@@ -1,0 +1,145 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.username }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="javascript:">RelationShips</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Matched</a></li>
+{% endblock %}
+{% block content %}
+    <div style="text-align: right;">
+        <a class="btn btn-primary" href="{% url 'relationships_matching:list' %}">Match</a>
+        <br>
+        <br>
+    </div>
+    {% for i in matching %}
+        <div class="col-sm-12">
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="padding: 15px;">
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-home-tab" data-toggle="pill" href="#{{ i.male.pk }}{{ i.pk }}" role="tab" aria-controls="pills-home" aria-selected="false">{{ i.male.name }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#{{ i.female.pk }}{{ i.pk }}" role="tab" aria-controls="pills-profile" aria-selected="false">{{ i.female.name }}</a>
+                </li>
+                <li class="nav-item">
+                    <a style="color:#000000;text-transform:none;">Matched By {{ i.user }}</a>
+                </li>
+                <li class="nav-item">
+                    
+                </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent" style="padding:0">
+                <div class="tab-pane fade" id="{{ i.male.pk }}{{ i.pk }}" role="tabpanel" aria-labelledby="pills-home-tab">
+                    <div class="row" style="padding: 15px;">
+                        {% if i.male.image %}
+                            <div class="col-sm-12 col-xl-4">
+                                <img style="width: 100%;height: auto;" src="{{ i.male.image.url }}">
+                            </div>
+                        <div class="col-sm-12 col-xl-8">
+                        {% else %}
+                        <div class="col-sm-12 col-xl-12">
+                        {% endif %}
+                            Name = {{ i.male.name }}<br>
+                            Father Name = {{ i.male.father_name }}<br>
+                            Date Of Birth = {{ i.male.date_of_birth }}<br>
+                            Age = {{ i.male.age }}<br>
+                            Gender = {{ i.male.gender }}<br>
+                            Occupation = {{ i.male.occupation }}<br>
+                            Education = {{ i.male.education }}<br>
+                            Living Status = {{ i.male.living_status }}<br>
+                            Cast = {{ i.male.cast }}<br>
+                            Siblings = {{ i.male.siblings }}<br>
+                            Height = {{ i.male.height }}inch<br>
+                            Address = {{ i.male.address }}<br>
+                            Place Of Birth = {{ i.male.place_of_birth }}<br>
+                            Marital Status = {{ i.male.marital_status }}<br>
+                            Religion = {{ i.male.religion }}<br>
+                            Mother Toungue = {{ i.male.mother_toungue }}<br>
+                            Monthly Income = {{ i.male.monthly_income }}<br>
+                            {% if i.male.facebook_id %}
+                                <a class="btn btn-primary" href="{{ i.male.facebook_id }}">View Profile On Facebook</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="{{ i.female.pk }}{{ i.pk }}" role="tabpanel" aria-labelledby="pills-profile-tab">    
+                    <div class="row" style="padding: 15px;">
+                            {% if i.female.image %}
+                                <div class="col-sm-12 col-xl-4">
+                                    <img style="width: 100%;height: auto;" src="{{ i.female.image.url }}">
+                                </div>
+                            <div class="col-sm-12 col-xl-8">
+                            {% else %}
+                            <div class="col-sm-12 col-xl-12">
+                            {% endif %}
+                                Name = {{ i.female.name }}<br>
+                                Father Name = {{ i.female.father_name }}<br>
+                                Date Of Birth = {{ i.female.date_of_birth }}<br>
+                                Age = {{ i.female.age }}<br>
+                                Gender = {{ i.female.gender }}<br>
+                                Occupation = {{ i.female.occupation }}<br>
+                                Education = {{ i.female.education }}<br>
+                                Living Status = {{ i.female.living_status }}<br>
+                                Cast = {{ i.female.cast }}<br>
+                                Siblings = {{ i.female.siblings }}<br>
+                                Height = {{ i.male.heightfe }}inch<br>
+                                Address = {{ i.female.address }}<br>
+                                Place Of Birth = {{ i.female.place_of_birth }}<br>
+                                Marital Status = {{ i.female.marital_status }}<br>
+                                Religion = {{ i.female.religion }}<br>
+                                Mother Toungue = {{ i.female.mother_toungue }}<br>
+                                Monthly Income = {{ i.female.monthly_income }}<br>
+                                {% if i.female.facebook_id %}
+                                    <a class="btn btn-primary" href="{{ i.female.facebook_id }}">View Profile On Facebook</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a class="btn btn-primary" onclick="closeTabs()" style="position: fixed;bottom: 60px;right: 60px;z-index: 1;">Close All</a>
+    {% endfor %}
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript">
+        function closeTabs() {
+            tabs = document.getElementsByClassName('tab-pane');
+            [].forEach.call(tabs, function(el) {
+                el.classList.remove("active");
+                el.classList.remove("show");
+            });
+        }
+        function showImg(pk) {
+            data = document.getElementById("data" + pk).style.display;
+            img = document.getElementById("img" + pk).style.display;
+            if(data == 'none'){
+                document.getElementById("data" + pk).style.display = 'block';
+                document.getElementById("img" + pk).style.display = 'none';
+                document.getElementById("change_btn" + pk).innerHTML = 'Image';
+            }
+            if(data == 'block'){
+                document.getElementById("data" + pk).style.display = 'none';
+                document.getElementById("img" + pk).style.display = 'block';
+                document.getElementById("change_btn" + pk).innerHTML = 'Data';
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        function match() {
+            var elements = document.getElementsByClassName('card-body collapse show');
+            var form = document.getElementById('match');
+            var name = ['male_pk','female_pk']
+            if(elements.length == '2'){
+                for (let i = 0; i < elements.length; i++) {
+                    document.getElementById(name[i]).value = elements[i].getAttribute('c_value');
+                }
+                form.submit();
+            }else{
+                alert("Please Select A Male And Female Candidate")
+            }
+        }
+    </script>
+{% endblock %}

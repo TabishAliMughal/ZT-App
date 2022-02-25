@@ -1,0 +1,93 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.username }}
+{% endblock %}
+{% block content %}
+    <div class="table-responsive">
+                        <table  class="table table-hover">
+        <thead class="text-center">
+            <tr>
+                <th>Order Number</th>
+                <td>{{ order }}</td>
+            </tr>
+        </thead>
+        <tbody class="text-center">
+            <tr>
+                <th>Order User</th>
+                <td>{{ order.user }}</td>
+            </tr>
+            <tr>
+                <th>Order Status</th>
+                <td><a href="javascript:">{{ order.status }}</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    <br>
+    <br>
+    <br>
+    <div class="table-responsive">
+                        <table  class="table table-hover">
+        <thead class="text-center">
+            <tr>
+                <th>Products</th>
+                <th>Quantity</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody class="text-center"> 
+            {% for v in products %}
+                <tr>
+                    <td>{{ v.product }}</td>
+                    <td>{{ v.qty }}</td>
+                    <td>{{ v.price }}</td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <th>Total</th>
+                <th></th>
+                <th>{{ total }}</th>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    <br>
+    <br>
+    <br>
+    {% if order.status == 'Delivered' %}
+    {% else %}
+    <form method="POST" action="{% url 'shop_delivery:delivery_person_tasks_create' %}">
+        {% csrf_token %}
+        <div class="table-responsive">
+                        <table  class="table table-hover">
+            <thead class="text-center">
+                <tr>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Call</th>
+                </tr>
+            </thead>
+            <tbody class="text-center"> 
+                {% for v in delivery %}
+                    <tr>
+                        <td>{{ v.name }}</td>
+                        <td>{{ v.active }}</td>
+                        <td hidden>
+                            <input type="text" value="{{ shop.pk }}" name="shop" readonly required />
+                            <br>
+                            <input type="text" value="{{ order.user.pk }}" name="delivery" readonly required />
+                            <br>
+                            <input type="text" value="{{ v.pk }}" name="person" readonly required />
+                            <br>
+                            <input type="text" value="{{ order.pk }}" name="order" readonly required />
+                        </td>
+                        <td><input type="submit" value="Call" /></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+</div>
+    </form>
+    {% endif %}
+{% endblock %}

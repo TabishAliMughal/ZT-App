@@ -1,0 +1,24 @@
+{% extends 'MainPage.html' %}
+{% block content %}
+    <button><a href="{% url 'shop_account:accounts_pay' %}">Pay</a></button>
+    <div class="table-responsive">
+                        <table  class="table table-hover">
+        <thead class="text-center">
+            <tr>
+                <th>Orders</th>
+                <th>Shop</th>
+                <th>Rider</th>
+            </tr>
+        </thead>
+        <tbody class="text-center">
+            {% for i in orders %}
+                <tr>
+                    <td><a href="#">{{ i.order }}</a></td>
+                    <td><a href="#">{% if i.shop == 'True' %}{{ i.shop }}{% else %}False{% endif %}</a></td>
+                    <td><a href="#">{% if i.delivery == 'True' %}{{ i.delivery }}{% else %}False{% endif %}</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.username }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Shop</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Orders</a></li>
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Your Orders</h5>
+            </div>
+            <div class="card-body">
+                <a class="btn btn-primary" href="{% url 'shop_account:shop_account' %}">My Account</a>
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="table-responsive">
+                        <table  class="table table-hover">
+                        <thead class="text-center">
+                            <tr>
+                                <th>Order Number</th>
+                                <th>Products</th>
+                                <th>Qty</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            {% for i in orders %}
+                                <tr>
+                                    <td><a href="{% url 'shop:shop_order_detail' i.pk %}">{{ i.pk }}</a></td>
+                                    <td></td>
+                                    <td></td>
+                                    {% for v in i.products %}
+                                    <tr>
+                                        <td></td>
+                                        <td>{{ v.product }}</td>
+                                        <td>{{ v.qty }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>{{ i.status }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+</div>
+                    {% csrf_token %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

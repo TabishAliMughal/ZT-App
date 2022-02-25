@@ -1,0 +1,160 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.username }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Shop</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Edit</a></li>
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Edit Shop</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="first_name">Name :</label>
+                            <input type="text" value="{{ form.name.value }}" name="name" required class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="city">City :</label>
+                            <select name="user" required class="form-control">
+                                {% for i in form.user %}
+                                    {{ i }}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Address:</label>
+                            <div class="mw-wrap" id="address-mw-wrap" style="width: 100%;min-width: 20px;">
+                                <div class="mw-header">
+                                
+                                    <div class="mw-coordinates-wrap">
+                                        <a class="mw-btn mw-btn-primary mw-btn-coordinates">Coordinates <i class="icon-down-dir" ></i></a>
+                                        <div class="mw-coordinates-overlay hide">
+                                            <label for="address-mw-overlay-latitude">
+                                                Latitude:
+                                                <input type="text" id="address-mw-overlay-latitude" class="form-control mw-overlay-input mw-overlay-latitude" placeholder="Ex: 41.015137" style="width: 100%;"/>
+                                            </label>
+                                            <label for="address-mw-overlay-longitude">
+                                                Longitude:
+                                                <input type="text" id="address-mw-overlay-longitude" class="form-control mw-overlay-input mw-overlay-longitude" placeholder="Ex: 28.979530" style="width: 100%;"/>
+                                            </label>
+                                            <br>
+                                            <br>
+                                            <button type="button" class="btn btn-primary mw-btn-coordinates-done"><a>Done</a></button>
+                                        </div>
+                                    </div>
+                    
+                                    <a class="mw-btn mw-btn-info mw-btn-my-location" >Current</a>
+                                    <a class="mw-btn mw-btn-warning mw-btn-add-marker" ><i class="icon-location"></i></a>
+                                    <br>
+                                    <br>
+                                    <div class="mw-adress-input-wrap" style="width: 100%;">
+                                        <input type="text" class="form-control pull-right" id="address-mw-google-address-input" placeholder="Enter or update the address here"/>
+                                    </div>
+                                
+                                </div>
+                                <br>
+                                <br>
+                                <div style="width: 100%;">
+                    
+                                    <div class="mw-map-wrapper">
+                                        <div class="mw-loader-overlay hide" >
+                                            <div class="mw-loader"></div>
+                                        </div>
+                                        <div id="address-map-elem" class="mw-map"></div>
+                                        <div style="display: none" class="hide">
+                                            <textarea id="id_address" name="address">POINT (67.14330946075596 24.83546661590558)</textarea>
+                                        </div>
+                                    </div>
+                        
+                                    <div class="mw-footer">
+                                        <span class="mw-help-text help-text"></span>
+                                        <a class="mw-btn mw-btn-delete pull-right mw-btn-danger" ><i class="icon-trash-empty"></i></a>
+                                    </div>
+                                    <div class="animated-loader"></div>
+                                </div>
+                            </td>
+                        </div>
+                        {% if form.address.value %}
+                            <input hidden type="text" value="{{ lat }}" id="lat" required class="form-control">
+                            <input hidden type="text" value="{{ lon }}" id="lon" required class="form-control">
+                        {% else %}
+                            <!-- <input type="text" name="city" required class="form-control" placeholder="Enter Your City ..."> -->
+                        {% endif %}
+
+                        <div class="form-group">
+                            <label for="active">Active :</label>
+                            <input class="form-control" type="checkbox" name="active" id="id_active" {% if form.active.value == True %}checked{% endif %} >
+                        </div>
+
+                        <button type="submit" class="btn btn-primary form-control">Save</button>
+                        {% csrf_token %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&amp;language=en&amp;key=AIzaSyBgzluEvlveyfNKaigwEClXvhSaUyTmLLI"></script>
+    <link href="{% static 'mapwidgets/css/map_widgets.min.css' %}" type="text/css" media="all" rel="stylesheet">
+    <script src="{% static 'admin/js/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'admin/js/jquery.init.js' %}"></script>
+    <script src="{% static 'mapwidgets/js/mw_google_point_field.min.js' %}"></script>
+    <script src="{% static 'admin/js/core.js' %}"></script>
+    <script src="{% static 'admin/js/admin/RelatedObjectLookups.js' %}"></script>
+    <script src="{% static 'admin/js/actions.js' %}"></script>
+    <script src="{% static 'admin/js/urlify.js' %}"></script>
+    <script src="{% static 'admin/js/prepopulate.js' %}"></script>
+    <script src="{% static 'admin/js/vendor/xregexp/xregexp.min.js' %}"></script>
+
+    <script type="application/javascript">
+        (function($) {
+            var mapOptions = JSON.parse("{\u0022mapCenterLocationName\u0022: null, \u0022mapCenterLocation\u0022: [24.835052, 67.153083], \u0022zoom\u0022: 15, \u0022GooglePlaceAutocompleteOptions\u0022: {\u0022componentRestrictions\u0022: {\u0022country\u0022: \u0022pakistan\u0022}}, \u0022markerFitZoom\u0022: 12, \u0022streetViewControl\u0022: true}");
+            var field_value = JSON.parse("{}");
+
+            var wrapElemSelector = "#address-mw-wrap";
+            var mapElemID = "address-map-elem";
+            var googleAutoInputID = "address-mw-google-address-input";
+            var locationInputID = "#id_address";
+
+            var mapWidgetOptions = {
+                locationInput: $(locationInputID),
+                wrapElemSelector: wrapElemSelector,
+                locationFieldValue: field_value,
+                mapElement: document.getElementById(mapElemID),
+                mapCenterLocationName: mapOptions.mapCenterLocationName,
+                mapCenterLocation: mapOptions.mapCenterLocation,
+                coordinatesOverlayToggleBtn: $(".mw-btn-coordinates", wrapElemSelector),
+                coordinatesOverlayDoneBtn: $(".mw-btn-coordinates-done", wrapElemSelector),
+                coordinatesOverlayInputs: $(".mw-overlay-input", wrapElemSelector),
+                coordinatesOverlay: $(".mw-coordinates-overlay", wrapElemSelector),
+                myLocationBtn: $(".mw-btn-my-location", wrapElemSelector),
+                addressAutoCompleteInput: document.getElementById(googleAutoInputID),
+                deleteBtn: $(".mw-btn-delete", wrapElemSelector),
+                addMarkerBtn: $(".mw-btn-add-marker", wrapElemSelector),
+                loaderOverlayElem: $(".mw-loader-overlay", wrapElemSelector),
+                zoom: mapOptions.zoom,
+                markerFitZoom: mapOptions.markerFitZoom,
+                GooglePlaceAutocompleteOptions: mapOptions.GooglePlaceAutocompleteOptions,
+                streetViewControl: mapOptions.streetViewControl,
+                markerCreateTriggerNameSpace: "google_point_map_widget:marker_create",
+                markerChangeTriggerNameSpace: "google_point_map_widget:marker_change",
+                markerDeleteTriggerNameSpace: "google_point_map_widget:marker_delete",
+                placeChangedTriggerNameSpace: "google_point_map_widget:place_changed"
+            };
+            var widget = new DjangoGooglePointFieldWidget(mapWidgetOptions);
+            
+
+            
+        })(mapWidgets.jQuery);
+    </script>
+{% endblock %}

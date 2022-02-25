@@ -1,0 +1,52 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.username }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'blog:blog_list' %}">Blogs</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Post</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Create</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Create Post</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="id_height">Name</label>
+                            <input class="form-control" type="text" name="name" maxlength="50" required="" id="id_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="id_height">Description</label>
+                            <input class="form-control" name="description" required="" id="id_discription">
+                        </div>
+                        <div class="form-group">
+                            <label for="id_height">Text</label>
+                            <textarea class="form-control" name="text" required="" id="id_text"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_height">Image</label>
+                            <input class="form-control" type="file" accept="image/png, image/jpeg" name="image" required="" id="id_image">
+                        </div>
+                        <div class="form-group">
+                            <label for="id_height">Video</label>
+                            <input class="form-control" type="url" name="video" id="id_video">
+                        </div>
+                        <div class="form-group">
+                            <label for="id_height">Sound</label>
+                            <input class="form-control" type="file" accept=".mp3" name="sound" maxlength="50" id="id_sound">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                        {% csrf_token %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

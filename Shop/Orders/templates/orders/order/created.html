@@ -1,0 +1,25 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.username }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'shop:product_list' %}">Shop</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'shop_cart:cart_detail' %}">Cart</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Order Completed</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Thank You</h5>
+                </div>
+                <div class="card-body">
+                    <p>Your order has been successfully completed. Your order number is <strong>{% for i in order %}" {{ i }} "<br>{% endfor %}</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

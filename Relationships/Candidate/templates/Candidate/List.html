@@ -1,0 +1,89 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.username }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="javascript:">RelationShips</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Match</a></li>
+{% endblock %}
+{% block content %}
+<div style="text-align: right;">
+    <a class="btn btn-primary" href="{% url 'relationships_matching:list' %}">Start Matching</a>
+    <br>
+    <br>
+</div>
+<div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>All Candidates</h5>                    
+                </div>
+                <div class="card-body">
+                    <div class="accordion" id="matching_male">
+                        {% for i in candidates %}
+                            <div class="card">
+                                <div class="card-header" id="headingOne">
+                                    <h5 class="mb-0"><a href="javascript:" data-toggle="collapse" data-target="#{{ i.pk }}" aria-expanded="false" aria-controls="collapseOne" class="collapsed">{{ i.name }}</a></h5>
+                                </div>
+                                <div id="{{ i.pk }}" class="card-body collapse" c_name="{{ i.name }}" c_value="{{ i.pk }}" aria-labelledby="headingOne" data-parent="#matching_male">
+                                    <div class="row">
+                                        {% if i.image %}
+                                            <div class="col-cm-12 col-xl-6" id="img{{ i.pk }}">
+                                                <img style="width: 100%;height: auto;" src="{{ i.image.url }}">
+                                            </div>
+                                        {% endif %}
+                                        <div class="col-cm-12 col-xl-6" id="data{{ i.pk }}">
+                                            Name = {{ i.name }}<br>
+                                            Father Name = {{ i.father_name }}<br>
+                                            Date Of Birth = {{ i.date_of_birth }}<br>
+                                            Age = {{ i.age }}<br>
+                                            Gender = {{ i.gender }}<br>
+                                            Occupation = {{ i.occupation }}<br>
+                                            Education = {{ i.education }}<br>
+                                            Living Status = {{ i.living_status }}<br>
+                                            Cast = {{ i.cast }}<br>
+                                            Siblings = {{ i.siblings }}<br>
+                                            Height = {{ i.height }}inch<br>
+                                            Mobile = {{ i.mobile }}<br>
+                                            Address = {{ i.address }}<br>
+                                            Cnic = {{ i.cnic }}<br>
+                                            Place Of Birth = {{ i.place_of_birth }}<br>
+                                            Marital Status = {{ i.marital_status }}<br>
+                                            Parents = {{ i.parents }}<br>
+                                            Discription = {{ i.discription }}<br>
+                                            Father's Occupation = {{ i.father_occupation }}<br>
+                                            Religion = {{ i.religion }}<br>
+                                            Mother Toungue = {{ i.mother_toungue }}<br>
+                                            Monthly Income = {{ i.monthly_income }}<br>
+                                            <a class="btn btn-primary" href="{{ i.facebook_id }}">View Profile On Facebook</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript">
+        function showImg(pk) {
+            data = document.getElementById("data" + pk).style.display;
+            img = document.getElementById("img" + pk).style.display;
+            if(data == 'none'){
+                document.getElementById("data" + pk).style.display = 'block';
+                document.getElementById("img" + pk).style.display = 'none';
+                document.getElementById("change_btn" + pk).innerHTML = 'Image';
+            }
+            if(data == 'block'){
+                document.getElementById("data" + pk).style.display = 'none';
+                document.getElementById("img" + pk).style.display = 'block';
+                document.getElementById("change_btn" + pk).innerHTML = 'Data';
+            }
+        }
+    </script>
+{% endblock %}

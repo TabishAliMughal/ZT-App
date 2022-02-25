@@ -1,0 +1,168 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.username }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'shop:product_list' %}">Shop</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'shop_cart:cart_detail' %}">Cart</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Checkout</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Your Order</h5>
+                </div>
+                <div class="card-body">
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#detail" aria-expanded="false" aria-controls="collapseExample">Detail</button>
+                    <div class="collapse" id="detail">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                        <table  class="table table-hover">
+                                <thead class="text-center">
+                                    <tr>
+                                        <th>From</th>
+                                        <th>Delivery</th>
+                                        <th>Product</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center">
+                                    {% for i in cart %}
+                                        <tr>
+                                            <td>{{ i.shop }}</td>
+                                            <td>{{ i.delivery }}</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            {% for v in i.item %}
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>{{ v.product.name }}</td>
+                                                    <td>{{ v.product.price }}</td>
+                                                    <td>{{ v.quantity }}</td>
+                                                    <td>{{ v.total_price }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+</div>
+                            <br>
+                            <div style="text-align: right;margin-right: 5%;">
+                                <h5>Goods : PKR {{ u_cart.get_total_price }}</h5>
+                                <br>
+                                <h5>Delivery : PKR {{ delivery }}</h5>
+                                <br>
+                                <h5 id="demo"></h5>
+                                <input class="form-control" id="delivery" type="text" value="{{ delivery }}" hidden />
+                                <input class="form-control" id="total_price" type="text" value="{{ u_cart.get_total_price }}" hidden />
+                            </div>
+                        </div>
+                    </div>
+                    <form method="post" class="order-form">
+                        {% for i in user %}
+                            <div class="form-group">
+                                <label>First Name</label>
+                                <input class="form-control" type="text" name='first_name' value="{{ i.first_name }}" readonly required>
+                            </div>
+                            <div class="form-group">
+                                <label>Address</label>
+                                <iframe width="100%" height="500px" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBgzluEvlveyfNKaigwEClXvhSaUyTmLLI&q={{ address.lat }}%2c{{ address.lon }}" allowfullscreen></iframe></td>
+                                <input class="form-control" type="text" name='address' value="{{ i.address }}" required hidden>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" type="hidden" name="total_price" value="{{ u_cart.get_total_price }}" />
+                                <input class="form-control" type="hidden" name="delivery" value="{{ delivery }}" />
+                            </div>
+                        {% endfor %}
+                        <p><input class="btn btn-primary form-control" type="submit" value="Place order"></p>
+                        {% csrf_token %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var p = document.getElementById("delivery").value;
+        var k = document.getElementById("total_price").value;
+        var x = Number(p)+Number(k)
+        document.getElementById("demo").innerHTML = "Total : PKR " + Number(x) ;
+        var price = document.getElementById("price").innerText;
+        var qty = document.getElementById('qty').innerText;
+        document.getElementById("total").innerHTML = Number(price)*Number(qty);
+    </script>
+{% endblock %}
+
+
+    <!-- <script src="http://maps.google.com/maps?file=api&amp;v=2.x&amp;key=AIzaSyBgzluEvlveyfNKaigwEClXvhSaUyTmLLI" type="text/javascript"></script>
+    <script type="text/javascript">
+                
+        function addEvent(obj, evType, fn){ 
+        if (obj.addEventListener){ 
+        obj.addEventListener(evType, fn, false); 
+        return true; 
+        } else if (obj.attachEvent){ 
+        var r = obj.attachEvent("on"+evType, fn); 
+        return r; 
+        } else { 
+        return false; 
+        } 
+        }
+        addEvent(window, 'load', gmap_load);	
+            
+            
+        var map_gmap;
+        var geocoder_gmap = new GClientGeocoder();
+        var marker_gmap = [];
+        
+            
+        function openMarkerInfoWindow_gmap(num) { GEvent.trigger(marker_gmap[num],"click"); }
+        
+        function gmap_load() {
+            var center_marker = false;
+            var drag_marker;
+            var drag_point;
+            var bounds = new GLatLngBounds();
+                
+            if (GBrowserIsCompatible()) {
+                var div = document.getElementById("gmap");
+                div.setAttribute('abc','def')
+                if (!div) return;
+                map_gmap = new GMap2(div);    map_gmap.setCenter(new GLatLng(0,0),13);	
+                map_gmap.addControl(new GLargeMapControl());
+                map_gmap.addControl(new GMapTypeControl());
+                {% for i in address %}
+                    icon1 = new GIcon();
+                    icon1.image = "{% static './img/map.png' %}";
+                    icon1.iconSize = new GSize(60,80);
+                    icon1.iconAnchor = new GPoint(1,18);
+                    icon1.infoWindowAnchor = new GPoint(15,1);
+                            
+                    var point = new GLatLng({{i.lat}},{{i.lon}});
+                    marker_gmap1= new GMarker(point,{icon:icon1,title:"Your Location"});
+                    bounds.extend(point);
+                    GEvent.addListener(marker_gmap1, "click", function() { marker_gmap1.openInfoWindowHtml('The Address Of Delivery');});			  				
+                    map_gmap.addOverlay(marker_gmap1);
+                {% endfor %}
+                    
+                map_gmap.setCenter(bounds.getCenter(),map_gmap.getBoundsZoomLevel(bounds));					
+            }
+            else {
+                var div = document.getElementById("gmap");
+                var new_input = "Will Be Your Default Address";
+                $('#gmap').append(new_input);
+            }
+        };
+        
+    </script> -->

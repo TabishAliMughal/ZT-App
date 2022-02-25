@@ -1,0 +1,93 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.username }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'blog:blog_list' %}">Blogs</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Blog</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Edit</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Create Edit</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        <div class="table-responsive">
+                        <table  class="table table-hover">
+                            <tbody class="text-center">
+                                <tr>
+                                    <td>Name</td>
+                                    <td><input class="form-control" type="text" name="name" maxlength="50" required="" id="id_name" value="{{ form.name.value }}"></td>
+                                </tr>
+                                <tr>
+                                    <td>Image</td>
+                                    <td>
+                                        {% if form.image.value %}
+                                            <div class="form-control">
+                                                Currently: 
+                                                <img style="width:10%;height:auto;" src="{{ form.image.value.url }}">
+                                                <br>
+                                                <br>
+                                                Change:
+                                                <input type="file" name="image" accept="image/*" id="id_image">
+                                            </div>
+                                        {% else %}
+                                            <input class="form-control" type="file" name="image" accept="image/*" id="id_image">
+                                        {% endif %}
+                                    </td>
+                                    <!-- <td><input class="form-control" type="file" accept="image/png, image/jpeg" name="image" maxlength="50" required="" id="id_image"></td> -->
+                                </tr>
+                                <tr>
+                                    <td>Type</td>
+                                    <td>
+                                        <select name="type" class="form-control" >
+                                            {% for i in form.type %}
+                                                {{ i }}
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td style="text-align: right;"><button type="submit" class="btn btn-primary">Add</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+</div>
+                        {% csrf_token %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+    <form method="POST" enctype="multipart/form-data">
+        <div class="table-responsive">
+                        <table  class="table table-hover">
+            <tbody class="text-center">
+                <tr>
+                    <td>Name</td>
+                    <td>{{ form.name }}</td>
+                </tr>
+                <tr>
+                    <td>Image</td>
+                    <td>{{ form.image }}</td>
+                </tr>
+                <tr>
+                    <td>Type</td>
+                    <td>{{ form.type }}</td>
+                </tr>
+                <tr>
+                    <td>Submit</td>
+                    <td><button>Add</button></td>
+                </tr>
+            </tbody>
+        </table>
+</div>
+    </form>

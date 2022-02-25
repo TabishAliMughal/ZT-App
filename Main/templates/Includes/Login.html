@@ -1,0 +1,112 @@
+{% load static %}
+<div id="login" style="display: none;" class="row">
+    <div class="auth-wrapper">
+        <div class="auth-content">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="mb-4">
+                        <i class="feather icon-unlock auth-icon"></i>
+                    </div>
+                    <h3 class="mb-4">Login</h3>
+
+                    <span class="mb-0 text-muted">
+                        {% if msg %}
+                            {{ msg | safe }}
+                        {% else %}
+                            Add your credentials
+                        {% endif %} 
+                    </span>
+
+                    <br />
+                    <br />
+
+                    <form role="form" method="POST" action="{% url 'Authentication:login' %}">
+
+                        {% csrf_token %}                   
+
+                        <div class="input-group mb-3">
+                            <input type="text" name="username" placeholder="Username" class="form-control" required id="id_username">
+                        </div>
+                        
+                        <div class="input-group mb-4">
+                            <input type="password" name="password" placeholder="Password" class="form-control" required id="id_password">
+                        </div>
+                        
+                        <input type="text" name="path" value="{{ request.GET.next }}" hidden readonly>
+                        <button type="submit" name="login" class="btn btn-primary shadow-2 mb-4 form-control">Login</button>
+
+                    </form>
+                    <h3 class="mb-4">OR</h3>
+                    <a role="button" class="btn btn-primary shadow-2 mb-4 form-control" href="{% url 'social:begin' 'facebook' %}{% if request.path != '/' %}?next={{ request.path }}{% else %}{% endif %}">Sign in with Facebook</a>
+                    <a role="button" class="btn btn-primary shadow-2 mb-4 form-control" href="{% url 'social:begin' 'google-oauth2' %}?next={% if request.path != '/' %}{{ request.path }}{% else %}{{ request.get_host }}{% endif %}">Sign in with Google</a>
+                    {% if request.path == '/' %}
+                        {% if request.user.is_authenticated %}
+                            <br>
+                            <br>
+                            <a role="button" class="btn btn-primary shadow-2 mb-4 form-control" href="javascript:" onclick="
+                            var modal = document.getElementById('login');modal.style.display = 'none';
+                            document.getElementById('id03').style.display='block';
+                            ">Activate Your Shop</a>
+                        {% else %}
+                            <a role="button" class="btn btn-primary shadow-2 mb-4 form-control" href="javascript:" onclick="showCreatorForm()">Be A Creator</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="creator" style="display: none;" class="row">
+    <div class="auth-wrapper">
+        <div class="auth-content">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="mb-4">
+                        <i class="feather icon-unlock auth-icon"></i>
+                    </div>
+                    <h3 class="mb-4">Register Yourself</h3>
+
+                    <span class="mb-0 text-muted">
+                        Add Your Credentials
+                    </span>
+
+                    <br />
+                    <br />
+                    <form autocomplete="off" action="{% url 'creator:creator_create' %}" method="POST" >
+                            <div class="input-group mb-3">
+                                <input type="text" placeholder="Your Name" class="form-control" name="name" maxlength="200" required id="id_name"required>
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <input type="password" placeholder="Create Password" class="form-control" id="pass1" onkeyup='check();' required>
+                                <p id="text" style="display:none;">WARNING! Caps lock is ON.</p>
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <input type="password" placeholder="Confirm Password" class="form-control" id="pass2" onkeyup='check();' name='password' required>
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <input type="text" placeholder="Your Mobile Number" class="form-control" name="mobile" maxlength="11" required id="id_mobile"required >
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <input type="text" placeholder="Your NIC Number(If Available)" class="form-control" name="nic" maxlength="15" id="id_nic">
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <input type="text" placeholder="Your Bank Account Number(If Available)" class="form-control" name="bank_account" maxlength="24" id="id_bank_account">
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <input type="text" placeholder="Your EasyPaisa Account Number(If Available)" class="form-control" name="easypaisa" maxlength="11" id="id_easypaisa">
+                            </div>
+                            <span id='message'><i class="feather icon-check-circle"></i></span><br>
+                            <button class="btn btn-primary form-control" type="submit" id="butt" style="display:none;">Send Request</button>
+                            {% csrf_token %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

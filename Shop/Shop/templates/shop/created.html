@@ -1,0 +1,19 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.username }}
+{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card">
+      <div class="card-header">
+        <h5>You Have Requested Your Shop</h5>
+      </div>
+      <div class="card-body">
+        <h1>Please Wait For Admin To Approve</h1>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

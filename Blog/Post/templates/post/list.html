@@ -1,0 +1,83 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.username }}
+{% endblock %}
+{% block address %}
+<li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+<li class="breadcrumb-item"><a href="{% url 'blog:blog_list' %}">Blog</a></li>
+<li class="breadcrumb-item"><a href="javascript:">Posts</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    {% if request.user.is_authenticated %}
+                        {% for k in user %}
+                            {% if k.name == 'Creator' %}
+                                <a class="btn btn-primary" href="{% url 'post:post_create' blog.pk %}">Create Post</a>
+                                <a class="btn btn-primary" href="{% url 'bunch:bunch_list' blog.pk %}">Bunch List</a>
+                                <a class="btn btn-primary" href="{% url 'blog:blog_edit' blog.pk %}">Edit Blog</a>
+                                <a class="btn btn-primary" onclick="var result = confirm('Want to delete?');if (result) {window.location = '{% url 'blog:blog_delete' blog.pk %}';}">Delete Blog</a>                                
+                            {% elif k.name == 'Public' %}
+                                <a class="btn btn-primary" href="{% url 'bunch:bunch_list' blog.pk %}">Bunch List</a>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h5>{{ blog }} By <a href="{% url 'blog:user_blog_list' blog.user %}">More From This Bloger</a></h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for i in posts %}
+                            <div class="col-md-12 col-xl-4">
+                                <div class="card block-card">
+                                    <div class="card-header">
+                                        <h5><a href="{% url 'post:post_detail' i.post.pk %}">{{ i.post.name }}</a></h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="text-center">{{ i.post.description }}</div>
+                                        <br>
+                                        <div class="text-center">
+                                            <a href="{% url 'post:post_detail' i.post.pk %}">
+                                                {% if i.post.image %}
+                                                    <div><img class="col-9" src="{{ i.post.image.url }}"></div>
+                                                {% else %}
+                                                        <div><img class="col-9" src="{% static 'assets/images/noimg.png' %}"></div>
+                                                {% endif %}
+                                            </a>
+                                        </div>
+                                        <br>
+                                        <div style="width: 100%;">
+                                            {% for p in i.reacts %}
+                                                <div style="width: {{ i.width }}%;float: left;">
+                                                    <i class="feather {{ p.type.icon }}"> {{ p.total }}</i>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        {% if request.user.is_authenticated %}
+                                            {% for k in user %}
+                                                {% if k.name == 'Creator' %}
+                                                        <a class="btn btn-primary" href="{% url 'post:post_edit' i.post.pk %}">Edit</a>
+                                                        <a class="btn btn-primary" onclick="var result = confirm('Want to delete?');if (result) {window.location = '{% url 'post:post_delete' i.post.pk %}';}">Delete</a>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

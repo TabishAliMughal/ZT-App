@@ -1,0 +1,96 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.username }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'shop:product_list' %}">Shop</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Cart</a></li>
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Your Shopping Cart</h5>
+            </div>
+            <div class="card-body">
+                {% if cart %}
+                    {% for i in cart %}
+                        <h5>From {{ i.shop }}</h5>
+                        <div class="table-responsive">
+                        <table  class="table table-hover">
+                            <thead class="text-center">
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Name</th>
+                                    <th>Unit Price</th>
+                                    <th>Total Price</th>
+                                    <th>Update</th>
+                                    <th>Remove</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                {% for v in i.item %}
+                                    <tr>
+                                        <td style="width: 25%;">
+                                            <div></div>
+                                            {% if v.img %}
+                                                <div class="col"><img class="col" src="{{ v.img }}"></div>
+                                            {% else %}
+                                                <img style="animation: opacity 3s;animation-fill-mode: forwards;" class="col" src="{% static 'assets/images/noimg.png' %}">
+                                            {% endif %}
+                                        </td>
+                                            <td>{{ v.product.name }}</td>
+                                            <td class="num">{{ v.product.price }}</td><br>
+                                            <td class="num">{{ v.total_price }}</td>
+                                            <td><form action="{% url "cart:cart_add" v.product.id %}" method="post">
+                                                {{ v.form.quantity }}
+                                                <br>
+                                                <br>
+                                                <br>
+                                                {{ v.form.update }}
+                                                <input class="btn btn-outline-primary" type="submit" value="Update">
+                                                {% csrf_token %}
+                                            </form>
+                                            </td>
+                                            <td><a class="btn btn-primary" href="{% url "cart:cart_remove" v.product.id %}">Remove</a></td>
+                                        </div>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+</div>
+                    {% endfor %}
+                    <br>
+                    <div style="text-align: right;margin-right: 5%;">
+                        <h5>Goods : PKR {{ u_cart.get_total_price }}</h5>
+                        <br>
+                        <h5>Delivery : PKR {{ delivery }}</h5>
+                        <br>
+                        <h5>Total : PKR <span id="demo"></span></h5>
+                    </div>
+                    <input id="delivery" type="text" value="{{ delivery }}" hidden />
+                    <input id="total_price" type="text" value="{{ u_cart.get_total_price }}" hidden />
+                    <a class="btn btn-primary form-control" href="{% url 'orders:order_create' request.user.pk %}">Checkout</a>
+                {% else %}
+                    <h3>Your Shopping Cart Is Empty</h3>
+                    <br>
+                    <br>
+                    <br>
+                {% endif %}
+                <a class="btn btn-primary form-control" href="{% url 'shop:product_list' %}">Continue shopping</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+    <script>
+        var p = document.getElementById("delivery").value;
+        var k = document.getElementById("total_price").value;
+        var x = Number(p)+Number(k)
+        document.getElementById("demo").innerHTML = x ;
+    </script>
+{% endblock %}

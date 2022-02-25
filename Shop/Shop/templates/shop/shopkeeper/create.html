@@ -1,0 +1,88 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.username }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Shop</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">New Product</a></li>
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Fill Info</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="Category">Category</label>
+                        <select class="form-control" name="category" required="" id="id_category">
+                            {% for i in form.product.category %}
+                                {{i}}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Product Name">Product Name</label>
+                        <input class="form-control" type="text" name="name" value="{{ name }}" >
+                    </div>
+                    <div class="form-group">
+                        <label for="Image">Image</label>
+                        <input class="form-control" type="file" accept="image/x-png,image/jpeg" name="image" multiple value="{{ image }}" />
+                    </div>
+                    {% if images %}
+                        {% for i in images %}
+                            <div class="form-group">
+                                <td></td>
+                                <td><img style="border: 5px solid gray;align-items: center;height:100px;" src="{{ i.image.url }}"><a href="{% url 'shop:shop_product_picture_delete' i.pk %}">Delete</a></td>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <div class="form-group">
+                        <label for="Video">Video</label>
+                        <input class="form-control" type="file" accept=".mp4,mkv" name="video" multiple />
+                    </div>
+                    {% if videos %}
+                        {% for i in videos %}
+                            <div class="form-group">
+                                <video controls style="width: 50%;margin: auto;"><source src="{{ i.video.url }}" type="video/mp4" ></video><a href="{% url 'shop:shop_product_video_delete' i.pk %}">Delete</a>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <div class="form-group">
+                        <label for="Description">Description</label>
+                        <textarea class="form-control" name="description">{{ description }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Price</label>
+                        <br>
+                        <input class="form-control" style="width:35%;float: left;" type="number" name="price" value="{{ price }}">
+                        <label style="float: left;font-size: 30px;padding: 0px 20px 0px 20px;"> / </label>
+                        <select class="form-control" style="width: 35%;float: left;" name="unit" required="" id="id_unit">
+                            {% for i in form.product.unit %}
+                                {{i}}
+                            {% endfor %}
+                        </select>
+                        <a class="btn btn-primary" style="margin-left: 20px;" href="{% url 'shop:units_add' %}">+</a>
+                    </div>
+                    <div class="form-group">
+                        <label for="Available">Available</label>
+                        <input class="form-control" style="width:20px" type="checkbox" name="available" {% if form.product.available.value == True %}checked{% endif %} />
+                    </div>
+                    <div class="form-group">
+                        <label for="Condition">Condition</label>
+                        <select class="form-control" name="condition" id="id_condition">
+                            {% for i in form.product.condition %}
+                                {{i}}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div style="text-align: right;">
+                        <button class="btn btn-primary" type="submit">Add</button>
+                    </div>
+                    {% csrf_token %}
+                </form>
+{% endblock %}

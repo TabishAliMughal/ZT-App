@@ -1,0 +1,45 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.username }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Shop</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Request</a></li>
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Your Shop</h5>
+                </div>
+                <div class="card-body">
+                    {% if return %}
+                        <h5>{{ return }}</h5>
+                    {% endif %}
+                    <form method="POST" action="{% url 'shop:shop_create' %}">
+                        <div class="table-responsive">
+                        <table  class="table table-hover">
+                            <thead class="text-center">
+                                <tr>
+                                    <th>Shop Name</th>
+                                    <td><input class="form-control" type='text' name='shop_name'></td>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                <tr>
+                                    <th></th>
+                                    <td style="text-align: right;"><button class="btn btn-primary" type="submit">Request Shop</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+</div>
+                        {% csrf_token %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

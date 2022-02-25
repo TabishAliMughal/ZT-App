@@ -1,0 +1,179 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.username }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'shop:product_list' %}">Shop</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Product</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <!-- <div class="card-header">
+                    <h5>{{ product.product.name }}</h5>
+                </div> -->
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-xl-4 col-md-6">
+                            <div class="card" style="box-shadow:none">
+                                {% if product.video %}
+                                    {% for i in product.video %}
+                                        <div class="mySlides" style="display: block;margin: auto;text-align:center;">
+                                            <video controls style="margin: auto;width:100%;">
+                                                <source src="{{ i.video }}" type="video/mp4" >
+                                            </video><div style="width: fit-content;margin: auto;">
+                                                <ul class="pagination">
+                                                    <li class="page-item"><a class="page-link" href="javascript:" onclick="plusSlides(-1)" aria-label="Previous"><span aria-hidden="true">«</span><span class="sr-only">Previous</span></a></li>
+                                                    <li class="page-item"><a class="page-link" href="javascript:">{{ i.count }} / {{ product.total }}</a></li>
+                                                    <li class="page-item"><a class="page-link" href="javascript:" onclick="plusSlides(1)" aria-label="Next"><span aria-hidden="true">»</span><span class="sr-only">Next</span></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                                {% if product.image %}
+                                    {% for i in product.image %}
+                                        <div class="mySlides" data-index="{{ i.count }}" style="text-align: center;">
+                                            <img style="border: 5px solid transparent;align-items: center;display: block;background-color: transparent;width:95%;" src="{{ i.image }}">
+                                            <div style="width: fit-content;margin: auto;">
+                                                <ul class="pagination">
+                                                    <li class="page-item"><a class="page-link" href="javascript:" onclick="plusSlides(-1)" aria-label="Previous"><span aria-hidden="true">«</span><span class="sr-only">Previous</span></a></li>
+                                                    <li class="page-item"><a class="page-link" href="javascript:">{{ i.count }} / {{ product.total }}</a></li>
+                                                    <li class="page-item"><a class="page-link" href="javascript:" onclick="plusSlides(1)" aria-label="Next"><span aria-hidden="true">»</span><span class="sr-only">Next</span></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                                {% if not product.video and not product.image %}
+                                    <div style="text-align: center;">
+                                        <img style="border: 5px solid transparent;align-items: center;display: block;background-color: transparent;width:95%;" src="{% static 'assets/images/noimg.png' %}">
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-md-6">
+                            <div class="card user-list" style="box-shadow:none">
+                                <div class="card-block">
+                                    <div class="row align-items-center m-b-20">
+                                        <div class="col-xl-12">
+                                            <h1 class="f-w-300 d-flex align-items-center float-left m-0">{{ product.product.name }}</h1>
+                                        </div>
+                                    </div>
+                                    <div class="row m-b-20">
+                                        <div class="col-xl-12">
+                                            <h4 class="align-items-center float-left">RS {{ product.product.price }} / {{ product.product.unit }}</h4>
+                                        </div>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <div class="col-xl-12">
+                                            <h6 class="align-items-center float-left">{{ product.product.description|linebreaks }}</h6>
+                                        </div>
+                                        <br>
+                                        <div class="col-xl-12">
+                                            <h6 class="align-items-center float-left">
+                                                From = <a href="{% url 'shop:shop_product_list' product.product.shop.pk %}">{{ product.product.shop }}</a>
+                                            </h6>
+                                        </div>
+                                        <div class="col-xl-12">
+                                            <h6 class="align-items-center float-left">
+                                                Category = <a href="{{ product.product.category.get_absolute_url }}">{{ product.product.category }}</a>
+                                            </h6>
+                                        </div>
+                                        <div class="col-xl-12">
+                                            <h6 class="align-items-center float-left">
+                                                {% if request.user.is_authenticated %}
+                                                    {% if user %}
+                                                        {% for i in user %}
+                                                            {% if i.name == "Creator" %}
+                                                                <h3>Cant Create Order</h3>
+                                                            {% elif i.name == 'Public' %}
+                                                                <form action="{% url 'cart:cart_add' product.product.pk %}" method="post">
+                                                                    <label for="id_quantity">Quantity : </label>
+                                                                    <select name="quantity" id="id_quantity">
+                                                                        <option value="1">1</option>
+                                                                        <option value="2">2</option>
+                                                                        <option value="3">3</option>
+                                                                        <option value="4">4</option>
+                                                                        <option value="5">5</option>
+                                                                        <option value="6">6</option>
+                                                                        <option value="7">7</option>
+                                                                        <option value="8">8</option>
+                                                                        <option value="9">9</option>
+                                                                        <option value="10">10</option>
+                                                                        <option value="11">11</option>
+                                                                        <option value="12">12</option>
+                                                                        <option value="13">13</option>
+                                                                        <option value="14">14</option>
+                                                                        <option value="15">15</option>
+                                                                        <option value="16">16</option>
+                                                                        <option value="17">17</option>
+                                                                        <option value="18">18</option>
+                                                                        <option value="19">19</option>
+                                                                        <option value="20">20</option>
+                                                                    </select>
+                                                                    {% csrf_token %}
+                                                                    <br>
+                                                                    <br>
+                                                                    <button class="btn btn-primary form-control">Add To Cart</button>
+                                                                </form>
+                                                            {% else %}
+                                                                <h3>Cant Create Order</h3>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% else %}
+                                                        <h6>Cant Create Order <a href="{% url 'costumer:costumer_data' %}">Fill Your Data</a></h6>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <span><a href="{% url 'main_login' %}?next={{ request.path }}">Log In</a>To Create Order</span>
+                                                {% endif %}
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script>
+        var slideIndex = 1;
+            showSlides(slideIndex);
+
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        function showSlides(n) {
+            var i;
+            var slides = document.getElementsByClassName("mySlides");
+            var dots = document.getElementsByClassName("dot");
+            if (n > slides.length) {
+                slideIndex = 1
+            }
+            if (n < 1) {
+                slideIndex = slides.length
+            }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";  
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex-1].style.display = "block";  
+            dots[slideIndex-1].className += " active";
+        }
+    </script>
+{% endblock %}

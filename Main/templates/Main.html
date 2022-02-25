@@ -1,0 +1,140 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% load static %}
+{% block content %}
+    <br>
+    <div class="row">
+        <div class="col-md-6 col-xl-4">
+            <div class="card daily-sales">
+                <div class="card-block">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-12">
+                            <h3 class="f-w-300 d-flex align-items-center m-b-0">
+                                <a style="color:#038fcf" href="{% url 'shop:product_list' %}">
+                                    <div class="row">
+                                        <div>
+                                            <i class="feather icon-shopping-cart" style="font-size: 100px;" ></i>
+                                        </div>
+                                        <div style="margin: auto;padding-left: 30px;">
+                                            Shop
+                                        </div>
+                                    </div>
+                                </a>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-4">
+            <div class="card daily-sales">
+                <div class="card-block">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-12">
+                            <h3 class="f-w-300 d-flex align-items-center m-b-0">
+                                <a style="color:#038fcf" href="javascript:">
+                                    <div class="row">
+                                        <div>
+                                            <i class="feather icon-home" style="font-size: 100px;" ></i>
+                                        </div>
+                                        <div style="margin: auto;padding-left: 30px;">
+                                            School
+                                        </div>
+                                    </div>
+                                </a>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-4">
+            <div class="card daily-sales">
+                <div class="card-block">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-12">
+                            <h3 class="f-w-300 d-flex align-items-center m-b-0">
+                                <a style="color:#038fcf" href="{% url 'blog:blog_list' %}">
+                                    <div class="row">
+                                        <div>
+                                            <i class="feather icon-mic" style="font-size: 100px;" ></i>
+                                        </div>
+                                        <div style="margin: auto;padding-left: 30px;">
+                                            Blog
+                                        </div>
+                                    </div>
+                                </a>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-4">
+            <div class="card daily-sales">
+                <div class="card-block">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-12">
+                            <h3 class="f-w-300 d-flex align-items-center m-b-0">
+                                <a style="color:#038fcf" href="{% url 'relationships:home' %}">
+                                    <div class="row">
+                                        <div>
+                                            <i class="feather icon-link" style="font-size: 100px;" ></i>
+                                        </div>
+                                        <div style="margin: auto;padding-left: 30px;">
+                                            RelationShips
+                                        </div>
+                                    </div>
+                                </a>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-4">
+            <div class="card daily-sales">
+                <div class="card-block">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-12">
+                            <h3 class="f-w-300 d-flex align-items-center m-b-0">
+                                <a style="color:#038fcf" href="https://www.youtube.com">
+                                    <div class="row">
+                                        <div>
+                                            <i class="feather icon-play-circle" style="font-size: 100px;" ></i>
+                                        </div>
+                                        <div style="margin: auto;padding-left: 30px;">                    
+                                            Youtube
+                                        </div>
+                                    </div>
+                                </a>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-4">
+            <div class="card daily-sales">
+                <div class="card-block">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-12">
+                            <h3 class="f-w-300 d-flex align-items-center m-b-0">
+                                <a style="color:#038fcf" href="https://www.facebook.com">
+                                    <div class="row">
+                                        <div>
+                                            <i class="feather icon-facebook" style="font-size: 100px;" ></i>
+                                        </div>
+                                        <div style="margin: auto;padding-left: 30px;">                      
+                                            Facebook
+                                        </div>
+                                    </div>
+                                </a>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

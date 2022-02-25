@@ -1,0 +1,76 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.username }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'blog:blog_list' %}">Blogs</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Post</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Edit</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Edit Post</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="id_height">Name</label>
+                            <input class="form-control" type="text" name="name" maxlength="50" required="" id="id_name" value="{{ form.name.value }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="id_height">Description</label>
+                            <input class="form-control" name="description" required="" id="id_text" value="{{ form.description.value }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="id_height">Text</label>
+                            <textarea class="form-control" name="text" required="" id="id_text">{{ form.text.value }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_height">Image</label>
+                            {% if form.image.value %}
+                                <div class="form-control">
+                                    Currently: 
+                                    <img style="width:10%;height:auto;" src="{{ form.image.value.url }}">
+                                    <br>
+                                    <br>
+                                    Change:
+                                    <input type="file" name="image" accept="image/png, image/jpeg" id="id_image">
+                                </div>
+                            {% else %}
+                                <input class="form-control" type="file" name="image" accept="image/png, image/jpeg" id="id_image">
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_height">Video</label>
+                            <input class="form-control" type="url" name="video" id="id_video" value="{{ form.video.value }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="id_height">Sound</label>                                    
+                            {% if form.sound.value %}
+                                <div class="form-control">
+                                    Currently: 
+                                    <br>
+                                    <audio controls>
+                                        <source src="{{ form.sound.value.url }}" />
+                                    </audio>
+                                    <br>
+                                    Change:
+                                    <input type="file" name="image" accept="image/*" id="id_image">
+                                </div>
+                            {% else %}
+                                <input class="form-control" type="file" name="image" accept="image/*" id="id_image">
+                            {% endif %}
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                        {% csrf_token %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

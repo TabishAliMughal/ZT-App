@@ -1,0 +1,174 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.username }}
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Fill Your Info</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="form-group" style="display: none;">
+                        <label for="id_name">User:</label>
+                        <input class="form-control" type="text" name="user" value="{{ request.user.pk }}" maxlength="50" required id="id_user">
+                    </div>
+                    <div class="form-group">
+                        <label for="id_name">Name:</label>
+                        <input class="form-control" type="text" name="name" maxlength="50" required id="id_name" value="{% if form.name.value %}{{ form.name.value }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="id_father_name">Father name:</label>
+                        <input class="form-control" type="text" name="father_name" maxlength="50" required id="id_father_name" value="{% if form.father_name.value %}{{ form.father_name.value }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="id_image">Image:</label>
+                        {% if form.image.value %}
+                        <div class="form-control">
+                            Currently: 
+                            <img src="{{ form.image.value.url }}" style="width:10%;height:auto;">
+                            <br><br>
+                            Change:
+                            <input type="file" name="image" accept="image/jpg,image/png" id="id_image"></td></tr>
+                        </div>
+                        {% else %}
+                            <input class="form-control" type="file" name="image" accept="image/*" id="id_image">
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_date_of_birth">Date of birth:</label>
+                        <input class="form-control" type="date" name="date_of_birth" required id="id_date_of_birth" value="{% if dob != '' %}{{ dob }}{% else %}1995-01-01{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="id_age">Age:</label>
+                        <input class="form-control" type="number" name="age" required id="id_age" value="{% if form.age.value %}{{ form.age.value }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="id_gender">Gender:</label>                
+                        <select class="form-control" name="gender" required id="id_gender" >
+                            {% for i in form.gender %}
+                                {{i}}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_occupation">Occupation:</label>
+                        <select class="form-control" name="occupation" id="id_occupation" >
+                            {% for i in form.occupation %}
+                                {{i}}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_education">Education:</label>                
+                        <select class="form-control" name="education" id="id_education" >
+                            {% for i in form.education %}
+                                {{i}}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_living_status">Living status:</label>                
+                        <select class="form-control" name="living_status" id="id_living_status" >
+                            {% for i in form.living_status %}
+                                {{i}}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_cast">Cast:</label>
+                        <input class="form-control" type="text" name="cast" maxlength="50" id="id_cast" value="{% if form.cast.value %}{{ form.cast.value }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="id_siblings">Siblings:</label>
+                        <input class="form-control" type="number" name="siblings" id="id_siblings" value="{% if form.siblings.value %}{{ form.siblings.value }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="id_height">Height (Inches):</label>
+                        <input class="form-control" type="number" name="height" id="id_height" value="{% if form.height.value %}{{ form.height.value }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="id_mobile">Mobile:</label>
+                        <input class="form-control" type="tel" name="mobile" maxlength="11" required id="id_mobile" value="0{% if form.mobile.value %}{{ form.mobile.value }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="id_address">Address:</label>
+                        <input class="form-control" type="text" name="address" maxlength="250" required id="id_address" value="{% if form.address.value %}{{ form.address.value }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="id_cnic">Cnic:</label>
+                        <input class="form-control" type="number" name="cnic" required id="id_cnic" value="{% if form.cnic.value %}{{ form.cnic.value }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="id_place_of_birth">Place of birth:</label>
+                        <input class="form-control" type="text" name="place_of_birth" maxlength="50" id="id_place_of_birth" value="{% if form.place_of_birth.value %}{{ form.place_of_birth.value }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="id_marital_status">Marital status:</label>
+                        <select class="form-control" name="marital_status" required id="id_marital_status" >
+                            {% for i in form.marital_status %}
+                                {{i}}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_parents">Parents:</label>
+                        <select class="form-control" name="parents" required id="id_parents" >
+                            {% for i in form.parents %}
+                                {{i}}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_discription">Discription:</label>
+                        <textarea class="form-control" type="text" name="discription" maxlength="500" id="id_discription" >{% if form.discription.value %}{{ form.discription.value }}{% endif %}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_father_occupation">Father occupation:</label>                
+                        <select class="form-control" name="father_occupation" id="id_father_occupation" >
+                            {% for i in form.father_occupation %}
+                                {{i}}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_facebook_id">Facebook id:</label>
+                        <input class="form-control" type="url" name="facebook_id" maxlength="200" id="id_facebook_id" value="{% if form.facebook_id.value %}{{ form.facebook_id.value }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="id_email_address">Email address:</label>
+                        <input class="form-control" type="email" name="email_address" maxlength="254" id="id_email_address" value="{% if form.email_address.value %}{{ form.email_address.value }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="id_religion">Religion:</label>
+                        <select class="form-control" name="religion" required id="id_religion" >
+                            {% for i in form.religion %}
+                                {{i}}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_mother_toungue">Mother toungue:</label>
+                        <input class="form-control" type="text" name="mother_toungue" maxlength="50" required id="id_mother_toungue" value="{% if form.mother_toungue.value %}{{ form.mother_toungue.value }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="id_monthly_income">Monthly income:</label>
+                        <input class="form-control" type="number" name="monthly_income" id="id_monthly_income" value="{% if form.monthly_income.value %}{{ form.monthly_income.value }}{% endif %}">
+                    </div>
+                    <div class="form-group" hidden>
+                        <label for="id_matched">Matched:</label>
+                        <input class="form-control" type="checkbox" name="matched" id="id_matched" value="False">
+                    </div>
+                    <div style="text-align: right;">
+                        <button type="submit" class="btn btn-primary align-right" >Submit</button>
+                    </div>
+                    {% csrf_token %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

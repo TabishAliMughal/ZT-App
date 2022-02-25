@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+    <head>
+        <title>ZT App</title>
+        <!-- Favicon icon -->
+        <link rel="shortcut icon" href="{% static 'assets/images/Logo.png' %}" >
+        
+        <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        
+        <meta name="description" content="ZT App | Solution For All Needs">
+        <meta name="keywords" content="Shops | Blogs | E-School | RelationShip Matching">
+        <meta name="author" content="Tabish Ali Mughal">
+        <meta name="google-site-verification" content="yUPP4PqUSPQB8EL6aOzkkdrZ6We1yApTmpO_JSSbFHY" />
+
+        <!-- fontawesome icon -->
+        <link rel="stylesheet" href="{% static 'assets/fonts/fontawesome/css/fontawesome-all.min.css' %}">
+        <!-- animation css -->
+        <link rel="stylesheet" href="{% static 'assets/plugins/animation/css/animate.min.css' %}">
+        <!-- feather css -->
+        <link rel="stylesheet" href="{% static 'assets/fonts/feather/css/feather.css' %}">
+        <!-- style css -->
+        <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+        
+        <link rel="stylesheet" href="{% static 'assets/css/my_custom.css' %}">
+        <!-- Specific CSS goes HERE -->
+        <!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&amp;language=en&amp;key=AIzaSyBgzluEvlveyfNKaigwEClXvhSaUyTmLLI"></script> -->
+        {% block link %}
+
+        {% endblock %}
+        
+        {% block style %}
+
+        {% endblock %}
+        
+
+    </head>
+
+    <body>
+        {% include "Includes/Navbar.html" %}
+        
+        <div class="pcoded-main-container">
+            <div class="pcoded-wrapper">
+                <div class="pcoded-content">
+                    <div class="pcoded-inner-content">
+                        <div class="page-header">
+                            <div id="header">
+                                <div class="page-block">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-12">
+                                            <a id="mobile-collapse" href="javascript:"><i class="feather icon-menu"></i></a>
+                                            <div class="page-header-title">
+                                                <a class="mobile-menu" style="display: none;" id="mobile-collapse" href="javascript:"><span>abc</span></a>
+                                                <h5 class="m-b-10">
+                                                    <br>
+                                                    {% block title %}{% endblock %}
+                                                </h5>
+                                            </div>
+                                            <ul class="breadcrumb">{% block address %}{% endblock %}</ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="main-body">
+                            <div class="page-wrapper">
+                                {% include 'Includes/Login.html' %}
+                                <div id="content">
+                                    {% block content %}
+                                    {% endblock %}
+                                    {% if login %}
+                                        <h1>Login</h1>
+                                        <script>
+                                            window.onload = function () {
+                                                showLogin()
+                                            }
+                                        </script>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Required Js -->
+        <script src="{% static 'assets/js/vendor-all.min.js' %}"></script>
+        <script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'assets/js/pcoded.min.js' %}"></script>
+
+        <script>
+            showLogin = function () {
+                document.getElementById('creator').style.display='none';
+                document.getElementById('content').style.display='none';
+                document.getElementById('header').style.display='none';
+                document.getElementById('login').style.display='block';
+                var element = document.getElementById("pcoded-navber");
+                element.classList.remove("mob-open");
+            }
+        </script>
+        <script>
+            showCreatorForm = function () {
+                document.getElementById('login').style.display='none';
+                document.getElementById('content').style.display='none';
+                document.getElementById('header').style.display='none';
+                document.getElementById('creator').style.display='block';
+                var element = document.getElementById("pcoded-navber");
+                element.classList.remove("mob-open");
+            }
+        </script>
+        <script>
+            var check = function() {
+                if (document.getElementById('pass1').value ==
+                    document.getElementById('pass2').value) {
+                        if (document.getElementById('pass1').value.length >= '8'){
+                            document.getElementById('message').style.color = '#038fcf';
+                            document.getElementById('butt').style.display = 'block';
+                        } else {
+                            // document.getElementById('message').innerHTML = 'empty';
+                        }
+                } else {
+                    document.getElementById('message').style.color = '#888';
+                    document.getElementById('butt').style.display = 'none';
+                }
+            }
+        </script>
+
+        {% block scripts %}
+        {% endblock %}
+
+    </body>
+</html>

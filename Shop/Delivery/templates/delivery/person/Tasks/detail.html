@@ -1,0 +1,65 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.username }}
+{% endblock %}
+{% block content %}
+    
+    <div class="table-responsive">
+                        <table  class="table table-hover">
+        <thead class="text-center">
+            <tr>
+                <th>Order</th>
+                <th>Date</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody class="text-center">
+            <tr>
+                <td>{{ task.order }}</td>
+                <td>{{ task.date }}</td>
+                <td><a id="demo"></a></td>
+                <input id="price" type="hidden" value="{{ price }}" />
+                <input id="delivery" type="hidden" value="{{ delivery }}" />
+            </tr>
+        </tbody>
+    </table>
+</div>
+    <div class="table-responsive">
+                        <table  class="table table-hover">
+        <tbody class="text-center">
+            <tr>
+                <td>
+                    <iframe
+                    width="100%"
+                    height="500px"
+                    frameborder="0" style="border:0"
+                    src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyBgzluEvlveyfNKaigwEClXvhSaUyTmLLI&origin={{ task_from.lat }}%2c{{ task_from.lon }}&destination={{ task_to.lat }}%2c{{ task_to.lon }}" allowfullscreen>
+                    </iframe>
+                <h3 style="text-align:center;"><a href="https://www.google.com/maps/dir/?api=1&origin={{ task_from.lat }}%2c{{ task_from.lon }}&destination={{ task_to.lat }}%2c{{ task_to.lon }}&travelmode=driving">Open Google Map</a></h3>
+                </td>
+            </tr>
+            {% if task.order.status == 'Delivered' %}
+                <tr>
+                    <th>Proof
+                </tr>
+                <tr>
+                    {% for i in proof %}
+                        <td style="text-align:center;"><img src="{{ i }}" /></td>
+                    {% endfor %}
+                </tr>
+            {% else %}
+            <tr>
+                <td><a href="{% url 'delivery:delivery_person_task_complete' task.pk %}">Add Delivery Proof</a></td>
+            </tr>
+                {% endif %}
+        </tbody>
+    </table>
+</div>
+    <script>
+        var p = document.getElementById("price").value;
+        var k = document.getElementById("delivery").value;
+        var x = Number(p)+Number(k)
+        document.getElementById("demo").innerHTML = Number(x) ;
+    </script>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.username }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'blog:blog_list' %}">Blogs</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Bunch</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Add Posts</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Add Posts</h5>
+                </div>
+                <div class="card-body">
+                    <h3>Your Bunch Has Been Created Successfully</h3>
+                    <h3>You Can Now Add Posts</h3>
+                    <br>
+                    <form method="POST" action="{% url 'bunch:bunch_post_add' %}">
+                        <input type="hidden" name="bunch" value="{{ bunch.pk }}" />
+                        <div class="table-responsive">
+                        <table  class="table table-hover">
+                            <tbody class="text-center">
+                                {% for i in sel_posts %}
+                                    <tr>
+                                        <td><input type="checkbox" name="posts" value="{{i.pk}}" checked ></td>
+                                        <td>{{ i }}</td>
+                                    </tr>
+                                {% endfor %}
+                                {% for i in posts %}
+                                    <tr>
+                                        <td><input type="checkbox" name="posts" value="{{i.pk}}"></td>
+                                        <td>{{ i }}</td>
+                                    </tr>
+                                {% endfor %}
+                                <tr>
+                                    <td></td>
+                                    <td style="text-align: right;"><button type="submit" class="btn btn-primary">Add Posts</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+</div>
+                        {% csrf_token %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

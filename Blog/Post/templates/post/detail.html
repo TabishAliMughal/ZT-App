@@ -1,0 +1,215 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.username }}
+{% endblock %}
+{% block address %}
+<li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+<li class="breadcrumb-item"><a href="{% url 'blog:blog_list' %}">Blog</a></li>
+<li class="breadcrumb-item"><a href="javascript:">Post</a></li>
+<li class="breadcrumb-item"><a href="javascript:">Detail</a></li>
+{% endblock %}
+{% block style %}
+    <style>
+        #more {display: none;}
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>{{ post.name }}</h5>
+                </div>
+                <div class="card-body">                    
+                    <div class="row">
+                        <div class="col-sm-12 col-xl-10">
+                            {{ post.description }}
+                        </div>
+                        <div class="col-sm-12 col-xl-2">
+                            <a class="btn btn-primary" href="{% url 'post:post_list' post.blog.pk %}">Go To Blog</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        {% if post.image %}
+                            <div class="col-md-12 col-xl-4">
+                                <div class="card block-card">
+                                    <div class="card-header">
+                                        <h5>Image</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="text-center">
+                                            <img class="col-9" src="{{ post.image.url }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if post.video %}
+                            <div class="col-md-12 col-xl-4">
+                                <div class="card block-card">
+                                    <div class="card-header">
+                                        <h5>Video</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="text-center">
+                                                <iframe class="col-9" id="video" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                            <input type="text" id="url" value="{{ post.video }}" hidden />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="col-md-12 col-xl-4">
+                            <div class="card block-card">
+                                <div class="card-header">
+                                    <h5>Description</h5>
+                                </div>
+                                <div class="card-body">
+                                    <a style="color: #000000;font-size: 14px;">{% if post.stext %}{{ post.stext }}<span id="dots">...</span><span id="more">{{ post.ltext }}</span><a href="javascript:" onclick="myFunction()" id="myBtn">Read more</a>{% else %}{{ post.text }}{% endif %}</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% if post.sound %}
+                            <div class="col-md-12 col-xl-4">
+                                <div class="card block-card">
+                                    <div class="card-header">
+                                        <h5>Sound</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="text-center">
+                                            <audio controls>
+                                                <source src="{{ post.sound.url }}" />
+                                              </audio>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>   
+    {% if request.user.is_authenticated %}
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="text-center" style="padding: 15px;">
+                        {% for i in react %}
+                            <div style="float: left;">
+                                <form action="{% url 'post:post_react' post.pk %}" method="POST">
+                                    <input type="hidden" name="url" value="{{ request.path }}" />
+                                    <input type="hidden" name="react" value="{{ i.type.pk }}" />
+                                    <button class="btn btn-primary">
+                                        <span><i class="feather {{ i.type.icon }}"></i></span>
+                                        <span>{{ i.total }}</span>
+                                    </button>
+                                    {% csrf_token %}
+                                </form>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% if request.user.is_authenticated %}
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card" style="padding:15px;">
+                    <button class="btn btn-primary" id="comment-button" onClick="newComment()">Comment</button>
+                    <div id="new_comment" style="display:none">
+                        <form action="{% url 'post:post_comment' post.pk %}" method="POST">
+                            <div class="row">
+                                <div class="col-sm-12 col-xl-10">
+                                    <input type="text" required name="comment" class="form-control" aria-describedby="emailHelp" placeholder="Write Your Comment">
+                                    <input type="hidden" name="url" value="{{ request.path }}" />
+                                </div>
+                                <div class="col-sm-12 col-xl-2">
+                                    <button class="btn btn-primary" style="width: inherit;"><i class="feather icon-navigation"></i></button>
+                                </div>
+                            </div>
+                            {% csrf_token %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% if comments.total != 0 %}
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card" style="padding:15px;">
+                    <button class="btn btn-primary" onClick="prevComment()" id="id_prev_comments">Previous Comments ( {{ comments.total }})</button>
+                    <div id="prev_comment" style="display: none;">
+                        {% for i in comments.comment %}
+                            <div class="row" style="border: 1px solid;padding: 15px;margin-left: 0px;margin-right: 10px;">
+                                <div class="col-sm-12 col-xl-2">
+                                    <a style="color: #000000;">{{ i.user }} = </a>
+                                </div>
+                                <div class="col-sm-12 col-xl-10">
+                                    <small id="emailHelp" class="form-text text-muted">{{ i.comment }}</small>
+                                </div>
+                            </div>
+                            <br>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    
+    <script>
+        function newComment() {
+            document.getElementById('new_comment').style.display = 'block' ;
+            document.getElementById('comment-button').style.display = 'none' ;
+        }
+        function prevComment() {
+            document.getElementById('prev_comment').style.display = 'block' ;
+            document.getElementById('id_prev_comments').style.display = 'none' ;
+        }
+    </script>
+    <script>
+        function getId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+            const match = url.match(regExp);
+
+            return (match && match[2].length === 11)
+            ? match[2]
+            : null;
+        }
+        var frame = document.getElementById('video') ;
+        url = document.getElementById('url').value;
+        var stat1 = url.includes('youtu.be');
+        var stat2 = url.includes('https://www.youtube.com/watch?v=');
+        var stat3 = url.includes('https://www.youtube.com/embed/');
+        var videoId ;
+        if(stat1 == true){
+            videoId = url.replace('https://youtu.be/','');
+        }if(stat2 == true){
+            videoId = url.replace('https://www.youtube.com/watch?v=','');
+        }if(stat3 == true){
+            videoId = url.replace('https://www.youtube.com/embed/','');
+        }
+        new_url = "https://www.youtube.com/embed/" + videoId
+        frame.src = new_url ;
+    </script>
+    <script>
+        function myFunction() {
+          var dots = document.getElementById("dots");
+          var moreText = document.getElementById("more");
+          var btnText = document.getElementById("myBtn");
+        
+          if (dots.style.display === "none") {
+            dots.style.display = "inline";
+            btnText.innerHTML = "Read more"; 
+            moreText.style.display = "none";
+          } else {
+            dots.style.display = "none";
+            btnText.innerHTML = "Read less"; 
+            moreText.style.display = "inline";
+          }
+        }
+    </script>
+{% endblock %}

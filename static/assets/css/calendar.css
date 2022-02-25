@@ -1,0 +1,64 @@
+
+
+
+.wc-calendar__days-names__item,
+.wc-calendar__days-list__item {
+  width: 14.2%;
+  flex-grow: 1;
+  text-align: center;
+}
+
+.wc-calendar__days-names,
+.wc-calendar__days-list {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+}
+
+.wc-calendar__days-list__item {
+    height: 60px;
+    line-height: 60px;
+    cursor: pointer;
+  }
+
+.wc-calendar__days-list__item:hover:not(.active) {
+background-color: #038fcf;
+color: white;
+}
+
+iframe {
+    height: 565px;
+    border-width: 2px;
+    border-style: inset;
+    border-color: initial;
+    border-image: initial;
+    width: 1000px;
+}
+
+.account{
+    margin-left: -58px !important;
+}
+
+.mar{
+    margin-left: 20px;
+    color: black !important;
+}
+
+.quadrat {
+    -webkit-animation: blink 1s infinite;  /* Safari 4+ */
+    -moz-animation: blink 1s infinite;  /* Fx 5+ */
+    -o-animation: blink 1s infinite;  /* Opera 12+ */
+    animation: blink 1s infinite;  /* IE 10+, Fx 29+ */
+  }
+  
+@-webkit-keyframes blink {
+0%, 49% {
+    background-color: rgb(117, 209, 63);
+    border: 3px solid #e50000;
+}
+50%, 100% {
+    background-color: #e50000;
+    border: 3px solid rgb(117, 209, 63);
+}
+}

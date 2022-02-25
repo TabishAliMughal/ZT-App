@@ -1,0 +1,52 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.username }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'blog:blog_list' %}">Blogs</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Bunch</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Create</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Create Bunch</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        <div class="table-responsive">
+                            <table  class="table table-hover">
+                                <tbody class="text-center">
+                                    <tr>
+                                        <td>Name</td>
+                                        <td><input class="form-control" type="text" name="name" maxlength="50" required="" id="id_name"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Blog</td>
+                                        <td>
+                                            <select name="blog" class="form-control" >
+                                                <option value="">----------</option>
+                                                {% for i in blog %}
+                                                    <option value="{{ i.pk }}">{{ i.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td style="text-align: right;"><button type="submit" class="btn btn-primary">Add</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        {% csrf_token %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'MainPage.html' %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Shop</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Account</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Your Account</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table  class="table table-hover">
+                        <thead class="text-center">
+                            <th>Orders</th>
+                            <th>Price</th>
+                        </thead>
+                        <tbody class="text-center">
+                            <tr>
+                                <th>Paid</th>
+                                <th></th>
+                            </tr>
+                            {% for i in paid_orders %}
+                                <tr>
+                                    <td><a href="{% url 'shop:shop_order_detail' i.pk %}">{{ i.user }}</a></td>
+                                    <td>{{ i.price }}</td>
+                                </tr>
+                            {% endfor %}
+                            <tr>
+                                <th>UnPaid</th>
+                                <th></th>
+                            </tr>
+                            {% for i in unpaid_orders %}
+                                <tr>
+                                    <td><a href="{% url 'shop:shop_order_detail' i.pk %}">{{ i.user }}</a></td>
+                                    <td>{{ i.price }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

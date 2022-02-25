@@ -1,0 +1,38 @@
+{% extends 'MainPage.html' %}
+{% block content %}
+    <div class="table-responsive">
+                        <table  class="table table-hover">
+        <thead class="text-center">
+            <tr>
+            </tr>
+        </thead>
+        <tbody class="text-center">
+            <tr>
+                <th>Order</th>
+                <td>{{ payment.order }}</td>
+            </tr>
+            <tr><td><br></td></tr>
+            <tr>
+                <th>Payment</th>
+                <td>{{ payment.payment }}</td>
+            </tr>
+            <tr><td><br></td></tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ payment.date }}</td>
+            </tr>
+            <tr><td><br></td></tr>
+            <tr>
+                <th>Proof</th>
+                <td><img style="align-items: center;width:35%;height:auto;" src="{{ payment.proof.url }}"></td>
+            </tr>
+            <tr><td><br></td></tr>
+            <tr>
+                <th>Accepted</th>
+                <td>{{ payment.accepted }}</td>
+            </tr>
+            <tr><td><br></td></tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

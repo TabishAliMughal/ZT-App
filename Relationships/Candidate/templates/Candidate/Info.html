@@ -1,0 +1,154 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.username }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="javascript:">RelationShips</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Info</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Your Info</h5>
+                </div>
+                <div class="card-body">
+                    {% if data %}
+                        <a class="btn btn-primary" href="{% url 'candidate:edit_data' %}">Edit Data</a>
+                    {% else %}
+                        <a class="btn btn-primary" href="{% url 'candidate:add_data' %}">Add Data</a>
+                    {% endif %}
+                </div>
+                {% if data %}
+                    <div class="card-body">
+                            <a><img style="width:50%;" src="{{ data.image.url }}"></a>
+
+                        <div class="form-group">
+                            <label for="id_name">Name:</label>
+                            <br>
+                            <a style="margin-left:5%;color: black;">{{ data.name }}</a>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_father_name">Father name:</label>
+                            <br>
+                            <a style="color: black;margin-left: 5%;">{{ data.father_name }}</a>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_date_of_birth">Date of birth:</label>
+                            <br>
+                            <a style="color: black;margin-left: 5%;">{{ data.date_of_birth }}</a>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_age">Age:</label>
+                            <br>
+                            <a style="color: black;margin-left: 5%;">{{ data.age }}</a>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_gender">Gender:</label>                
+                            <br>
+                            <a style="color: black;margin-left: 5%;">{{ data.gender }}</a>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_occupation">Occupation:</label>
+                            <br>
+                            <a style="color: black;margin-left: 5%;">{{ data.occupation }}</a>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_education">Education:</label>                
+                            <br>
+                            <a style="color: black;margin-left: 5%;">{{ data.education }}</a>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_living_status">Living status:</label>                
+                            <br>
+                            <a style="color: black;margin-left: 5%;">{{ data.living_status }}</a>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_cast">Cast:</label>
+                            <br>
+                            <a style="color: black;margin-left: 5%;">{{ data.cast }}</a>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_siblings">Siblings:</label>
+                            <br>
+                            <a style="color: black;margin-left: 5%;">{{ data.siblings }}</a>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_height">Height:</label>
+                            <br>
+                            <a style="color: black;margin-left: 5%;">{{ data.height }}</a>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_mobile">Mobile:</label>
+                            <br>
+                            <a style="color: black;margin-left: 5%;">{{ data.mobile }}</a>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_address">Address:</label>
+                            <br>
+                            <a style="color: black;margin-left: 5%;">{{ data.address }}</a>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_cnic">Cnic:</label>
+                            <br>
+                            <a style="color: black;margin-left: 5%;">{{ data.cnic }}</a>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_place_of_birth">Place of birth:</label>
+                            <br>
+                            <a style="color: black;margin-left: 5%;">{{ data.place_of_birth }}</a>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_marital_status">Marital status:</label>
+                            <br>
+                            <a style="color: black;margin-left: 5%;">{{ data.marital_status }}</a>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_parents">Parents:</label>
+                            <br>
+                            <a style="color: black;margin-left: 5%;">{{ data.parents }}</a>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_discription">Discription:</label>
+                            <br>
+                            <a style="color: black;margin-left: 5%;">{{ data.discription }}</a>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_father_occupation">Father occupation:</label>                
+                            <br>
+                            <a style="color: black;margin-left: 5%;">{{ data.father_occupation }}</a>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_facebook_id">Facebook id:</label>
+                            <br>
+                            <a style="color: black;margin-left: 5%;" href="{{ data.facebook_id }}">{{ data.facebook_id }}</a>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_email_address">Email address:</label>
+                            <br>
+                            <a style="color: black;margin-left: 5%;">{{ data.email_address }}</a>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_religion">Religion:</label>
+                            <br>
+                            <a style="color: black;margin-left: 5%;">{{ data.religion }}</a>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_mother_toungue">Mother toungue:</label>
+                            <br>
+                            <a style="color: black;margin-left: 5%;">{{ data.mother_toungue }}</a>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_monthly_income">Monthly income:</label>
+                            <br>
+                            <a style="color: black;margin-left: 5%;">{{ data.monthly_income }}</a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

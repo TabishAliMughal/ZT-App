@@ -1,0 +1,53 @@
+{% extends 'MainPage.html' %}
+{% block content %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <form method="POST" enctype="multipart/form-data">
+        <div class="table-responsive">
+                        <table  class="table table-hover">
+            <thead class="text-center">
+                <tr>
+                    <th>Order</th>
+                    <th>Price</th>
+                    <th>Select</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                {% for i in price %}
+                    <tr>
+                        <td><a href="#">{{ i.order }}<input type="text" name="order" value="{{ i.order }}" readonly /></a></td>
+                        <td><a href="#">{{ i.price }}<input type="text" id="price" name="price" value="{{ i.price }}" readonly /></a></td>
+                        <td>
+                            <input type="radio" name="{{ i.order }}" id="outside" class="sum" value="{{ i.price }}">
+                            <input type="radio" name="{{ i.order }}" id="outside" class="sum" value="0">
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <th>Total</th>
+                    <th><input type="text" name="total" id="total"></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th>Proof</th>
+                    <th><input type="file" accept="image/*" name="proof" required /></th>
+                    <th></th>
+                </tr>
+            </tbody>
+        </table>
+</div>
+        <button>Add</button>
+        {% csrf_token %}
+    </form>
+    <script>
+        $(document).ready(function() {
+            function updateSum() {
+                var total = 0;
+                $(".sum:checked").each(function(i, n) {total += parseInt($(n).val());})
+                $("#total").val(total);
+            }
+            // run the update on every checkbox change and on startup
+            $("input.sum").change(updateSum);
+            updateSum();
+        })
+    </script>
+{% endblock %}

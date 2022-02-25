@@ -1,0 +1,39 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.username }}
+{% endblock %}
+{% block content %}
+    <script type="text/javascript">
+    </script>
+    <body onload="init()">
+        <div class="table-responsive">
+                        <table  class='res-table'>
+            <thead class="text-center">
+                <tr>
+                    <td><canvas id="can" class="canvas"></canvas></td>
+                </tr>
+                <tr>
+                    <td><input type="button" value="save" id="btn" size="30" onclick="save()">
+                    <input type="button" value="clear" id="clr" size="23" onclick="erase()">
+                    <a id="download" download="image.png">download</a></td>
+                </tr>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <tr>
+                        <td><input type="file" name="image" capture="camera" required />
+                        <input type="submit" value="Add"></td>
+                    </tr>
+                </form>
+            </thead>
+        </table>
+</div>
+    </body>
+    
+ 
+
+
+
+
+    <script src="{% static 'abc.js' %}"></script>
+{% endblock %}

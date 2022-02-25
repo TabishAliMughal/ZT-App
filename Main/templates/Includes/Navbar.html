@@ -1,0 +1,139 @@
+{% load static %}
+<nav class="pcoded-navbar" id="pcoded-navber">
+    <div class="navbar-wrapper">
+        <div class="navbar-brand header-logo">
+            <a target="_blank" href="/" class="b-brand">
+                <div class="b-bg">
+                    <img class="feather" src="{% static 'assets/images/Logo.png' %}" style="width: 50px;opacity: 100%;transform: none;">
+                    <!-- <i class="feather icon-trending-up"></i> -->
+                </div>
+                <span class="b-title feather" >App</span>
+                <a class="mobile-menu on" id="mobile-collapse" href="javascript:"><span></span></a>
+            </a>
+        </div>
+        <div class="navbar-content scroll-div" style="padding-right: 6px;">
+            <ul class="nav pcoded-inner-navbar">
+                <li class="nav-item pcoded-menu-caption">
+                    <label>Navigation</label>
+                </li>
+                <br>
+                <li data-username="" class="nav-item  active ">
+                    <a href="/" class="nav-link "><span class="pcoded-micon"><i class="feather icon-layers"></i></span><span class="pcoded-mtext">Dashboard</span></a>
+                </li>
+                <br>
+                <!-- Shop  -->
+                {% if request.user.is_authenticated %}
+                    <li class="nav-item pcoded-hasmenu">
+                        <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-shopping-cart"></i></span><span class="pcoded-mtext">Shop</span></a>
+                        <ul class="pcoded-submenu">
+                            <li><a href="{% url 'shop:product_list' %}" >Home</a></li>
+                            {% if user %}
+                                {% for i in user %}
+                                    {% if i.name == "Creator" %}
+                                        <li><a href="{% url 'shop:shop_products' %}" >My Shop</a></li>
+                                        <li><a href="{% url 'shop:shop_orders' %}" >Orders</a></li>
+                                    {% elif i.name == "Public" %}
+                                        <li><a href="{% url 'shop_cart:cart_detail' %}">My Cart</a></li>
+                                        <li><a href="{% url 'shop_costumer:previous_orders' %}">My Orders</a></li>
+                                        <li><a href="{% url 'shop_costumer:costumer_data' %}">My Data</a></li>
+                                    {% elif i.name == "Delivery" %}
+                                        <li><a href="{% url 'shop_delivery:delivery_person_tasks' %}">My Tasks</a></li>
+                                        <li><a href="{% url 'shop_delivery:delivery_person_data' %}">My Data</a></li>
+                                    {% elif i.name == "Admin" %}
+                                        <li><a href="{% url 'shop:shop_list' %}">Shops</a></li>
+                                        <li><a href="{% url 'shop_account:accounts_list' %}">Accounts</a></li>
+                                    {% else %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </ul>
+                    </li>
+                {% else %}
+                    <li data-username="" class="nav-item  active ">
+                        <a href="{% url 'shop:product_list' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-shopping-cart"></i></span><span class="pcoded-mtext">Shop</span></a>
+                    </li>
+                {% endif %}
+                <!-- End Shop  -->
+                <br>
+                <li class="nav-item pcoded-hasmenu">
+                    <li data-username="" class="nav-item active">
+                        <a href="javascript:" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">School</span></a>
+                    </li>
+                </li>
+                <br>
+                <li class="nav-item pcoded-hasmenu">
+                    {% if request.user.is_authenticated %}
+                        <a href="javascript:" class="nav-link"><span class="pcoded-micon"><i class="feather icon-mic"></i></span><span class="pcoded-mtext">Blog</span></a>
+                        <ul class="pcoded-submenu">
+                            <li><a href="{% url 'blog:blog_list' %}" class="nav-link">Home</a></li>
+                            {% if user %}            
+                                {% for i in user %}
+                                    {% if i.name == "Creator" %}
+                                        <li><a href="{% url 'blog:user_blog_list' %}" >My Blogs</a></li>
+                                    {% elif i.name == "Public" %}
+                                    {% elif i.name == "Admin" %}
+                                    {% else %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </ul>
+                    {% else %}
+                        <li data-username="" class="nav-item  active ">
+                            <a href="{% url 'blog:blog_list' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-mic"></i></span><span class="pcoded-mtext">Blog</span></a>
+                        </li>
+                    {% endif %}
+                </li>
+                <br>
+                <li class="nav-item pcoded-hasmenu">
+                    {% if request.user.is_authenticated %}
+                        <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-mic"></i></span><span class="pcoded-mtext">RelationShips</span></a>
+                        <ul class="pcoded-submenu">
+                            <li><a href="{% url 'relationships:home' %}" class="nav-link">Home</a></li>
+                            {% if user %}
+                                {% for i in user %}
+                                    {% if i.name == "Creator" %}
+                                    {% elif i.name == "Public" %}
+                                        <li><a href="{% url 'candidate:info' %}" class="nav-link">My Info</a></li>
+                                        <li><a href="{% url 'candidate:candidate_matches' %}" class="nav-link">My Matches</a></li>
+                                    {% elif i.name == "Admin" %}
+                                    {% elif i.name == "RAdmin" %}
+                                        <li><a href="{% url 'candidate:candidate_list' %}" class="nav-link">All Info</a></li>
+                                        <li><a href="{% url 'relationships_matching:matched_list' %}" class="nav-link">Matched List</a></li>
+                                    {% else %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </ul>
+                    {% else %}
+                        <li data-username="" class="nav-item  active ">
+                            <a href="{% url 'relationships:home' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-mic"></i></span><span class="pcoded-mtext">RelationShips</span></a>
+                        </li>
+                    {% endif %}
+                </li>
+                <br>
+                <li data-username="" class="nav-item ">
+                    <a href="https://www.youtube.com" class="nav-link "><span class="pcoded-micon"><i class="feather icon-play-circle"></i></span><span class="pcoded-mtext">Youtube</span></a>
+                </li>
+                <br>
+                <li data-username="" class="nav-item ">
+                    <a href="https://www.facebook.com"" class="nav-link "><span class="pcoded-micon"><i class="feather icon-facebook"></i></span><span class="pcoded-mtext">Facebook</span></a>
+                </li>
+                <li class="nav-item pcoded-menu-caption">
+                    <label>Authentication</label>
+                </li>
+                <li data-username="Disabled Menu" class="nav-item">
+                    {% if request.user.is_authenticated %}
+                        <a href="{% url 'Authentication:logout' %}" class="nav-link">
+                            <span class="pcoded-micon"><i class="feather icon-power"></i></span><span class="pcoded-mtext">Logout</span>
+                        </a>
+                    {% else %}
+                        <a href="javascript:" onclick="showLogin()" class="nav-link">
+                            <span class="pcoded-micon"><i class="feather icon-power"></i></span><span class="pcoded-mtext">Login</span>
+                        </a>
+                    {% endif %}
+                </li>
+                <br>
+            </ul>
+        </div>
+    </div>
+</nav>

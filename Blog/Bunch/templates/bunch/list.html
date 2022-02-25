@@ -1,0 +1,145 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.username }}
+{% endblock %}
+{% block address %}
+<li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+<li class="breadcrumb-item"><a href="{% url 'blog:blog_list' %}">Blogs</a></li>
+<li class="breadcrumb-item"><a href="javascript:">Bunches</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            {% if request.user.is_authenticated %}
+                {% for i in user %}
+                    {% if i.name == 'Creator' %}
+                        <div class="card">
+                            <div class="card-body">
+                                <a class="btn btn-primary" href="{% url 'bunch:bunch_create' %}">Create Bunch</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            <div class="card">
+                <div class="card-header">
+                    <h5>All Bunches</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-12">
+                            <ul class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                {% for i in bunch %}
+                                    <li>
+                                        <a class="nav-link text-left" id="v-pills-home-tab" data-toggle="pill" href="#{{ i.bunch.pk }}" role="tab" aria-controls="v-pills-home" aria-selected="false">{{ i.bunch }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="col-md-9 col-sm-12">
+                            <div class="tab-content" style="padding: 0px;box-shadow: none;" id="v-pills-tabContent">
+                                {% for i in bunch %}
+                                    <div class="tab-pane fade" id="{{ i.bunch.pk }}" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                                        <h3 class="text-center">All Posts Of Bunch = {{ i.bunch }}</h3>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                {% for v in i.post %}
+                                                    <div class="card block-card">
+                                                        <div class="card-header">
+                                                            <h5><a href="{% url 'post:post_detail' v.pk %}">{{ v.name }}</a></h5>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="table-responsive">
+                        <table  class="table table-hover">
+                                                                <thead class="text-center"></thead>
+                                                                </thead>
+                                                                <tbody class="text-center">
+                                                                    <tr>
+                                                                        <td>Post Name</td>
+                                                                        <td>{{ v.name }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Post Text</td>
+                                                                        <td>{{ v.description }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Blog</td>
+                                                                        <td>{{ v.blog }}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+</div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <a class="btn btn-primary" href="{% url 'bunch:bunch_edit' i.bunch.pk %}">Edit</a>
+                                            <a class="btn btn-primary" onclick="var result = confirm('Want to delete?');if (result) {window.location = '{% url 'bunch:bunch_delete' i.bunch.pk %}'}">Delete</a>
+                                            <form action="{% url 'bunch:bunch_create' %}" method="POST">
+                                                <input type="text" value="{{ i.bunch.name }}" name="name" hidden>
+                                                <button class="btn btn-primary" type="submit" >Add Or Remove Posts</button>
+                                                {% csrf_token %}
+                                            </form>
+                                            <!-- <a class="btn btn-primary" href="{% url 'bunch:bunch_post_add' %}">Add Or Remove Posts</a> -->
+                                        </div>
+                                        <!-- <div class="table-responsive">
+                        <table  class="table table-hover">
+                                            <thead class="text-center">
+                                                <tr>
+                                                    <td>Post Name</td>
+                                                    <td>Post Text</td>
+                                                    <td>Blog</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="text-center">
+                                                {% for v in i.post %}
+                                                <tr>
+                                                    <td>{{ v.name }}</td>
+                                                    <td>{{ v.text }}</td>
+                                                    <td>{{ v.blog }}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+</div> -->
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                        <!-- <div>
+                            <button onclick="openCity(event, '{{ i.bunch.pk }}','{{ i.bunch.pk }}+1')" style="float:right;width:auto;">
+                                <i style="transform: rotate(45deg);-webkit-transform: rotate(45deg);border: solid black;border-width: 0 3px 3px 0;display: inline-block;padding: 3px;" href="#" id="{{ i.bunch.pk }}+1"></i>
+                            </button>
+                        </div>
+                        <div id="{{ i.bunch.pk }}" style="display:none;width:80%;margin-left:5%;" class="tabcontent">
+                            {% for v in i.post %}
+                                {{ v.name }}
+                                {{ v.text }}
+                                {{ v.blog }}
+                                {{ v.time }}
+                            {% endfor %}
+                        </div> -->
+                </div>
+            </div>
+        </div>
+{% endblock %}
+{% block scripts %}
+    <script>
+        function openCity(evt, cityName,cityCode) {
+            var btn = document.getElementById(cityCode);
+            var item = document.getElementById(cityName);
+            var displaySetting = item.style.display;
+            if (displaySetting == "inline-block") {
+                document.getElementById(cityName).style.display = "none";
+                btn.style = 'float:right;transform: rotate(45deg);-webkit-transform: rotate(45deg);border: solid black;border-width: 0 3px 3px 0;display: inline-block;padding: 3px;';
+                } else {
+                document.getElementById(cityName).style.display = "inline-block";
+                btn.style = 'float:right;transform: rotate(-135deg);-webkit-transform: rotate(-135deg);border: solid black;border-width: 0 3px 3px 0;display: inline-block;padding: 3px;';
+            }
+        }
+    </script>
+{% endblock %}

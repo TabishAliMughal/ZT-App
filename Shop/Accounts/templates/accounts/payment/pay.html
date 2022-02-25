@@ -1,0 +1,103 @@
+{% extends 'MainPage.html' %}
+{% block content %}
+    <div style="">
+        <div style="position: relative;width: 35%;float: left;"><button onclick="openCity(event, 'Shops')">Shops</button></div>
+        <div style="position: relative;width: 35%;float: right;"><button onclick="openCity(event, 'Riders')">Riders</button></div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div id="Shops" style="display:none;" class="tabcontent">
+        {% for i in shop_product %}
+            <div style="border:3px solid grey;">
+                <form action="{% url 'shop_account:shop_pay' i.shop.pk %}" method="GET" >
+                    <div class="table-responsive">
+                        <table  class="table table-hover">
+                            <thead class="text-center">
+                                <tr>
+                                    <th>{{ i.shop }}<input type="text" name="shop" value="{{ i.shop.pk }}" readonly /></th>
+                                    <th>Orders</th>
+                                    <th>Prices</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                {% for k in i.orders %}
+                                    <tr>
+                                        <td>Order</td>
+                                        <td>{{ k.orders }}<input type="text" name="order" value="{{ k.orders.pk }}" readonly /></td>
+                                        <td>{{ k.price }}<input type="text" name="price" value="{{ k.price }}" readonly /></td>
+                                    </tr>
+                                {% endfor %}
+                                <tr>
+                                    <th>
+                                        {% if i.shop.easypaisa != "" %}{{ i.shop.easypaisa }}<br>{% endif %}
+                                        {% if i.shop.bank_account != "" %}{{ i.shop.bank_account }}<br>{% endif %}
+                                    </th>
+                                    <th>Total = </th>
+                                    <th><input type="text" name="total_price" value="{{ i.total }}" readonly /></th>
+                                </tr>
+                            </tbody>
+                    </table>
+</div>
+                    {% csrf_token %}
+                    <button>Pay All Of {{ i.shop }}</button>
+                </form>
+            </div>
+            <br>
+        {% endfor %}
+    </div>
+
+    <div id="Riders" style="display:none;" class="tabcontent">
+        {% for i in delivery %}
+            <div style="border:3px solid grey;">
+                <form action="{% url 'shop_account:delivery_pay' i.rider.pk %}" method="GET" >
+                    <div class="table-responsive">
+                        <table  class="table table-hover">
+                        <thead class="text-center">
+                            <tr>
+                                <th>{{ i.rider }}</th>
+                                <th>Orders</th>
+                                <th>Prices</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            {% for k in i.task %}
+                                <tr>
+                                    <td>{{ k.order }}<input type="text" name="order" value="{{ k.order.pk }}" readonly /></td>
+                                    <td>{{ k.task.task_from }} To {{ k.task.task_to }}</td>
+                                    <td>{{ k.price }}<input type="text" name="price" value="{{ k.price }}" readonly /></td>
+                                </tr>
+                            {% endfor %}
+                            <tr>
+                                <th>Total</th>
+                                <th> = </th>
+                                <th>{{ i.total }}</th>
+                            </tr>
+                        </tbody>
+                    </table>
+</div>
+                    <button><a>Pay All Of {{ i.rider }}</a></button>
+                </form>
+            </div>
+            <br>
+        {% endfor %}
+    </div>
+
+    <script>
+        function openCity(evt, cityName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+        }
+    </script>
+{% endblock %}

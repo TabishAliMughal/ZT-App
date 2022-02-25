@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <title>
+        Login
+    </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="canonical" href="https://appseed.us/admin-dashboards/django-dashboard-dattaable">
+    
+    <meta name="description" content="Datta Able Bootstrap admin template made using Bootstrap 4 and it has huge amount of ready made feature, UI components, pages which completely fulfills any dashboard needs." />
+    <meta name="keywords" content="admin templates, bootstrap admin templates, bootstrap 4, dashboard, dashboard templets, sass admin templets, html admin templates, responsive, bootstrap admin templates free download,premium bootstrap admin templates, datta able, datta able bootstrap admin template, free admin theme, free dashboard template"/>
+    <meta name="author" content="CodedThemes"/>
+
+    <!-- Favicon icon -->
+    <link rel="icon" href="{% static 'assets/images/favicon.ico' %}" type="image/x-icon'>
+    <!-- fontawesome icon -->
+    <link rel="stylesheet" href="{% static 'assets/fonts/fontawesome/css/fontawesome-all.min.css' %}">
+    <!-- animation css -->
+    <link rel="stylesheet" href="{% static 'assets/plugins/animation/css/animate.min.css' %}">
+    <!-- vendor css -->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+    <!-- Specific CSS goes HERE -->
+    {% block stylesheets %}{% endblock stylesheets %}
+
+</head>
+
+<body>
+    <div class="auth-wrapper">
+        <div class="auth-content">
+            <div class="auth-bg">
+                <span class="r"></span>
+                <span class="r s"></span>
+                <span class="r s"></span>
+                <span class="r"></span>
+            </div>
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="mb-4">
+                        <i class="feather icon-unlock auth-icon"></i>
+                    </div>
+                    <h3 class="mb-4">Login</h3>
+
+                    <span class="mb-0 text-muted">
+                        {% if msg %}
+                            {{ msg | safe }}
+                        {% else %}
+                            Add your credentials
+                        {% endif %} 
+                    </span>
+
+                    <br />
+                    <br />
+
+                    <form role="form" method="POST" action="{% url 'Authentication:Login_Page' %}">
+
+                        {% csrf_token %}                   
+
+                        <div class="input-group mb-3">
+                            <input type="text" name="username" placeholder="Username" class="form-control" required id="id_username">
+                        </div>
+                        
+                        <div class="input-group mb-4">
+                            <input type="password" name="password" placeholder="Password" class="form-control" required id="id_password">
+                        </div>
+                        <input readonly type='hidden' value="{{ request.path }}" name="path" />
+                        
+                        <button type="submit" name="login" class="btn btn-primary shadow-2 mb-4">Login</button>
+
+                    </form>
+                    <a role="button" class="sign-in" href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">Sign in with Facebook</a>
+                    <br>
+                    <br>
+                    <a role="button" class="sign-in" href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">Sign in with Google</a>
+                    {% if request.path == '/' %}
+                        {% if request.user.is_authenticated %}
+                            <br>
+                            <br>
+                            <a role="button" class="sign-in" href="##" onclick="
+                            var modal = document.getElementById('id01');modal.style.display = 'none';
+                            document.getElementById('id03').style.display='block';
+                            ">Activate Your Shop</a>
+                        {% else %}
+                            <a role="button" class="sign-in" href="##" onclick="
+                            var modal = document.getElementById('id01');modal.style.display = 'none';
+                            document.getElementById('id03').style.display='block';
+                            ">Be A Creator</a>
+                        {% endif %}
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Required Js -->
+    <script src="{% static 'assets/js/vendor-all.min.js' %}"></script>
+    <script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets/js/pcoded.min.js' %}"></script>
+</body>
+</html>
+<div id="id03" class="modal">
+    <form autocomplete="off" class="modal-content animate" action="{% url 'creator:creator_create' %}" method="POST" >
+        {% csrf_token %}
+        <div class="container">
+        <input hidden autocomplete='false'>
+            <label for="sname"><b>Your Name</b></label>
+            {{ form.name }}
+
+            <label for="sname"><b>Create Password</b></label>
+            <input type="password" id="pass1" onkeyup='check();' >
+            <p id="text" style="display:none;">WARNING! Caps lock is ON.</p>
+
+            <label for="sname"><b>Confirm Password</b></label>
+            <input type="password" id="pass2" onkeyup='check();' name='password' >
+            <span id='message'></span><br>
+
+            <label for="mob"><b>Your Mobile Number</b></label>
+            {{ form.mobile }}
+
+            <label for="nic"><b>Your NIC Number(If Available)</b></label>
+            {{ form.nic }}
+
+            <label for="ban_acc"><b>Your Bank Account Number(If Available)</b></label>
+            {{ form.bank_account }}
+
+            <label for="eas_acc"><b>Your EasyPaisa Account Number(If Available)</b></label>
+            {{ form.easypaisa }}
+            <button type="submit" id="butt" style="display:none;">Send Request</button>
+        </div>
+    </form>
+</div>
+    <script>
+        var check = function() {
+            if (document.getElementById('pass1').value ==
+                document.getElementById('pass2').value) {
+                    if (document.getElementById('pass1').value != "" ){
+                        document.getElementById('message').style.color = 'green';
+                        document.getElementById('message').innerHTML = 'matching';
+                        document.getElementById('butt').style.display = 'block';
+                    } else {
+
+                        document.getElementById('message').innerHTML = 'empty';
+                    }
+            } else {
+                document.getElementById('message').style.color = 'red';
+                document.getElementById('message').innerHTML = 'not matching';
+                document.getElementById('butt').style.display = 'none';
+            }
+        }
+    </script>
+    <script>
+        var input = document.getElementById("pass1");
+        var text = document.getElementById("text");
+        input.addEventListener("keyup", function(event) {
+
+        if (event.getModifierState("CapsLock")) {
+            text.style.display = "block";
+        } else {
+            text.style.display = "none"
+        }
+        });
+    </script>

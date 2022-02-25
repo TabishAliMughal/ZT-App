@@ -1,0 +1,171 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Shop</a></li>
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        {% if all == 'Selected' %}
+            <div class="card">
+                <div class="card-header">
+                    <h5>{% if category %} {{ category.name }}{% else %}All Products{% endif %}</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for v in products %}
+                            <div class="col-md-12 col-xl-4">
+                                <div class="card block-card">
+                                    <div class="card-header">
+                                        <h5><a class="catogery" href="{% url 'shop:product_detail' v.product.pk v.product.slug %}">{{ v.product.name }}</a></h5>
+                                    </div>
+                                        <a style="text-align:center" href="{% url 'shop:product_detail' v.product.pk v.product.slug %}">
+                                            {% if v.image %}
+                                                {% for k in v.image %}
+                                                        <div class="align-items-center" ><img class="col-9" style="height:300px;width:auto;" style="height:300px;width:auto;" src="{{ k }}"></div>
+                                                {% endfor %}
+                                            {% else %}
+                                                    <div class="align-items-center" ><img class="col-9" style="height:300px;width:auto;" style="height:300px;width:auto;" src="{% static 'assets/images/noimg.png' %}"></div>
+                                            {% endif %}
+                                        </a>
+                                        <br>
+                                    <h6 class="text-center mb-1">PKR {{ v.product.price }} / {{ v.product.unit }}</h6>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="card">
+                <div class="row">
+                    <div class="col-md-12 col-xl-6">
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="align-self: center;">
+                            <li class="nav-item">
+                                <a class="nav-link active show" id="pills-home-tab" data-toggle="pill" href="#pill-New" role="tab" aria-controls="pills-display" aria-selected="true">New</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pill-Used" role="tab" aria-controls="pills-detail" aria-selected="false">Used</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-12 col-xl-6">
+                        <div>
+                            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="align-self: center;">
+                                <li class="nav-item">
+                                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Category</button>
+                                    <div class="dropdown-menu" x-placement="top-start" style="position: absolute; transform: translate3d(0px, -200px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                        <a class="dropdown-item" href="{% url "shop:product_list" %}">All</a>
+                                        <div role="separator" class="dropdown-divider"></div>
+                                        {% for c in categories %}
+                                            <a class="dropdown-item" href="{% url 'shop:product_list_by_category' c.slug %}">{{ c }}</a>
+                                        {% endfor %}
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade active show" id="pill-New" role="tabpanel" aria-labelledby="pills-home-tab">
+                        <div class="card-header">
+                            <h5>New Products</h5>
+                        </div>
+                        {% for i in all_products %}
+                            {% if i.type == 'New' %}
+                                <div class="card-body">
+                                    <h5>{{ i.category }}</h5>
+                                    <div class="row">
+                                        {% for v in i.products %}
+                                            <div class="col-md-12 col-xl-4">
+                                                <div class="card block-card">
+                                                    <div class="card-header">
+                                                        <h5><a class="catogery" href="{% url 'shop:product_detail' v.product.pk v.product.slug %}">{{ v.product.name }}</a></h5>
+                                                    </div>
+                                                        <a style="text-align:center" href="{% url 'shop:product_detail' v.product.pk v.product.slug %}">
+                                                            {% if v.image %}
+                                                                {% for k in v.image %}
+                                                                        <div class="align-items-center" ><img class="col-9" style="height:300px;width:auto;" src="{{ k }}"></div>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                    <div class="align-items-center" ><img class="col-9" style="height:300px;width:auto;" src="{% static 'assets/images/noimg.png' %}"></div>
+                                                            {% endif %}
+                                                        </a>
+                                                        <br>
+                                                    <h6 class="text-center mb-1">PKR {{ v.product.price }} / {{ v.product.unit }}</h6>
+                                                    </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div style="text-align:center">
+                                        <a class="btn btn-primary" style="width:80%;" href="{% url 'shop:shop_product_list_by_category_and_type' i.category.slug i.type %}">More Products</a>
+                                    </div>
+                                    <hr>
+                                </div>
+                            {% endif %}
+                            <br>
+                        {% endfor %}
+                    </div>
+                    <div class="tab-pane fade" id="pill-Used" role="tabpanel" aria-labelledby="pills-profile-tab">
+                        <div class="card-header">
+                            <h5>Used Products</h5>
+                        </div>
+                        {% for i in all_products %}
+                            {% if i.type == 'Old' %}
+                                <div class="card-body">
+                                    <h5>{{ i.category }}</h5>
+                                    <div class="row">
+                                        {% for v in i.products %}
+                                            <div class="col-md-12 col-xl-4">
+                                                <div class="card block-card">
+                                                    <div class="card-header">
+                                                        <h5><a class="catogery" href="{% url 'shop:product_detail' v.product.pk v.product.slug %}">{{ v.product.name }}</a></h5>
+                                                    </div>
+                                                        <a style="text-align:center" href="{% url 'shop:product_detail' v.product.pk v.product.slug %}">
+                                                            {% if v.image %}
+                                                                {% for k in v.image %}
+                                                                        <div class="align-items-center" ><img class="col-9" style="height:300px;width:auto;" src="{{ k }}"></div>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                    <div class="align-items-center" ><img class="col-9" style="height:300px;width:auto;" style="height:300px;width:auto;" src="{% static 'assets/images/noimg.png' %}"></div>
+                                                            {% endif %}
+                                                        </a>
+                                                        <br>
+                                                    <h6 class="text-center mb-1">PKR {{ v.product.price }} / {{ v.product.unit }}</h6>
+                                                    </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div style="text-align:center">
+                                        <a class="btn btn-primary" style="width:80%;" href="{% url 'shop:shop_product_list_by_category_and_type' i.category.slug i.type %}">More Products</a>
+                                    </div>
+                                    <hr>
+                                </div>
+                                <br>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+    <script>
+        function openCity(evt, cityName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(cityName).style.display = "inline-block";
+        evt.currentTarget.className += " active";
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.username }}
+{% endblock %}
+{% block address %}
+<li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+<li class="breadcrumb-item"><a href="{% url 'blog:blog_list' %}">Blogs</a></li>
+<li class="breadcrumb-item"><a href="javascript:">My Blogs</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    {% if request.user.is_authenticated %}
+                        {% for i in user %}
+                            {% if i.name == 'Creator' %}
+                                <a class="btn btn-primary" href="{% url 'blog:blog_create' %}">Create Blog</a>
+                            {% elif i.name == 'Public' %}
+                                <a class="btn btn-primary" href="{% url 'bunch:bunch_list' %}">Bunch List</a>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        {% for i in blogs %}
+            <div class="col-md-12 col-xl-4">
+                <div class="card block-card">
+                    <div class="card-header">
+                        <h5><a href="{% url 'post:post_list' i.blog.pk %}">{{ i.blog.name }}</a></h5>
+                    </div>
+                    <div class="text-center">
+                        <a href="{% url 'post:post_list' i.blog.pk %}">
+                            {% if i.blog.image.url %}
+                                <div><img class="col-9" src="{{ i.blog.image.url }}"></div>
+                            {% else %}
+                                    <div><img class="col-9" src="{% static 'assets/images/noimg.png' %}"></div>
+                            {% endif %}
+                        </a>
+                        <br>
+                        {{ i.blog.type }}
+                        <br>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12 col-xl-4">
+                                {% for k in i.icons %}
+                                    <i class="feather {{ k.type }}"></i>
+                                {% endfor %}
+                                {{ i.react }}
+                            </div>
+                            <div class="col-md-12 col-xl-4">
+                                <i class="feather icon-message-square"></i>
+                                {{ i.comment }}
+                            </div>
+                            <div class="col-md-12 col-xl-4">
+                                {{ i.posts }} Posts
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

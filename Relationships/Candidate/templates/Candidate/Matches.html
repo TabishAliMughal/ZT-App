@@ -1,0 +1,138 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.username }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="javascript:">RelationShips</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">My Match</a></li>
+{% endblock %}
+{% block content %}
+<div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>All Matches</h5>                    
+                </div>
+                <div class="card-body">
+                    <div class="accordion" id="matching_male">
+                        {% if candidate %}
+                            {% if my_matches != None %}
+                                {% for i in my_matches %}
+                                    {% if gender == 'male' %}
+                                        <div class="card">
+                                            <div class="card-header" id="headingOne">
+                                                <h5 class="mb-0"><a href="javascript:" data-toggle="collapse" data-target="#{{ i.pk }}" aria-expanded="false" aria-controls="collapseOne" class="collapsed">{{ i.female }}</a></h5>
+                                            </div>
+                                            <div id="{{ i.pk }}" class="card-body collapse" c_name="{{ i.name }}" c_value="{{ i.pk }}" aria-labelledby="headingOne" data-parent="#matching_male">
+                                                <div class="row">
+                                                    {% if i.image %}
+                                                        <div class="col-cm-12 col-xl-6" id="img{{ i.pk }}">
+                                                            <img style="width: 100%;height: auto;" src="{{ i.image.url }}">
+                                                        </div>
+                                                    {% endif %}
+                                                    <div class="col-cm-12 col-xl-6" id="data{{ i.pk }}">
+                                                        Name = {{ i.female.name }}<br>
+                                                        Father Name = {{ i.female.father_name }}<br>
+                                                        Date Of Birth = {{ i.female.date_of_birth }}<br>
+                                                        Age = {{ i.female.age }}<br>
+                                                        Gender = {{ i.female.gender }}<br>
+                                                        Occupation = {{ i.female.occupation }}<br>
+                                                        Education = {{ i.female.education }}<br>
+                                                        Living Status = {{ i.female.living_status }}<br>
+                                                        Cast = {{ i.female.cast }}<br>
+                                                        Siblings = {{ i.female.siblings }}<br>
+                                                        Height = {{ i.heightfemale. }}inch<br>
+                                                        Mobile = {{ i.female.mobile }}<br>
+                                                        Address = {{ i.female.address }}<br>
+                                                        Cnic = {{ i.female.cnic }}<br>
+                                                        Place Of Birth = {{ i.female.place_of_birth }}<br>
+                                                        Marital Status = {{ i.female.marital_status }}<br>
+                                                        Parents = {{ i.parents }}<br>
+                                                        Discription = {{ i.female.discription }}<br>
+                                                        Father's Occupation = {{ i.female.father_occupation }}<br>
+                                                        Religion = {{ i.female.religion }}<br>
+                                                        Mother Toungue = {{ i.female.mother_toungue }}<br>
+                                                        Monthly Income = {{ i.female.monthly_income }}<br>
+                                                        <a class="btn btn-primary" href="{{ i.female.facebook_id }}">View Profile On Facebook</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% elif gender == 'female' %}
+                                        <div class="card">
+                                            <div class="card-header" id="headingOne">
+                                                <h5 class="mb-0"><a href="javascript:" data-toggle="collapse" data-target="#{{ i.pk }}" aria-expanded="false" aria-controls="collapseOne" class="collapsed">{{ i.male }}</a></h5>
+                                            </div>
+                                            <div id="{{ i.pk }}" class="card-body collapse" c_name="{{ i.name }}" c_value="{{ i.pk }}" aria-labelledby="headingOne" data-parent="#matching_male">
+                                                <div class="row">
+                                                    {% if i.image %}
+                                                        <div class="col-cm-12 col-xl-6" id="img{{ i.pk }}">
+                                                            <img style="width: 100%;height: auto;" src="{{ i.image.url }}">
+                                                        </div>
+                                                    {% endif %}
+                                                    <div class="col-cm-12 col-xl-6" id="data{{ i.pk }}">
+                                                        Name = {{ i.male.name }}<br>
+                                                        Father Name = {{ i.male.father_name }}<br>
+                                                        Date Of Birth = {{ i.male.date_of_birth }}<br>
+                                                        Age = {{ i.male.age }}<br>
+                                                        Gender = {{ i.male.gender }}<br>
+                                                        Occupation = {{ i.male.occupation }}<br>
+                                                        Education = {{ i.male.education }}<br>
+                                                        Living Status = {{ i.male.living_status }}<br>
+                                                        Cast = {{ i.male.cast }}<br>
+                                                        Siblings = {{ i.male.siblings }}<br>
+                                                        Height = {{ i.heightmale. }}inch<br>
+                                                        Mobile = {{ i.male.mobile }}<br>
+                                                        Address = {{ i.male.address }}<br>
+                                                        Cnic = {{ i.male.cnic }}<br>
+                                                        Place Of Birth = {{ i.male.place_of_birth }}<br>
+                                                        Marital Status = {{ i.male.marital_status }}<br>
+                                                        Parents = {{ i.parents }}<br>
+                                                        Discription = {{ i.male.discription }}<br>
+                                                        Father's Occupation = {{ i.male.father_occupation }}<br>
+                                                        Religion = {{ i.male.religion }}<br>
+                                                        Mother Toungue = {{ i.male.mother_toungue }}<br>
+                                                        Monthly Income = {{ i.male.monthly_income }}<br>
+                                                        <a class="btn btn-primary" href="{{ i.male.facebook_id }}">View Profile On Facebook</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <div class="card">
+                                    <h3>We Are Processing Your Data Please Be Patient</h3>
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <div class="card">
+                                <h3>Please <a href="{% url 'candidate:add_data' %}">Add Your Data</a> To Find Your Match</h3>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript">
+        function showImg(pk) {
+            data = document.getElementById("data" + pk).style.display;
+            img = document.getElementById("img" + pk).style.display;
+            if(data == 'none'){
+                document.getElementById("data" + pk).style.display = 'block';
+                document.getElementById("img" + pk).style.display = 'none';
+                document.getElementById("change_btn" + pk).innerHTML = 'Image';
+            }
+            if(data == 'block'){
+                document.getElementById("data" + pk).style.display = 'none';
+                document.getElementById("img" + pk).style.display = 'block';
+                document.getElementById("change_btn" + pk).innerHTML = 'Data';
+            }
+        }
+    </script>
+{% endblock %}

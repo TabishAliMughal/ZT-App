@@ -1,0 +1,36 @@
+{% extends 'MainPage.html' %}
+{% block content %}
+    <div class="table-responsive">
+                        <table  class="table table-hover">
+        <thead class="text-center">
+            <th>Tasks</th>
+            <th>Price</th>
+            <th></th>
+        </thead>
+        <tbody class="text-center">
+            <tr>
+                <th>Paid</th>
+                <th></th>
+                <th></th>
+            </tr>
+            {% for i in paid_tasks %}
+                <tr>
+                    <td><a href="{% url 'account:payment_detail' i.order.pk %}">{{ i.order }}</a></td>
+                    <td>{{ i.fees }}</td>
+                    <td>{% if i.payment.accepted == False %}Not Received{% else %}Received{% endif %}<a>Received</a></td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <th>UnPaid</th>
+                <th></th>
+                <th></th>
+            </tr>
+            {% for i in unpaid_tasks %}
+                <tr>
+                    <td><a href="{% url 'delivery:delivery_person_task_detail' i.task.pk %}">{{ i.order }}</a></td>
+                    <td>{{ i.fees }}</td>
+                    <td></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.username }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Shop</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">List</a></li>
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Shop List</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        <div class="table-responsive">
+                        <table  class="table table-hover">
+                            <thead class="text-center">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Active</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                {% for i in shops %}
+                                    <tr>
+                                        <td><a href="{% url 'shop:shop_products' i.pk %}">{{ i.name }}</a></td>
+                                        <td>{{ i.active }}</td>
+                                        <td><a href="{% url 'shop:shop_edit' i.pk %}">Edit</a></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+</div>
+                        {% csrf_token %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
