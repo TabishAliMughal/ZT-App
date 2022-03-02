@@ -1,29 +1,45 @@
 from django.http.response import HttpResponseRedirect
 from Blog.Blog.models import Blog
 from django.shortcuts import get_object_or_404, redirect, render
+from Blog.Bunch.models import Bunch, BunchPost
 from .models import Post, PostComment, PostReact, ReactTypes
 from .forms import ManagePostCommentForm, ManagePostCreateForm, ManagePostReactForm
 from django.contrib.auth.decorators import login_required
-from Authentication.user_handeling import unauthenticated_user, allowed_users, admin_only
+from Authentication.user_handeling import allowed_users
 from io import BytesIO
 from PIL import Image
 from django.core.files.base import ContentFile
 from django.contrib.auth.models import User
+from Blog.Tags.models import BlogTags, PostTags
 
-
-def ManagePostListView(request,pk=None):
+def ManagePostListView(request,blog=None,bunch=None):
     user = request.user.groups.values('name')
     posts = []
     post = []
-    blog = ''
-    if pk:
-        blog = get_object_or_404(Blog , pk = pk)
-        for i in Post.objects.all():
-            if int(i.blog.pk) == int(blog.pk):
-                post.append(i)
-    else:
+    my_blog = 'None'
+    bunches = []
+    my_bunch = 'None'
+    tags = []
+    my_tags = 'None'
+    if blog:
+        my_blog = get_object_or_404(Blog , pk = blog)
+        for i in Post.objects.all().filter(blog = my_blog):
+            post.append(i)
+        for i in Bunch.objects.all().filter(blog = my_blog):
+            bunches.append(i)
+    if bunch:
+        my_bunch = get_object_or_404(Bunch , pk = bunch)
+        my_blog = get_object_or_404(Blog , pk = my_bunch.blog.pk)
+        for i in BunchPost.objects.all().filter(bunch = my_bunch):
+            post.append(i.post)
+        for i in Bunch.objects.all().filter(blog = my_blog.pk):
+            bunches.append(i)
+    if not blog and not bunch:
         for i in Post.objects.all():
             post.append(i)
+    if my_blog:
+        for i in BlogTags.objects.all().filter(blog = my_blog):
+            tags.append(i)
     for l in post:
         reacts = []
         for k in ReactTypes.objects.all():
@@ -40,8 +56,11 @@ def ManagePostListView(request,pk=None):
         posts.append({'post' : l , 'reacts' : reacts , 'width' : length })
     context = {
         'user' : user ,
-        'blog' : blog ,
+        'my_blog' : my_blog ,
+        'my_bunch' : my_bunch ,
         'posts' : posts,
+        'bunches' : bunches,
+        'tags' : tags ,
     }
     return render(request,'post/list.html',context)
 
@@ -71,10 +90,12 @@ def ManagePostDetailView(request,pk):
     if int(len(post.text)) >= int('150'):
         setattr(post,'stext',post.text[:150])
         setattr(post,'ltext',post.text[150:])
+    tags = PostTags.objects.all().filter(post = post)
     context = {
         'react' : react ,
         'user' : user ,
         'post' : post ,
+        'tags' : tags ,
         'comments' : comments ,
     }
     return render(request,'post/detail.html',context)
@@ -92,7 +113,7 @@ def ManagePostReactView(request,pk):
         'react' : int(request.POST.get('react'))
     })
     form.save()
-    return redirect('post:post_detail',post.pk)
+    return redirect('blog_post:post_detail',post.pk)
 
 @login_required(login_url='main_login')
 def ManagePostCommentView(request,pk):
@@ -103,7 +124,7 @@ def ManagePostCommentView(request,pk):
         'comment' : request.POST.get('comment')
     })
     form.save()
-    return redirect('post:post_detail',post.pk)
+    return redirect('blog_post:post_detail',post.pk)
 
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Creator'])

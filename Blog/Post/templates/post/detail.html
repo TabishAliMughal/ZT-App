@@ -5,7 +5,7 @@
 {% endblock %}
 {% block address %}
 <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
-<li class="breadcrumb-item"><a href="{% url 'blog:blog_list' %}">Blog</a></li>
+<li class="breadcrumb-item"><a href="{% url 'blog_blog:blog_list' %}">Blog</a></li>
 <li class="breadcrumb-item"><a href="javascript:">Post</a></li>
 <li class="breadcrumb-item"><a href="javascript:">Detail</a></li>
 {% endblock %}
@@ -24,10 +24,19 @@
                 <div class="card-body">                    
                     <div class="row">
                         <div class="col-sm-12 col-xl-10">
+                            {% if tags %}
+                                <div>
+                                    {% for i in tags %}
+                                        <a href="{% url 'blog_tags:tag_detail' i.tag.pk %}" style="padding-right: 5px;">#{{ i }}</a>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                             {{ post.description }}
+                            <br>
+                            <br>
                         </div>
                         <div class="col-sm-12 col-xl-2">
-                            <a class="btn btn-primary" href="{% url 'post:post_list' post.blog.pk %}">Go To Blog</a>
+                            <a class="btn btn-primary" href="{% url 'blog_post:post_list_by_blog' post.blog.pk %}">Go To Blog</a>
                         </div>
                     </div>
                     <div class="row">
@@ -98,7 +107,7 @@
                     <div class="text-center" style="padding: 15px;">
                         {% for i in react %}
                             <div style="float: left;">
-                                <form action="{% url 'post:post_react' post.pk %}" method="POST">
+                                <form action="{% url 'blog_post:post_react' post.pk %}" method="POST">
                                     <input type="hidden" name="url" value="{{ request.path }}" />
                                     <input type="hidden" name="react" value="{{ i.type.pk }}" />
                                     <button class="btn btn-primary">
@@ -120,7 +129,7 @@
                 <div class="card" style="padding:15px;">
                     <button class="btn btn-primary" id="comment-button" onClick="newComment()">Comment</button>
                     <div id="new_comment" style="display:none">
-                        <form action="{% url 'post:post_comment' post.pk %}" method="POST">
+                        <form action="{% url 'blog_post:post_comment' post.pk %}" method="POST">
                             <div class="row">
                                 <div class="col-sm-12 col-xl-10">
                                     <input type="text" required name="comment" class="form-control" aria-describedby="emailHelp" placeholder="Write Your Comment">

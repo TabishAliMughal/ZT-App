@@ -16,6 +16,7 @@ class Bunch(models.Model):
 class BunchPost(models.Model):
     bunch = models.ForeignKey(Bunch,on_delete=models.CASCADE)
     post = models.ForeignKey(Post,on_delete=models.CASCADE)
+    serial = models.IntegerField()
     class Meta:
         verbose_name_plural = 'Bunch Posts'
     def __str__(self):

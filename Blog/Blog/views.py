@@ -1,11 +1,10 @@
-from email.errors import InvalidMultipartContentTransferEncodingDefect
 from Creator.models import Creator
-from Blog.Blog.forms import ManageBlogCreateForm
+from Blog.Blog.forms import ManageBlogCreateForm 
 from django.shortcuts import get_object_or_404, render,get_list_or_404
 from .models import Blog, Type
 from Blog.Post.models import Post, PostComment, PostReact, ReactTypes
 from django.contrib.auth.decorators import login_required
-from Authentication.user_handeling import unauthenticated_user, allowed_users, admin_only
+from Authentication.user_handeling import allowed_users
 from io import BytesIO
 from PIL import Image
 from django.core.files.base import ContentFile
@@ -49,7 +48,7 @@ def ManageBlogListView(request):
         'user' : user ,
         'blogs' : blogs ,
     }
-    return render(request,'blog/list.html',context)
+    return render(request,'Blog/List.html',context)
 
 def ManageUserBlogListView(request,pk=None):
     user = request.user.groups.values('name')
@@ -93,7 +92,7 @@ def ManageUserBlogListView(request,pk=None):
         'user' : user ,
         'blogs' : blogs ,
     }
-    return render(request,'blog/user/list.html',context)
+    return render(request,'Blog/User/List.html',context)
 
 @login_required(login_url='not_authorized')
 @allowed_users(allowed_roles=['Creator'])
@@ -116,6 +115,7 @@ def ManageBlogCreateView(request):
         img_content = ContentFile(img_io.getvalue(),"img.jpg" )
         form = ManageBlogCreateForm({
             'name' : request.POST.get('name') ,
+            'description' : request.POST.get('description') ,
             'type' : request.POST.get('type') ,
             'user' : cur_user.pk ,
         },{
@@ -125,14 +125,14 @@ def ManageBlogCreateView(request):
         context = {
             'user' : user ,
         }
-        return render(request,'blog/user/created.html',context)
+        return render(request,'Blog/User/Created.html',context)
     else:
         form = ManageBlogCreateForm()
         context = {
             'user' : user ,
             'form' : form ,
         }
-        return render(request,'blog/user/create.html',context)
+        return render(request,'Blog/User/Create.html',context)
 
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Creator'])
@@ -155,8 +155,9 @@ def ManageBlogEditView(request,pk):
             img_content = request.FILES.get('image')
         form = ManageBlogCreateForm({
             'name' : request.POST.get('name') ,
+            'description' : request.POST.get('description') ,
             'type' : request.POST.get('type') ,
-            'user' : blog.user.pk ,
+            'user' : blog.user ,
         } or None,{
             'image' : img_content ,
         } or None,instance=blog)
@@ -164,14 +165,14 @@ def ManageBlogEditView(request,pk):
         context = {
             'user' : user ,
         }
-        return render(request,'blog/user/created.html',context)
+        return render(request,'Blog/User/Created.html',context)
     else:
         form = ManageBlogCreateForm(instance = blog)
         context = {
             'user' : user ,
             'form' : form ,
         }
-        return render(request,'blog/user/edit.html',context)
+        return render(request,'Blog/User/Edit.html',context)
 
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Creator'])
@@ -182,4 +183,4 @@ def ManageBlogDeleteView(request,pk):
     context = {
         'user' : user ,
     }
-    return render(request,'blog/user/deleted.html',context)
+    return render(request,'Blog/User/Deleted.html',context)

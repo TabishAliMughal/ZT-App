@@ -2,8 +2,6 @@ from django.contrib.gis.db import models
 from Blog.Blog.models import Blog
 from django.contrib.auth.models import User
 
-
-
 class ReactTypes(models.Model):
     name = models.CharField(max_length=15)
     icon = models.CharField(max_length=25)
@@ -32,7 +30,7 @@ class PostReact(models.Model):
     post = models.ForeignKey(Post,on_delete=models.CASCADE)
     react = models.ForeignKey(ReactTypes , on_delete=models.CASCADE)
     class Meta:
-        verbose_name_plural = 'Post Reacts'
+        verbose_name_plural = 'Reacts'
     def __str__(self):
         return "{} > {}".format(self.post,self.react)
 

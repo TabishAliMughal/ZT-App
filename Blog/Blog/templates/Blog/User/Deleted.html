@@ -5,20 +5,20 @@
 {% endblock %}
 {% block address %}
     <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
-    <li class="breadcrumb-item"><a href="{% url 'blog:blog_list' %}">Blogs</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'blog_blog:blog_list' %}">Blogs</a></li>
     <li class="breadcrumb-item"><a href="javascript:">Blog</a></li>
-    <li class="breadcrumb-item"><a href="javascript:">Created</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Deleted</a></li>
 {% endblock %}
 {% block content %}
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header">
-                    <h5>Blog Added</h5>
+                    <h5>Blog Deleted</h5>
                 </div>
                 <div class="card-body">
-                    <h1>Your Blog Has Been Added SuccessFully</h1>
-                    <a class="btn btn-primary" href="{% url 'blog:user_blog_list' %}">Go To My Blogs</a>
+                    <h1>Your Blog Has Been Deleted SuccessFully</h1>
+                    <a class="btn btn-primary" href="{% url 'blog_blog:user_blog_list' %}">Go To My Blogs</a>
                 </div>
             </div>
         </div>

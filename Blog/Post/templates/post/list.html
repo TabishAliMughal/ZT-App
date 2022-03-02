@@ -5,7 +5,7 @@
 {% endblock %}
 {% block address %}
 <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
-<li class="breadcrumb-item"><a href="{% url 'blog:blog_list' %}">Blog</a></li>
+<li class="breadcrumb-item"><a href="{% url 'blog_blog:blog_list' %}">Blog</a></li>
 <li class="breadcrumb-item"><a href="javascript:">Posts</a></li>
 {% endblock %}
 {% block content %}
@@ -16,12 +16,32 @@
                     {% if request.user.is_authenticated %}
                         {% for k in user %}
                             {% if k.name == 'Creator' %}
-                                <a class="btn btn-primary" href="{% url 'post:post_create' blog.pk %}">Create Post</a>
-                                <a class="btn btn-primary" href="{% url 'bunch:bunch_list' blog.pk %}">Bunch List</a>
-                                <a class="btn btn-primary" href="{% url 'blog:blog_edit' blog.pk %}">Edit Blog</a>
-                                <a class="btn btn-primary" onclick="var result = confirm('Want to delete?');if (result) {window.location = '{% url 'blog:blog_delete' blog.pk %}';}">Delete Blog</a>                                
-                            {% elif k.name == 'Public' %}
-                                <a class="btn btn-primary" href="{% url 'bunch:bunch_list' blog.pk %}">Bunch List</a>
+                                <a class="btn btn-primary" href="{% url 'blog_post:post_create' my_blog.pk %}">Create Post</a>
+                                <a class="btn btn-primary" href="{% url 'blog_blog:blog_edit' my_blog.pk %}">Edit Blog</a>
+                                <a class="btn btn-primary" href="{% url 'blog_tags:blog_tags' my_blog.pk %}">Manage Tags</a>
+                                <a class="btn btn-primary" onclick="var result = confirm('Want to delete?');if (result) {window.location = '{% url 'blog_blog:blog_delete' my_blog.pk %}';}">Delete Blog</a>                                
+                                
+                                <div class="btn-group mb-2 mr-2">
+                                    <a type="button" class="btn btn-info" style="color: white;" href="{% url 'blog_bunch:blog_bunch_list' my_blog.pk %}">Bunches</a>
+                                    <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>
+                                    <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(66px, 43px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                        {% for i in bunches %}
+                                            <a class="dropdown-item" href="{% url 'blog_post:post_list_by_bunch' i.pk %}">{{ i.name }}</a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% elif k.name == 'Public' %}                                
+                                <div class="btn-group mb-2 mr-2">
+                                    <a type="button" class="btn btn-info" style="color: white;" href="{% url 'blog_bunch:blog_bunch_list' my_blog.pk %}">Bunches</a>
+                                    <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>
+                                    <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(66px, 43px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                        {% for i in bunches %}
+                                            <a class="dropdown-item" href="{% url 'blog_post:post_list_by_bunch' i.pk %}">{{ i.name }}</a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <!-- <a class="btn btn-primary" href="{% url 'blog_bunch:bunch_list' my_blog.pk %}">Bunch List</a>
+                                <a class="btn btn-primary" href="{% url 'blog_bunch:bunch_list' my_blog.pk %}">Bunches</a> -->
                             {% endif %}
                         {% endfor %}
                     {% endif %}
@@ -29,7 +49,18 @@
             </div>
             <div class="card">
                 <div class="card-header">
-                    <h5>{{ blog }} <a href="{% url 'blog:user_blog_list' blog.user %}">More From This Bloger</a></h5>
+                    <h5>{{ my_blog }}{% if my_bunch != 'None' %} > {{ my_bunch }}{% endif %} </h5>
+                    <div class="float-right"><a href="{% url 'blog_blog:user_blog_list' my_blog.user %}">More From This Bloger</a></div>
+                    {% if tags %}
+                        <br>
+                        <br>
+                        <div>
+                            {% for i in tags %}
+                                <a href="{% url 'blog_tags:tag_detail' i.tag.pk %}" style="padding-right: 5px;">#{{ i }}</a>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {% if my_blog.description %}{{ my_blog.description }}{% endif %}
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -37,13 +68,13 @@
                             <div class="col-md-12 col-xl-4">
                                 <div class="card block-card">
                                     <div class="card-header">
-                                        <h5><a href="{% url 'post:post_detail' i.post.pk %}">{{ i.post.name }}</a></h5>
+                                        <h5><a href="{% url 'blog_post:post_detail' i.post.pk %}">{{ i.post.name }}</a></h5>
                                     </div>
                                     <div class="card-body">
                                         <div class="text-center">{{ i.post.description }}</div>
                                         <br>
                                         <div class="text-center">
-                                            <a href="{% url 'post:post_detail' i.post.pk %}">
+                                            <a href="{% url 'blog_post:post_detail' i.post.pk %}">
                                                 {% if i.post.image %}
                                                     <div><img class="col-9" src="{{ i.post.image.url }}"></div>
                                                 {% else %}
@@ -65,8 +96,9 @@
                                         {% if request.user.is_authenticated %}
                                             {% for k in user %}
                                                 {% if k.name == 'Creator' %}
-                                                        <a class="btn btn-primary" href="{% url 'post:post_edit' i.post.pk %}">Edit</a>
-                                                        <a class="btn btn-primary" onclick="var result = confirm('Want to delete?');if (result) {window.location = '{% url 'post:post_delete' i.post.pk %}';}">Delete</a>
+                                                    <a class="btn btn-primary" href="{% url 'blog_post:post_edit' i.post.pk %}">Edit</a>
+                                                    <a class="btn btn-primary" href="{% url 'blog_tags:post_tags' i.post.pk %}">Tags</a>
+                                                    <a class="btn btn-primary" onclick="var result = confirm('Want to delete?');if (result) {window.location = '{% url 'blog_post:post_delete' i.post.pk %}';}">Delete</a>
                                                 {% endif %}
                                             {% endfor %}
                                         {% endif %}

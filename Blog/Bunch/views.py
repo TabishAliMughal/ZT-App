@@ -11,14 +11,13 @@ from django.contrib.auth.models import User
 
 
 
-@login_required(login_url='main_login')
-@allowed_users(allowed_roles=['Creator','Public'])
-def ManageBunchListView(request,pk=None):
+
+def ManageBunchListView(request,blog=None):
     user = request.user.groups.values('name')
     bunch = []
     l = int('0')
-    if pk :
-        blog = Blog.objects.all().filter(pk = pk)
+    if blog :
+        blog = Blog.objects.all().filter(pk = blog)
     else:
         blog = Blog.objects.all()
     for i in Bunch.objects.all():
@@ -107,7 +106,7 @@ def BunchAddPostsView(request):
                     })
                     if form.is_valid:
                         form.save()
-    return redirect('bunch:bunch_list',bunch.blog.pk)
+    return redirect('blog_bunch:bunch_list',bunch.blog.pk)
 
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Creator'])

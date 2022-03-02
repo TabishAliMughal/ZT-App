@@ -4,7 +4,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = 'dd^d35%b(x!ee+rnaewa_(l9#++ke@uh^gmwu6=eyt30ft^*jv'
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost','www.localhost.com','zandt.pk','www.zandt.pk','zandt.pk','127.0.0.1']
 
@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'Blog.Blog',
     'Blog.Bunch',
     'Blog.Post',
+    'Blog.Tags',
     'School.Admin',
     'School.Checker',
     'School.Content',

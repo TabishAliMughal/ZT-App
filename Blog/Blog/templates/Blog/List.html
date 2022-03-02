@@ -18,10 +18,10 @@
                                 <div class="col-md-12 col-xl-4">
                                     <div class="card block-card">
                                         <div class="card-header">
-                                            <h5><a href="{% url 'post:post_list' i.blog.pk %}">{{ i.blog.name }}</a></h5>
+                                            <h5><a href="{% url 'blog_post:post_list_by_blog' i.blog.pk %}">{{ i.blog.name }}</a></h5>
                                         </div>
                                         <div class="text-center">
-                                            <a href="{% url 'post:post_list' i.blog.pk %}">
+                                            <a href="{% url 'blog_post:post_list_by_blog' i.blog.pk %}">
                                                 {% if i.blog.image.url %}
                                                     <div><img class="col-9" src="{{ i.blog.image.url }}"></div>
                                                 {% else %}

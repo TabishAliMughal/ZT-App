@@ -5,8 +5,8 @@
 {% endblock %}
 {% block address %}
 <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
-<li class="breadcrumb-item"><a href="{% url 'blog:blog_list' %}">Blogs</a></li>
-<li class="breadcrumb-item"><a href="javascript:">My Blogs</a></li>
+<li class="breadcrumb-item"><a href="{% url 'blog_blog:blog_list' %}">Blogs</a></li>
+<li class="breadcrumb-item"><a href="javascript:">User Blogs</a></li>
 {% endblock %}
 {% block content %}
     <div class="row">
@@ -16,9 +16,9 @@
                     {% if request.user.is_authenticated %}
                         {% for i in user %}
                             {% if i.name == 'Creator' %}
-                                <a class="btn btn-primary" href="{% url 'blog:blog_create' %}">Create Blog</a>
+                                <a class="btn btn-primary" href="{% url 'blog_blog:blog_create' %}">Create Blog</a>
                             {% elif i.name == 'Public' %}
-                                <a class="btn btn-primary" href="{% url 'bunch:bunch_list' %}">Bunch List</a>
+                                <a class="btn btn-primary" href="{% url 'blog_bunch:bunch_list' %}">Bunch List</a>
                             {% endif %}
                         {% endfor %}
                     {% endif %}
@@ -29,12 +29,12 @@
     <div class="row">
         {% for i in blogs %}
             <div class="col-md-12 col-xl-4">
-                <div class="card block-card">
+                <div class="card">
                     <div class="card-header">
-                        <h5><a href="{% url 'post:post_list' i.blog.pk %}">{{ i.blog.name }}</a></h5>
+                        <h5><a href="{% url 'blog_post:post_list_by_blog' i.blog.pk %}">{{ i.blog.name }}</a></h5>
                     </div>
                     <div class="text-center">
-                        <a href="{% url 'post:post_list' i.blog.pk %}">
+                        <a href="{% url 'blog_post:post_list_by_blog' i.blog.pk %}">
                             {% if i.blog.image.url %}
                                 <div><img class="col-9" src="{{ i.blog.image.url }}"></div>
                             {% else %}
