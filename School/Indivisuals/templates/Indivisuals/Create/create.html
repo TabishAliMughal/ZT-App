@@ -1,0 +1,73 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+  <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+  <li class="breadcrumb-item"><a href="{% url 'school:main' %}">School</a></li>
+  <li class="breadcrumb-item"><a href="javascript:">Add</a></li>
+  <li class="breadcrumb-item"><a href="javascript:">Individual</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Add Individual Student</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="form-group">
+                            <label for="id_name">Name</label>
+                            <input class="form-control" type="text" name="name" maxlength="50" required="" id="id_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="id_name">Father Name</label>
+                            <input class="form-control" type="text" name="father_name" maxlength="50" required="" id="id_father_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="id_name">School</label>
+                            {% if school != 'No'%}
+                                <input type='text' value='{{ school }}' readonly />
+                                <input type='hidden' name='school' value='{{ school.pk }}' readonly />
+                            {% else %}
+                                <select class="form-control" name="school" id="id_school">
+                                    {% for i in form.school %}
+                                        {{ i }}
+                                    {% endfor %}
+                                </select>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_name">Sarting</label>
+                            <input class="form-control" readonly type="date" name="start_date" value="{{ date }}" required="" id="id_start_date" >
+                        </div>
+                        <div class="form-group">
+                            <label for="id_name">Mobile</label>
+                            <input class="form-control" type="text" name="mobile" maxlength="50" required="" id="id_mobile">
+                        </div>
+                        <div class="form-group">
+                            <label for="id_name">Class</label>
+                            <select class="form-control" name="clas" required="" id="id_clas">
+                                {% for i in form.clas %}
+                                    {{ i }}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_name">Fees</label>
+                            <input class="form-control" type="number" name="fees" required="" id="id_fees">
+                        </div>
+                        <div class="form-group">
+                            <label for="id_name">Active</label>
+                            <input class="form-control" type="checkbox" name="active" id="id_active">
+                        </div>
+                        <button class="btn btn-primary">Add</button>
+                        {% csrf_token %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

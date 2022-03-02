@@ -1,0 +1,94 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'school:main' %}">School</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Teacher</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Profile</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>My Classes</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table  class="table table-hover">
+                            <tbody class="text-center">
+                                {% if equal == 'equal' %}
+                                    <tr>
+                                        <th><a class="btn btn-primary" href="{% url 'school_teacher:teacher_class_create' teacher.pk %}" >Add New Class</a></th>
+                                    </tr>
+                                    {% for i in class %}
+                                        <tr>
+                                            <th><a href="{% url 'school_teacher:teacher_class' i.pk %}" >{{ i.clas }}</a></th>
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    {% if class == 'No Class' %}
+                                        <tr>
+                                            <th><a href="{% url 'school_teacher:teacher_class_create' teacher.pk %}" >Select Class</a></th>
+                                        </tr>
+                                    {% else %}
+                                        {% for i in class %}
+                                            <tr>
+                                                <th><a href="{% url 'school_teacher:teacher_class' i.pk %}" >{{ i.clas }}</a></th>
+                                            </tr>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h5>Current Exams</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table  class="table table-hover">
+                            <tbody class="text-center">
+                                {% for i in exam %}
+                                    {% if i == 'No Active Exams' %}
+                                        <tr>
+                                            <th><a>No Active Exams</a></th>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <th>{{ i.subject }}</th>
+                                            <th>{{ i.class_name }}</th>
+                                            <th><a class="btn" href="{% url 'school_exam:teacher_class_exam' i.pk %}">See Questions</a><a class="btn"  href="{% url 'school_exam:teacher_class_exam_answers_student_select' i.pk teacher.pk %}">Upload Answers</a></th>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h5>Upload Answers</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table  class="table table-hover">
+                         <tbody class="text-center">
+                             <tr>
+                                 <th><a>No Active Exams</a></th>
+                             </tr>
+                         </tbody>
+                     </table>
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

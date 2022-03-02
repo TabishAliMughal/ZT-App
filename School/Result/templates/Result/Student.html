@@ -1,0 +1,71 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h2 class="text-center" style="font-family:sans-serif;">Student Of {{student.clas.teacher}}</h2><hr/>
+       <div class="table-responsive">
+                        <table  class="table table-hover">
+            <tbody class="text-center">
+                <tr>
+                    <th><a>Name</a></th>
+                    <th><a>=</a></th>
+                    <th><a>{{ student.name }}</a></th>
+                </tr>
+                <tr>
+                    <th><a>Father</a></th>
+                    <th><a>=</a></th>
+                    <th><a>{{ student.father_name }}</a></th>
+                </tr>
+            </tbody>
+        </table>
+</div>
+    </div>
+    <div class="container">
+       <div class="table-responsive">
+                        <table  class="table table-hover">
+            <tbody class="text-center">
+                <tr>
+                    <th><a>Subjects</a></th>
+                    <th><a>Total Marks</a></th>
+                    <th><a>Obtained Marks</a></th>
+                    <th><a>Percentage</a></th>
+                </tr>
+                {% for v in numbers %}
+                    <tr>
+                        {% for i in v %}
+                            <td><a>{{ i }}</a></td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+</div>
+    </div>
+    <div class="container">
+       <div class="table-responsive">
+                        <table  class="table table-hover">
+            <tbody class="text-center">
+                <tr>
+                    <th><a>Total Marks</a></th>
+                    <th><a>{{ total_marks }}</a></th>
+                </tr>
+                <tr>
+                    <td><a>Total Obtained</a></td>
+                    <td><a>{{ final_marks }}</a></td>
+                </tr>
+                <tr>
+                    <th><a>Total Percentage</a></th>
+                    <th><a>{{ total_percentage }}%</a></th>
+                </tr>
+                <tr>
+                    <td><a>Grade</a></td>
+                    <td><a>{{ grade }}</a></td>
+                </tr>
+            </tbody>
+        </table>
+</div>
+    </div>
+{% endblock %}

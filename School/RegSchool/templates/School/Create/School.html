@@ -1,0 +1,32 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block content %}
+    <form method="POST">
+        {% csrf_token %}
+        <div class="container">
+            <h2 class="text-center" style="font-family:sans-serif;">Creating My School Data</h2><hr/>
+            <h3>Warning :</h3><h5>You Wont Be Able To Change This Class Later</h5>
+           <div class="table-responsive">
+                        <table  class="table table-hover">
+                <tbody class="text-center">
+                    <tr>
+                        <td>School Name</td>
+                        <td>{{ form.school }}</td>
+                    </tr>
+                    <tr>
+                        <td>Address</td>
+                        <td>{{ form.address }}</td>
+                    </tr>
+                    <tr>
+                        <td>Action</td>
+                        <td><input class='button' type="submit" value="Save"></td>
+                    </tr>
+                </tbody>
+            </table>
+</div>
+        </div>
+    </form>
+{% endblock %}

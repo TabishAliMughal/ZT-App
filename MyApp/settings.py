@@ -4,9 +4,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = 'dd^d35%b(x!ee+rnaewa_(l9#++ke@uh^gmwu6=eyt30ft^*jv'
 
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['localhost','www.localhost.com','zandt.pk','www.zandt.pk','zandt.pk','127.0.0.1']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -16,21 +16,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
-    # {'NAME':'Authentication', 'DEFAULT_DB': 'zt_app_data'},
-    # {'NAME':'Main', 'DEFAULT_DB': 'zt_app_data'},
-    # {'NAME':'Creator', 'DEFAULT_DB': 'zt_app_data'},
-    # {'NAME':'Shop.Shop', 'DEFAULT_DB': 'zt_shop_data'},
-    # {'NAME':'Shop.Cart', 'DEFAULT_DB': 'zt_shop_data'},
-    # {'NAME':'Shop.Orders', 'DEFAULT_DB': 'zt_shop_data'},
-    # {'NAME':'Shop.Customer', 'DEFAULT_DB': 'zt_shop_data'},
-    # {'NAME':'Shop.Delivery', 'DEFAULT_DB': 'zt_shop_data'},
-    # {'NAME':'Shop.Accounts', 'DEFAULT_DB': 'zt_shop_data'},
-    # {'NAME':'Blog.Blog', 'DEFAULT_DB': 'zt_blog_data'},
-    # {'NAME':'Blog.Bunch', 'DEFAULT_DB': 'zt_blog_data'},
-    # {'NAME':'Blog.Post', 'DEFAULT_DB': 'zt_blog_data'},
-    # {'NAME':'School.School', 'DEFAULT_DB': 'db1'},
-    # {'NAME':'Relationships.Info', 'DEFAULT_DB': 'zt_matrinomial_data'},
-    # {'NAME':'Relationships.Matching', 'DEFAULT_DB': 'zt_matrinomial_data'},
     'Authentication',
     'Main',
     'Creator',
@@ -43,7 +28,16 @@ INSTALLED_APPS = [
     'Blog.Blog',
     'Blog.Bunch',
     'Blog.Post',
-    'School.School',
+    'School.Admin',
+    'School.Checker',
+    'School.Content',
+    'School.Exam',
+    'School.Indivisuals',
+    'School.RegSchool',
+    'School.Requirments',
+    'School.Result',
+    'School.Teacher',
+    'School.Visitors',
     'Relationships.Info',
     'Relationships.Matching',
     'Relationships.Candidate',
@@ -101,6 +95,7 @@ TEMPLATES = [
     },
 ]
 
+
 TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.auth",
     "django.core.context_processors.debug",
@@ -112,9 +107,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 WSGI_APPLICATION = 'MyApp.wsgi.application'
 
 DATABASES = {
-    'blog': {
+    'school': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'zt_blog_data',
+        'NAME': 'zt_school_data',
         'USER': 'comsoft',
         'PASSWORD': 'Comsoft',
         'HOST': '127.0.0.1' ,
@@ -128,6 +123,14 @@ DATABASES = {
         'HOST': '127.0.0.1' ,
         'PORT': '5432' ,
     },
+    'blog': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'zt_blog_data',
+        'USER': 'comsoft',
+        'PASSWORD': 'Comsoft',
+        'HOST': '127.0.0.1' ,
+        'PORT': '5432' ,
+    },
     'shop': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'zt_shop_data',
@@ -136,9 +139,17 @@ DATABASES = {
         'HOST': '127.0.0.1' ,
         'PORT': '5432' ,
     },
-    'default': {
+    'app': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'zt_app_data',
+        'USER': 'comsoft',
+        'PASSWORD': 'Comsoft',
+        'HOST': '127.0.0.1' ,
+        'PORT': '5432' ,
+    },
+    'default':{
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'zt_default_data',
         'USER': 'comsoft',
         'PASSWORD': 'Comsoft',
         'HOST': '127.0.0.1' ,
@@ -150,7 +161,8 @@ DATABASE_ROUTERS = [
     'MyApp.routers.BlogRouter',
     'MyApp.routers.MatronomialRouter',
     'MyApp.routers.ShopRouter',
-    'MyApp.routers.AuthRouter',
+    'MyApp.routers.AppRouter',
+    'MyApp.routers.SchoolRouter',
     ]
 
 AUTH_PASSWORD_VALIDATORS = [

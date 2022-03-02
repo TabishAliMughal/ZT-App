@@ -1,0 +1,55 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'school:main' %}">School</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'school:all' %}">View</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'school:exam' %}">Exams</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>View All Exams</h5>
+                </div>
+                <div class="card-body">
+                    {% if request.user.is_authenticated %}
+                        <a class="btn btn-primary" href="{% url 'school:exam_form' %}">Add Another</a>
+                    {% endif %}
+                    <div class="table-responsive">
+                        <table  class="table table-hover">
+                        <thead class="text-center">
+                            <tr>
+                                <th>Name</th>
+                                <th>Class</th>
+                                <th>Subject</th>
+                                <th>Session</th>
+                                <th>Status</th>
+                                {% if request.user.is_authenticated %}
+                                    <th>Action</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        {% for i in list %}
+                        <tbody class="text-center">
+                            <tr>
+                                <td><a href="{% url 'school_exam:exam_questions' i.pk %}">{{ i.exam_number }}</a></td>
+                                <td>{{ i.class_name }}</td>
+                                <td>{{ i.subject }}</td>
+                                <td>{{ i.session }}</td>
+                                <td>{{ i.status }}</td>
+                                {% if request.user.is_authenticated %}
+                                    <td><a class="btn btn-primary" href="{% url 'school:exam_edit' i.pk %}">Edit</a><a href="{% url 'school:exam_close' i.pk %}" class="btn btn-primary" href="">{% if i.status == True %}Close{% else %}Open{% endif %}</a></td>
+                                {% endif %}
+                                </tr>
+                        </tbody>
+                        {% endfor %}
+                    </table>
+</div>
+                </div>
+
+{% endblock %}

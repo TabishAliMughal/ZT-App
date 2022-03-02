@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render , get_object_or_404 , redirect
 from .models import OrderItem , Order
 from .forms import OrderCreateForm , OrderItemsCreateForm
 from Shop.Customer.models import UserData
@@ -92,3 +92,11 @@ def ManageOrderCreateView(request,user):
             }
         return render(request,'orders/order/create.html',context)
 
+@login_required(login_url='main_login')
+@allowed_users(allowed_roles=['Creator'])
+def ManageDeliveryPersonCallView(request):
+    if request.method == 'POST':
+        data = request.POST
+        order = get_object_or_404(Order , pk = data.get('order'))
+        Order.objects.filter(pk = order.pk).update(status = 'DeliveryCalled')
+        return redirect('shop:shop_orders')

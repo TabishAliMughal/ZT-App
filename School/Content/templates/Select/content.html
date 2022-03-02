@@ -1,0 +1,74 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'school:main' %}">School</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Class</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Content</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Content</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table  class="table table-hover">
+                        <tbody class="text-center">
+                            <tr>
+                                <td class="text-center">Class : {{ content.class_name }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">Subject : {{ content.subject }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">Content Title : {{ content.title }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">Day : {{ content.day }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">{{ content.text }}</td>
+                            </tr>
+                            {% for i in videos %}
+                                <tr>
+                                    <td>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="card">
+                                                    <div class="video-div">
+                                                        <iframe class="video-frame" src="{{ i.url }}" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            {% for i in images %}
+                                <tr>
+                                    <td>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="card">
+                                                    <td><img width="50%" class="img" src="{% if i.image %}{{ i.image.url }}{% else %}{% static 'assets/images/noimg.png' %}{% endif %}"></td>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+</div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

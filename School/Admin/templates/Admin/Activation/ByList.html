@@ -1,0 +1,79 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'school:main' %}">School</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Admin</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Activate Students</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">                    
+                    <h5>Active And Deactive</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12 col-xl-6">
+                            
+                            <a class="btn btn-primary"  href="{% url 'school_admin:active_deactive_by_school' %}">Schools</a>
+                        </div>
+                        <div class="col-md-12 col-xl-6">
+                            <form method="POST">
+                                <div style="width: 60%;float: left;margin-right: 10px;">
+                                    <select class="form-control" name="school" required>
+                                        <option value="None">----------</option>
+                                        <option value="Digital-School">Digital-School</option>
+                                        {% for i in school %}
+                                        <option value="{{ i.pk }}">{{ i }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <button class="btn btn-primary">Search</button>
+                                {% csrf_token %}
+                            </form>
+                            
+                        </div>
+                    </div>
+                    <div>
+                    </div>
+                    <form method="POST">
+                        <div class="table-responsive">
+                        <table  class="table table-hover">
+                            <thead class="text-center">
+                                <tr class="row100">
+                                    <th>Name<br>Father</th>
+                                    <th>Class<br>Fees</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            {% for i in individuals %}
+                                <tbody class="text-center">
+                                    <tr class="row100">
+                                        <td hidden><input type="number" name="pk" value="{{ i.pk }}" /></td>
+                                        <td>{{ i.name }}<br>{{ i.father_name }}</td>
+                                        <td>{{ i.clas }}<br>{{ i.fees }}<br><br></td>
+                                        <td>
+                                            {% if i.active == True %}
+                                                <input type="checkbox" name="{{ i.pk }}" checked />
+                                            {% else %}
+                                                <input type="checkbox" name="{{ i.pk }}" />
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            {% endfor %}
+                        </table>
+</div>
+                        <input class="btn btn-primary" type="submit" value="Change All" />
+                        {% csrf_token %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

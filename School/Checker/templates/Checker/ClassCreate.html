@@ -1,0 +1,38 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'school:main' %}">School</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Checker</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Create</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Class</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Create Class</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <h3>Warning :</h3><h5>You Wont Be Able To Change This Class Later</h5>
+                        <div class="form-group">
+                            <label for="id_name">Name</label>
+                            <select class="form-control" name="subject" required="" id="id_clas">
+                                {% for i in form.subject %}
+                                    {{ i }}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button class="btn btn-primary">Create</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

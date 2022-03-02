@@ -1,7 +1,7 @@
 {% extends "MainPage.html" %}
 {% load static %}
 {% block title %}
-    Hello {{ request.user.username }}
+    Hello {{ request.user.first_name }}
 {% endblock %}
 {% block address %}
 <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
@@ -29,7 +29,7 @@
             </div>
             <div class="card">
                 <div class="card-header">
-                    <h5>{{ blog }} By <a href="{% url 'blog:user_blog_list' blog.user %}">More From This Bloger</a></h5>
+                    <h5>{{ blog }} <a href="{% url 'blog:user_blog_list' blog.user %}">More From This Bloger</a></h5>
                 </div>
                 <div class="card-body">
                     <div class="row">

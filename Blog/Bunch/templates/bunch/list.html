@@ -1,7 +1,7 @@
 {% extends "MainPage.html" %}
 {% load static %}
 {% block title %}
-    Hello {{ request.user.username }}
+    Hello {{ request.user.first_name }}
 {% endblock %}
 {% block address %}
 <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
@@ -46,12 +46,25 @@
                                             <div class="col-sm-12">
                                                 {% for v in i.post %}
                                                     <div class="card block-card">
-                                                        <div class="card-header">
+                                                        <a href="{% url 'post:post_detail' v.pk %}">
+                                                            <div class="row">
+                                                                <div class="col-md-12 col-xl-12">
+                                                                    <div class="col-9" style="width: 40%;float: left;">
+                                                                        <img style="width: -webkit-fill-available;" src="{{ v.image.url }}">
+
+                                                                    </div>
+                                                                    <div style="float: left;padding-left: 8px;width: 60%;">
+                                                                        <textarea style="border: none;background-color: transparent;width: 100%;">{{ v }}</textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        <!-- <div class="card-header">
                                                             <h5><a href="{% url 'post:post_detail' v.pk %}">{{ v.name }}</a></h5>
                                                         </div>
                                                         <div class="card-body">
                                                             <div class="table-responsive">
-                        <table  class="table table-hover">
+                                                                <table  class="table table-hover">
                                                                 <thead class="text-center"></thead>
                                                                 </thead>
                                                                 <tbody class="text-center">
@@ -59,18 +72,11 @@
                                                                         <td>Post Name</td>
                                                                         <td>{{ v.name }}</td>
                                                                     </tr>
-                                                                    <tr>
-                                                                        <td>Post Text</td>
-                                                                        <td>{{ v.description }}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Blog</td>
-                                                                        <td>{{ v.blog }}</td>
-                                                                    </tr>
+                                                                    <img style="width:80%;" src="{{ v.image.url }}">
                                                                 </tbody>
                                                             </table>
-</div>
-                                                        </div>
+                                                            </div>
+                                                        </div> -->
                                                     </div>
                                                 {% endfor %}
                                             </div>

@@ -18,7 +18,7 @@ from django.urls import path , include
 from Main import views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from MyApp import settings
-from MyApp.admin import blogsite , shopsite , matrinomialsite
+from MyApp.admin import blogsite , shopsite , matrinomialsite , schoolsite
 
 urlpatterns = [
     # Login Redirect
@@ -32,6 +32,7 @@ urlpatterns = [
     path('blogsite/', blogsite.urls),
     path('shopsite/', shopsite.urls),
     path('matrinomialsite/', matrinomialsite.urls),
+    path('schoolsite/', schoolsite.urls),
     path('creator/', include('Creator.urls', namespace='creator')),
     path('user/log/', include('Authentication.urls', namespace='auth')),
     # Shop Urls
@@ -46,7 +47,15 @@ urlpatterns = [
     path('blog/bunch/',include('Blog.Bunch.urls', namespace='bunch')),
     path('blog/post/',include('Blog.Post.urls', namespace='post')),
     # School Urls
-    path('school/', include('School.School.urls', namespace='school')),
+    path('school/', include('School.Content.urls', namespace='school')),
+    path('school/admin/', include('School.Admin.urls',namespace='school_admin')),
+    path('school/teacher/', include('School.Teacher.urls', namespace='school_teacher')),
+    path('school/exam/', include('School.Exam.urls', namespace='school_exam')),
+    path('school/checker/', include('School.Checker.urls', namespace='school_checker')),
+    path('school/result/', include('School.Result.urls', namespace='school_result')),
+    path('school/school/', include('School.RegSchool.urls', namespace='school_reg_school')),
+    path('school/indivisuals/', include('School.Indivisuals.urls', namespace='school_individuals')),
+    path('school/visitor/', include('School.Visitors.urls', namespace='school_visitors')),
     # Relationships Urls
     path('relationships/', include('Relationships.Info.urls', namespace='relationships')),
     path('candidate/', include('Relationships.Candidate.urls', namespace='candidate')),

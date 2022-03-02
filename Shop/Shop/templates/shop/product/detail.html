@@ -1,7 +1,7 @@
 {% extends "MainPage.html" %}
 {% load static %}
 {% block title %}
-    Hello {{ request.user.username }}
+    Hello {{ request.user.first_name }}
 {% endblock %}
 {% block address %}
     <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
@@ -121,6 +121,7 @@
                                                                     <br>
                                                                     <button class="btn btn-primary form-control">Add To Cart</button>
                                                                 </form>
+                                                            {% elif i.name == 'Individuals' %}
                                                             {% else %}
                                                                 <h3>Cant Create Order</h3>
                                                             {% endif %}

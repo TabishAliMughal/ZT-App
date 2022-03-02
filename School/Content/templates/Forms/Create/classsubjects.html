@@ -1,0 +1,47 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+<li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+<li class="breadcrumb-item"><a href="{% url 'school:main' %}">School</a></li>
+<li class="breadcrumb-item"><a href="{% url 'school:select_to_add' %}">Add</a></li>
+<li class="breadcrumb-item"><a href="javascript:">Class Subjects</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="text-center" style="font-family:sans-serif;">Add Class Subjects</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="form-group">
+                            <label for="id_name">Class</label>
+                            <select class="form-control" name="class_name" required="" id="id_class_name">
+                                {% for i in form.class_name %}
+                                    {{ i }}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_name">Subjects</label>
+                            <br>
+                            {% for i in sub %}
+                            <div class="form-control">
+                                {{ i }}
+                                <input type="checkbox" name="sub" value="{{ i.pk }}">
+                            </div>
+                            <br>
+                            {% endfor %}
+                        </div>
+                        <button class="btn btn-primary form-control" >Add</button>
+                        {% csrf_token %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}                

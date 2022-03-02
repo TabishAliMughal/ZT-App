@@ -21,7 +21,7 @@ def ManageShopAccountView(request):
     paid_orders = []
     cur_shop = ''
     for k in Shops.objects.all():
-        if int(k.user.pk) == int(request.user.pk):
+        if int(k.user) == int(request.user.pk):
             cur_shop = k.pk
     for i in Order.objects.all():
         for p in OrderItem.objects.all():
@@ -124,7 +124,7 @@ def ManageDeliveryAccountView(request):
     unpaid_tasks = []
     paid_tasks = []
     for k in DeliveryTasks.objects.all():
-        if int(k.person.user.pk) == int(request.user.pk):
+        if int(k.person.user) == int(request.user.pk):
             for i in Order.objects.all():
                 if int(k.order.pk) == int(i.pk):
                     if str(i.status) == 'Delivered':

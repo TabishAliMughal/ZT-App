@@ -1,0 +1,40 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h2 class="text-center" style="font-family:sans-serif;">Student Detail</h2><hr/>
+       <div class="table-responsive">
+                        <table  class="table table-hover">
+            <tbody class="text-center">
+                <tr>
+                    <th>Name</th>
+                    <th>Class</th>
+                    <th>Teacher</th>
+                    <th>Subject</th>
+                </tr>
+                {% for i in data %}
+                    <tr>
+                        <td>{{ i.name }}</td>
+                        <td>{{ i.class }}</td>
+                        <td>{{ i.teacher }}</td>
+                        <td>{{ i.subject }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+</div>
+        <h2 class="text-center" style="font-family:sans-serif;">Answer Sheets</h2><hr/>
+       <div class="table-responsive">
+                        <table  class="table table-hover">
+            <tbody class="text-center">
+                {% for i in ans %}
+                    <img src="{% static '' %}{{i}}" width="300px" /><a> </a>
+                {% endfor %}
+            </tbody>
+        </table>
+</div>
+    </div>
+{% endblock %}

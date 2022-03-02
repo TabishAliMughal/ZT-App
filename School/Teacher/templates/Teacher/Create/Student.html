@@ -1,0 +1,59 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'school:main' %}">School</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Teacher</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Class</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Student</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Add</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Add Student</h5>
+                </div>
+                <div class="card-body">
+                    {% if limit == 'Reached' %}
+                        <h1 class="text-center" style="font-family:sans-serif;">Your Limit Of Students Reached</h1>
+                    {% else %}
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <!-- <h2 class="text-center" style="font-family:sans-serif;">Adding My Student For Class {{ class.clas }} </h2><hr/> -->
+                            <div class="form-group">
+                                <label for="first_name">Name</label>
+                                <input class="form-control" type="text" name="name" maxlength="30" required="" id="id_name">
+                            </div>
+                                    
+                            <div class="form-group">
+                                <label for="first_name">Father</label>
+                                <input class="form-control" type="text" name="father_name" maxlength="30" required="" id="id_father_name">                                
+                            </div>
+                                    
+                            <div class="form-group">
+                                <label for="first_name">Contact</label>
+                                <input class="form-control" type="text" name="contact" maxlength="11" required="" id="id_contact">
+                            </div>
+                                    
+                            <div class="form-group">
+                                <label for="first_name">Address</label>
+                                <input class="form-control" type="text" name="address" maxlength="250" required="" id="id_address">
+                            </div>
+                                    
+                            <div class="form-group">
+                                <label for="first_name">Picture</label>
+                                <input class="form-control" type="file" name="picture" accept="image/*" id="id_picture">
+                            </div>
+                            <button class="btn btn-primary">Add</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

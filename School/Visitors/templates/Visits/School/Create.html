@@ -1,0 +1,80 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'school:main' %}">School</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Register As School</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Fill This Form To Register Your School</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="form-group">
+                            <label for="first_name">Your Name :</label>
+                            <input class="form-control" type="text" name="name" maxlength="50" required="" id="id_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="first_name">Your School Name :</label>
+                            <input class="form-control" type="text" name="school_name" maxlength="50" required="" id="id_school_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="first_name">Contact :</label>
+                            <input class="form-control" type="text" name="phone" maxlength="11" required="" id="id_phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="first_name">Email :</label>
+                            <input class="form-control" type="email" name="email" maxlength="254" id="id_email">
+                        </div>
+                        <div class="form-group">
+                            <label for="first_name">Status :</label>
+                            <input class="form-control" type="checkbox" name="seen">
+                        </div>
+                        <button class="btn btn-primary">Send Request</button>
+
+                        {% csrf_token %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Follow These Steps To Automate The Process</h5>
+                </div>
+                <div class="card-body">
+                    <ol>
+                        <li>Register Students @500 Rupees Per Month.</li>
+                        <li>Make A Class Wise List Of All Registered Students.</li>
+                        <li>Submit The Amount Of The Students X 300 Rupees At : 
+                            <ul>
+                                <li>Easypaisa Account = Zahid Ali Mughal(03123379978)</li>
+                                OR
+                                <li>Bank IBAN Number = PK73MEZN0001890101742064</li>
+                            </ul>
+                        </li>
+                        <li>Take A Picture Of The Receipt(Or Message) And Whatsapp It To 03123379978 With < The Class Wise List You Made ></li>
+                    </ol>
+                    <ul class="list-inline m-b-0" style="color: black;">
+                        <li class="list-inline-item">*Plese Double Check The List And Amount</li>
+                    </ul>
+                    <ul class="list-inline m-b-0" style="color: black;">
+                        <li class="list-inline-item">*The Amount Have To Be The Exect Amount Of All Students X 300</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="video-div">
+        <iframe src="https://www.youtube-nocookie.com/embed/IBRKNJdUnHs" class="video-frame" allowfullscreen></iframe>
+    </div>
+{% endblock %}

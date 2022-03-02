@@ -7,23 +7,23 @@ from .forms import CreateUserForm
 from django.contrib import messages
 
 def loginPage(request):
-		if request.user.is_authenticated:
-			logout(request)
-		if request.POST.get('path'):
-			path = request.POST.get('path')
-		else:
-			path = '/'
-		if request.method == 'POST':
-			username = request.POST.get('username')
-			password =request.POST.get('password')
-			user = authenticate(request, username=username, password=password)
-			if user is not None:
-				login(request, user)
-				return HttpResponseRedirect(path)
-			else:
-				return HttpResponseRedirect(path)
+	if request.user.is_authenticated:
+		logout(request)
+	if request.POST.get('path'):
+		path = request.POST.get('path')
+	else:
+		path = '/'
+	if request.method == 'POST':
+		username = request.POST.get('username')
+		password =request.POST.get('password')
+		user = authenticate(request, username=username, password=password)
+		if user is not None:
+			login(request, user)
+			return HttpResponseRedirect(path)
 		else:
 			return HttpResponseRedirect(path)
+	else:
+		return HttpResponseRedirect(path)
 
 def logoutUser(request):
 	logout(request)

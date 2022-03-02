@@ -94,6 +94,7 @@ def ManageBunchCreateView(request):
 @allowed_users(allowed_roles=['Creator'])
 def BunchAddPostsView(request):
     if request.method == 'POST':
+        bunch = get_object_or_404(Bunch,pk = (request.POST.get('bunch')))
         for i in BunchPost.objects.all():
             if int(i.bunch.pk) == int(request.POST.get('bunch')):
                 i.delete()
@@ -106,7 +107,7 @@ def BunchAddPostsView(request):
                     })
                     if form.is_valid:
                         form.save()
-    return redirect('bunch:bunch_list')
+    return redirect('bunch:bunch_list',bunch.blog.pk)
 
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Creator'])

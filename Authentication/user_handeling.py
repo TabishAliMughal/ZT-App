@@ -17,11 +17,10 @@ def allowed_users(allowed_roles=[]):
 		def wrapper_func(request, *args, **kwargs):
 			group = None
 			if request.user.groups.exists():
-				group = request.user.groups.all()[0].name
-			if group in allowed_roles:
-				return view_func(request, *args, **kwargs)
-			else:
-				return redirect('not_authorized')
+				for i in request.user.groups.all():
+					if str(i) in allowed_roles:
+						return view_func(request, *args, **kwargs)
+			return redirect('not_authorized')
 		return wrapper_func
 	return decorator
 

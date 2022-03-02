@@ -12,6 +12,7 @@ class Order(models.Model):
     status = models.CharField(max_length=250)
     price = models.IntegerField()
     delivery = models.IntegerField()
+    date = models.DateTimeField(auto_now_add=True)
     class Meta:
         ordering = ('-created',)
     def __str__(self):

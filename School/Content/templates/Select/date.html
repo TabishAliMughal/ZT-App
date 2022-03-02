@@ -1,0 +1,30 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'school:main' %}">School</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Start Class</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Select Date</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Select Date</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <input class="form-control" type="date" name="date"/>
+                        <br>
+                        <input class="btn btn-primary" type="submit" value="Next">
+                        {% csrf_token %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

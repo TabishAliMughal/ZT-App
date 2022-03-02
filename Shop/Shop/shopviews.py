@@ -75,7 +75,6 @@ def ManageShopsEditView(request,shop):
     lon = ''
     if request.method == 'POST':
         data = request.POST
-        print(data.get('address'))
         form = ManageShopCreateForm({
             'name' : data.get('name') ,
             'user' : data.get('user') ,
@@ -339,6 +338,7 @@ def ManageShopOrdersListView(request):
     context = {
         'orders': orders ,
         'user' : user ,
+        'shop' : shop ,
     }
     return render(request,'shop/shopkeeper/Orders/list.html',context)
 

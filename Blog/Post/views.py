@@ -69,7 +69,6 @@ def ManagePostDetailView(request,pk):
             v = v + 1
     comments = {'comment' : comment , 'total' : v}
     if int(len(post.text)) >= int('150'):
-        print(len(post.text))
         setattr(post,'stext',post.text[:150])
         setattr(post,'ltext',post.text[150:])
     context = {
@@ -103,7 +102,6 @@ def ManagePostCommentView(request,pk):
         'post' : post ,
         'comment' : request.POST.get('comment')
     })
-    print(form)
     form.save()
     return redirect('post:post_detail',post.pk)
 

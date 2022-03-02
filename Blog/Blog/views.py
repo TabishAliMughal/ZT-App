@@ -104,7 +104,6 @@ def ManageBlogCreateView(request):
         for i in Creator.objects.all():
             if int(get_object_or_404(User,pk= i.user.pk).pk) == int(request.user.pk):
                 cur_user = i
-                print(cur_user.pk)
         image = Image.open(request.FILES.get('image'))
         size = image.size
         image = image.convert('RGB')

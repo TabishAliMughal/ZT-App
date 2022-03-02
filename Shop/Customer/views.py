@@ -21,7 +21,7 @@ def ManagePreviousOrderView(request):
             for v in OrderItem.objects.all():
                 if str(i.pk) == str(v.order.pk):
                     items.append(v)
-            orders.append({'pk': i.pk , 'status' : i.status , 'items' : items })
+            orders.append({'pk': i.pk , 'order' : i , 'items' : items })
     context = {
         'user' : user,
         'orders': orders,

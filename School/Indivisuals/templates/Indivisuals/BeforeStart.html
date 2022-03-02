@@ -1,0 +1,20 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block content %}
+  <img src="{% static './Images/texture.jpg' %}" style="width:100%;">
+      <h2 style="color: darkorange;left: 25%;font-size: 50px;top: 20%;" class="text-center" style="font-family:sans-serif;">Digital School</h2>
+      <h3 class="text-center">Hello {{ individual }}</h3>
+        {% if clas == 'pre' %}
+            {% include 'Indivisuals/M-PTimeTable.html' %}
+        {% elif clas == 'primary' %}
+            {% include 'Indivisuals/1-8TimeTable.html' %}
+        {% elif clas == 'ninth' %}
+            {% include 'Indivisuals/9TimeTable.html' %}
+        {% elif clas == 'tenth' %}
+            {% include 'Indivisuals/10TimeTable.html' %}
+      {% endif %}
+      <h6 class="text-center">Your Classes Will Be Started From 6th Of July</h6>
+{% endblock %}

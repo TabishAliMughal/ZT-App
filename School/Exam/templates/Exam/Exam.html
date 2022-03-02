@@ -1,0 +1,49 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'school:main' %}">School</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Exam</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Questions</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Questions</h5>
+                </div>
+                <div class="card-body">
+                    <h5>Class = {{exam.class_name}} Session = {{exam.session}} Subject = {{exam.subject}}</h5>
+                    <a href="{% url 'school_exam:exam_print_questions' exam.pk %}" class="btn btn-primary">Print Paper</a><br><br>
+                    <div class="table-responsive">
+                        <table  class="table table-hover">
+                            <tbody class="text-center">
+                                {% for i in questions %}
+                                    {% if i.question == '' %}
+                                        <tr>
+                                            <td><img src="{{ i.file.url }}" style="width:100%;"></td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td>{{ i.question }}( {{ i.marks }} )</td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% for i in user %}
+                        {% if i.name == 'Individuals' %}
+                            <a href="{% url 'school_exam:exam_upload_pictures_1' exam.pk %}" class="btn btn-primary">Submit Answers</a>
+                            ( {{ answers }} ) Uploaded<br><br>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

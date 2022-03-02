@@ -1,0 +1,84 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'shop:product_list' %}">Shop</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'shop_delivery:delivery_person_data' %}">Rider</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'shop_delivery:delivery_person_tasks' %}">Tasks</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Detail</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Order Detail</h5>
+                </div>
+                <div class="card-body">    
+                    <div class="table-responsive">
+                        <table  class="table table-hover">
+                            <thead class="text-center">
+                                <tr>
+                                    <th>Order</th>
+                                    <th>Pick And Drop</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                <tr>
+                                    <td>{{ task.order }}</td>
+                                    <td>{{ task.pick_time }}<br>{{ task.drop_time }}</td>
+                                    <td>{{ total }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5>Order Pick And Drop</h5>
+                </div>
+                <div class="card-body">
+                    <iframe width="100%" height="500px" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyBgzluEvlveyfNKaigwEClXvhSaUyTmLLI&origin={{ task_from.lat }}%2c{{ task_from.lon }}&destination={{ task_to.lat }}%2c{{ task_to.lon }}" allowfullscreen></iframe>
+                    <br>
+                    <br>
+                    <br>
+                    <a class="btn btn-primary form-control" href="https://www.google.com/maps/dir/?api=1&origin={{ task_from.lat }}%2c{{ task_from.lon }}&destination={{ task_to.lat }}%2c{{ task_to.lon }}&travelmode=driving">Open Google Map</a>
+                </div>
+            </div>
+            {% if task.order.status == 'Delivered' %}
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Delivered</h5>
+                    </div>
+                    <div class="card-body">
+                        {% for i in proof %}
+                            <img src="{{ i }}" />
+                        {% endfor %}
+                    </div>
+                </div>
+            {% elif task.order.status == 'OrderPickProcessing' %}
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Pick</h5>
+                    </div>
+                    <div class="card-body">
+                        <a class="btn btn-primary form-control" href="{% url 'shop_delivery:delivery_person_pick_order' task.pk %}">Pick Order</a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Deliver</h5>
+                    </div>
+                    <div class="card-body">
+                        <a class="btn btn-primary form-control" href="{% url 'shop_delivery:delivery_person_task_complete' task.pk %}">Add Delivery Proof</a>
+                    </div>
+                </div>
+            {% endif %}
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+<li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+<li class="breadcrumb-item"><a href="{% url 'school:main' %}">School</a></li>
+<li class="breadcrumb-item"><a href="javascript:">Add</a></li>
+<li class="breadcrumb-item"><a href="javascript:">Subject</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="text-center" style="font-family:sans-serif;">Add Subject</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="form-group">
+                            <label for="id_name">Subject Name</label>
+                            <input class="form-control" type="text" name="subject_name" maxlength="200" required="" id="id_subject_name" value="{{ form.subject_name.value }}">
+                        </div>
+                        <button class="btn btn-primary form-control" >Add</button>
+                        {% csrf_token %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
