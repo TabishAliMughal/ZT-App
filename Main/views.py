@@ -5,6 +5,7 @@ from django.contrib.auth.models import Group
 from Creator.models import Creator
 from School.Indivisuals.models import Indivisuals
 from Shop.Shop.models import Shops
+from django.contrib.auth.models import User
 
 def ManageAuth(request):
     group = Group.objects.get(name='Public')
@@ -66,3 +67,20 @@ def PageNotFoundView(request,exception=None):
         'user' : user ,
     }
     return render(request,'Includes/404.html',context)
+
+def ManageUserProfileView(request):
+    user = request.user.groups.values('name')
+    if request.user.is_authenticated:
+        cur_user = get_object_or_404(User , pk = request.user.pk)
+    context = {
+        'user' : user ,
+        'cur_user' : cur_user ,
+    }
+    return render(request,'Profile.html',context)
+
+def ManageAboutUsView(request):
+    user = request.user.groups.values('name')
+    context = {
+        'user' : user ,
+    }
+    return render(request,'AboutUs.html',context)

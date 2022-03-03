@@ -12,9 +12,9 @@ class ReactTypes(models.Model):
 
 class Post(models.Model):
     name = models.CharField(max_length=50)
-    description = models.CharField(max_length=50)
-    text = models.CharField(max_length=5000)
-    image = models.FileField(blank=True,null=True,upload_to='blogs/post/')
+    description = models.CharField(max_length=500,blank=True,null=True)
+    text = models.CharField(max_length=50000,blank=True,null=True)
+    image = models.FileField(upload_to='blogs/post/',blank=True,null=True)
     video = models.URLField(blank=True,null=True)
     sound = models.FileField(blank=True,null=True,upload_to='blogs/post/')
     blog = models.ForeignKey(Blog , on_delete=models.CASCADE)

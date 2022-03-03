@@ -1,4 +1,6 @@
+import datetime
 from django.http.response import HttpResponseRedirect
+from django.utils import timezone
 from Blog.Blog.models import Blog
 from django.shortcuts import get_object_or_404, redirect, render
 from Blog.Bunch.models import Bunch, BunchPost
@@ -222,4 +224,21 @@ def ManagePostDeleteView(request,pk):
         'blog' : blog ,
     }
     return render(request,'post/deleted.html',context)
+
+from MyApp import automatic_tasks
+@login_required(login_url='main_login')
+@allowed_users(allowed_roles=['Admin'])
+def ManageBulkPostCreateView(request,pk):
+    user = request.user.groups.values('name')
+    blog = get_object_or_404(Blog,pk = pk)
+    if request.method == 'POST':
+        automatic_tasks.savePosts(request.POST,blog.pk)
+        return redirect('blog_post:post_list_by_blog',blog.pk)
+    else:
+        context = {
+            'user' : user ,
+            'blog' : blog ,
+        }
+        return render(request,'post/BulkCreate.html',context)
+
 

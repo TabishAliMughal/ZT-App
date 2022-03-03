@@ -11,6 +11,7 @@ urlpatterns = [
     path('comment/<pk>', views.ManagePostCommentView, name='post_comment'),
     path('detail/<pk>', views.ManagePostDetailView, name='post_detail'),
     path('post/create/<pk>', views.ManagePostCreateView, name='post_create'),
+    path('post/create/bulk/<pk>', views.ManageBulkPostCreateView, name='bulk_post_create'),
     path('post/edit/<pk>', views.ManagePostEditView, name='post_edit'),
     path('post/delete/<pk>', views.ManagePostDeleteView, name='post_delete'),
 ]

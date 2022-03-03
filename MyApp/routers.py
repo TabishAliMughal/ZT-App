@@ -1,5 +1,5 @@
 class AppRouter:
-    route_app_labels = {'admin','auth','Authentication','Main','Creator','social_django','contenttypes','sessions','messages','staticfiles','storages'}
+    route_app_labels = {'admin','auth','Authentication','Main','Creator','social_django','contenttypes','sessions','messages','staticfiles','storages','background_task'}
     def db_for_read(self, model, **hints):
         if model._meta.app_label in self.route_app_labels:
             return 'app'

@@ -4,7 +4,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = 'dd^d35%b(x!ee+rnaewa_(l9#++ke@uh^gmwu6=eyt30ft^*jv'
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['localhost','www.localhost.com','zandt.pk','www.zandt.pk','zandt.pk','127.0.0.1']
 
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'geocoder',
     'storages',
     'import_export',
+    'background_task',
 ]
 
 SOCIAL_AUTH_FACEBOOK_KEY = '154485483318786' # Facebook App ID
@@ -187,7 +188,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Karachi'
 
 USE_I18N = True
 
@@ -202,6 +203,7 @@ AWS_S3_CUSTOM_DOMAIN = '%s.s3.ap-south-1.amazonaws.com' % AWS_STORAGE_BUCKET_NAM
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
+# STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
@@ -210,6 +212,7 @@ STATICFILES_DIRS = [
 AWS_LOCATION = 'static'
 
 STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+
 
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
@@ -237,7 +240,6 @@ EMAIL_USE_TLS = True
 
 DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
-SECURE_SSL_REDIRECT = True
+# SECURE_SSL_REDIRECT = True
 
 CART_SESSION_ID = 'cart'
-
