@@ -26,7 +26,8 @@ def savePosts(s,t):
             response = api_request.execute()
             playlist_items.append(response["items"])
             api_request = youtube.playlistItems().list_next(api_request, response)
-        video_data = []
+        # video_data = []
+        id = int('1')
         for i in playlist_items:
             for v in i:
                 title = v.get('snippet').get("title")
@@ -40,18 +41,18 @@ def savePosts(s,t):
                 img.save(img_io, format='JPEG', quality=100)
                 img_content = ContentFile(img_io.getvalue(),"img.jpg" )
                 url = (f'https://www.youtube.com/watch?v={v["snippet"]["resourceId"]["videoId"]}&list={playlist_id}&t=0s')
-                video_data.append({"text" : title ,"description" : description ,"image" : img_content ,"url" : url})
-        for i in video_data:
-            form = ManagePostCreateForm({
-                'name' : str("{} #{}".format(s.get("name"),str(video_data.index(i)+1))) ,
-                'description' : i.get("text") ,
-                'text' : i.get("description") ,
-                'video' : i.get("url") ,
-                'blog' : t ,
-            },{
-                'image' : i.get("image") ,
-            })
-            form.save()
+                # video_data.append({"text" : title ,"description" : description ,"image" : img_content ,"url" : url})
+                form = ManagePostCreateForm({
+                    'name' : str("{} #{}".format(s.get("name"),str(id))) ,
+                    'description' : title ,
+                    'text' : description ,
+                    'video' : url ,
+                    'blog' : t ,
+                },{
+                    'image' : img_content ,
+                })
+                form.save()
+                id = int(id)+int('1')
     except:
         pass
 
