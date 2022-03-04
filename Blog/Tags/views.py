@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from Authentication.user_handeling import allowed_users
 from .models import Tags , BlogTags , PostTags
 from .forms import ManageTagsCreateForm , ManagePostTagsCreateForm , ManageBlogTagsCreateForm
+from Creator.models import Creator
 
 
 @login_required(login_url='main_login')
@@ -42,7 +43,7 @@ def ManagePostAddTagsView(request,pk):
             i.delete()
         for i in request.POST.getlist('tags'):
             try:
-                tag = get_object_or_404(Tags , name = str(i))
+                tag = get_object_or_404(Tags , name = str(i.replace("#","")))
             except:
                 tag = ManageTagsCreateForm({'name' : i.replace(' ','_').replace('#','')}).save()
             PostTags.objects.update_or_create(post = post , tag = tag)
@@ -70,7 +71,13 @@ def ManageTagDetailView(request,pk):
     user = request.user.groups.values('name')
     tag = get_object_or_404(Tags , pk = pk)
     blogs = BlogTags.objects.all().filter(tag = tag)
+    for i in blogs:
+        creator = get_object_or_404(Creator , pk = i.blog.user)
+        i.creator = creator
     posts = PostTags.objects.all().filter(tag = tag)
+    # for i in posts:
+    #     creator = get_object_or_404(Creator , pk = i.post.blog.user)
+    #     i.creator = creator
     context = {
         'user' : user ,
         'tag' : tag ,

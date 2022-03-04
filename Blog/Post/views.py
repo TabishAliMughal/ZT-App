@@ -1,4 +1,3 @@
-import datetime
 from django.http.response import HttpResponseRedirect
 from django.utils import timezone
 from Blog.Blog.models import Blog
@@ -13,11 +12,13 @@ from PIL import Image
 from django.core.files.base import ContentFile
 from django.contrib.auth.models import User
 from Blog.Tags.models import BlogTags, PostTags
+from django.db.models import DateTimeField
+from django.db.models.functions import Trunc
 
-def ManagePostListView(request,blog=None,bunch=None):
+def ManagePostListView(request,blog=None,bunch=None,post=None):
     user = request.user.groups.values('name')
     posts = []
-    post = []
+    my_post = []
     my_blog = 'None'
     bunches = []
     my_bunch = 'None'
@@ -25,24 +26,29 @@ def ManagePostListView(request,blog=None,bunch=None):
     my_tags = 'None'
     if blog:
         my_blog = get_object_or_404(Blog , pk = blog)
-        for i in Post.objects.all().filter(blog = my_blog):
-            post.append(i)
+        for i in Post.objects.all().order_by('time').order_by('time').filter(blog = my_blog):
+            my_post.append(i)
         for i in Bunch.objects.all().filter(blog = my_blog):
             bunches.append(i)
     if bunch:
         my_bunch = get_object_or_404(Bunch , pk = bunch)
         my_blog = get_object_or_404(Blog , pk = my_bunch.blog.pk)
-        for i in BunchPost.objects.all().filter(bunch = my_bunch):
-            post.append(i.post)
+        for i in BunchPost.objects.all().order_by('serial').filter(bunch = my_bunch):
+            if str(i.post.pk) == str(post):
+                i.post.selected = 'True'
+            else:
+                i.post.selected = 'False'
+            my_post.append(i.post)
         for i in Bunch.objects.all().filter(blog = my_blog.pk):
             bunches.append(i)
     if not blog and not bunch:
-        for i in Post.objects.all():
-            post.append(i)
+        for i in Post.objects.all().order_by('time'):
+            my_post.append(i)
     if my_blog:
         for i in BlogTags.objects.all().filter(blog = my_blog):
             tags.append(i)
-    for l in post:
+    time = []
+    for l in my_post:
         reacts = []
         for k in ReactTypes.objects.all():
             v = int('0')
@@ -92,12 +98,14 @@ def ManagePostDetailView(request,pk):
     if int(len(post.text)) >= int('150'):
         setattr(post,'stext',post.text[:150])
         setattr(post,'ltext',post.text[150:])
+    bunches = [i.bunch for i in BunchPost.objects.all().filter(post = post)]
     tags = PostTags.objects.all().filter(post = post)
     context = {
         'react' : react ,
         'user' : user ,
         'post' : post ,
         'tags' : tags ,
+        'bunches' : bunches ,
         'comments' : comments ,
     }
     return render(request,'post/detail.html',context)

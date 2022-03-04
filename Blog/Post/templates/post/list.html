@@ -19,7 +19,7 @@
                                 <a class="btn btn-primary" href="{% url 'blog_post:post_create' my_blog.pk %}">Create Post</a>
                                 <a class="btn btn-primary" href="{% url 'blog_blog:blog_edit' my_blog.pk %}">Edit Blog</a>
                                 <a class="btn btn-primary" href="{% url 'blog_tags:blog_tags' my_blog.pk %}">Manage Tags</a>
-                                <a class="btn btn-primary" onclick="var result = confirm('Want to delete?');if (result) {window.location = '{% url 'blog_blog:blog_delete' my_blog.pk %}';}">Delete Blog</a>                                
+                                <a class="btn btn-primary" href="javascript:" onclick="var result = confirm('Want to delete?');if (result) {window.location = '{% url 'blog_blog:blog_delete' my_blog.pk %}';}">Delete Blog</a>                                
                                 
                                 <div class="btn-group mb-2 mr-2">
                                     <a type="button" class="btn btn-info" style="color: white;" href="{% url 'blog_bunch:blog_bunch_list' my_blog.pk %}">Bunches</a>
@@ -66,9 +66,9 @@
                     <div class="row">
                         {% for i in posts %}
                             <div class="col-md-12 col-xl-4">
-                                <div class="card block-card">
+                                <div class="card block-card" style="{% if i.post.selected == 'True' %}background-color:#7ac1ff;color:black;{% endif %}">
                                     <div class="card-header">
-                                        <h5><a href="{% url 'blog_post:post_detail' i.post.pk %}">{{ i.post.name }}</a></h5>
+                                        <h5><a style="{% if i.post.selected == 'True' %}color:black;{% endif %}" href="{% url 'blog_post:post_detail' i.post.pk %}">{{ i.post.name }}</a></h5>
                                     </div>
                                     <div class="card-body">
                                         <div class="text-center">{{ i.post.description }}</div>
@@ -86,11 +86,10 @@
                                         <div style="width: 100%;">
                                             {% for p in i.reacts %}
                                                 <div style="width: {{ i.width }}%;float: left;">
-                                                    <i class="feather {{ p.type.icon }}"> {{ p.total }}</i>
+                                                    <i class="feather {{ p.type.icon }}">{{ p.total }}</i>
                                                 </div>
                                             {% endfor %}
                                         </div>
-                                        <br>
                                         <br>
                                         <br>
                                         {% if request.user.is_authenticated %}
@@ -102,7 +101,8 @@
                                                 {% endif %}
                                             {% endfor %}
                                         {% endif %}
-
+                                        <br>
+                                        <a style="font-size: 10px;color: #000000;">Posted On {{ i.post.time }}</a>
                                     </div>
                                 </div>
                             </div>

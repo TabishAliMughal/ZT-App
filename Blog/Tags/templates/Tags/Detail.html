@@ -24,18 +24,19 @@
                                     <div class="card-header">
                                         <h5><a href="{% url 'blog_post:post_list_by_blog' i.blog.pk %}">{{ i.blog.name }}</a></h5>
                                     </div>
-                                    <div class="text-center">
-                                        <a href="{% url 'blog_post:post_list_by_blog' i.blog.pk %}">
-                                            {% if i.blog.image.url %}
-                                                <div><img class="col-9" src="{{ i.blog.image.url }}"></div>
-                                            {% else %}
-                                                    <div><img class="col-9" src="{% static 'assets/images/noimg.png' %}"></div>
-                                            {% endif %}
-                                        </a>
-                                        <br>
-                                        {{ i.blog.type }}
-                                        <br>
-                                        <br>
+                                    <div class="card-body">
+                                        <div class="text-center">
+                                            <a href="{% url 'blog_post:post_list_by_blog' i.blog.pk %}">
+                                                {% if i.blog.image.url %}
+                                                    <div><img class="col-9" src="{{ i.blog.image.url }}"></div>
+                                                {% else %}
+                                                        <div><img class="col-9" src="{% static 'assets/images/noimg.png' %}"></div>
+                                                {% endif %}
+                                            </a>
+                                            <br>
+                                            {{ i.blog.type }}
+                                        </div>
+                                        <a style="font-size: 10px;color: #000000;padding-left: 5px;padding-bottom: 5px;">Posted By {{ i.creator.user.first_name }} On {{ i.blog.time }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -67,6 +68,7 @@
                                                 {% endif %}
                                             </a>
                                         </div>
+                                        <a style="font-size: 10px;color: #000000;padding-left: 5px;padding-bottom: 5px;">Posted By {{ i.creator.user.first_name }} On {{ i.post.time }}</a>
                                         <br>
                                     </div>
                                 </div>

@@ -7,6 +7,7 @@ urlpatterns = [
     path('list/', views.ManagePostListView, name='post_list'),
     path('list/blog/<blog>', views.ManagePostListView, name='post_list_by_blog'),
     path('list/bunch/<bunch>', views.ManagePostListView, name='post_list_by_bunch'),
+    path('list/bunch/<bunch>/<post>', views.ManagePostListView, name='post_list_by_bunch_post'),
     path('react/<pk>', views.ManagePostReactView, name='post_react'),
     path('comment/<pk>', views.ManagePostCommentView, name='post_comment'),
     path('detail/<pk>', views.ManagePostDetailView, name='post_detail'),

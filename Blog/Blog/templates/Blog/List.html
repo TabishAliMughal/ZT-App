@@ -19,33 +19,36 @@
                                     <div class="col-6 col-xl-4">
                                         <div class="card block-card">
                                             <div class="card-header">
-                                                <h5><a href="{% url 'blog_post:post_list_by_blog' i.blog.pk %}">{{ i.blog.name }}</a></h5>
+                                                <h5><a style="font-size: 14px;" href="{% url 'blog_post:post_list_by_blog' i.blog.pk %}">{{ i.blog.name }}</a></h5>
                                             </div>
                                             <div class="text-center">
                                                 <a href="{% url 'blog_post:post_list_by_blog' i.blog.pk %}">
                                                     {% if i.blog.image.url %}
-                                                        <div><img class="col-9" src="{{ i.blog.image.url }}"></div>
+                                                        <div><img class="col-9" style="padding-left: 0;padding-right: 0;" src="{{ i.blog.image.url }}"></div>
                                                     {% else %}
-                                                            <div><img class="col-9" src="{% static 'assets/images/noimg.png' %}"></div>
+                                                        <div><img class="col-9" style="padding-left: 0;padding-right: 0;" src="{% static 'assets/images/noimg.png' %}"></div>
                                                     {% endif %}
                                                 </a>
                                                 <br>
                                                 <div style="width: 100%;">
                                                     <div style="width: 33.333%;float: left;">
-                                                        {% for k in i.icons %}
-                                                            <i class="feather {{ k.type }}"></i>
-                                                        {% endfor %}
-                                                        {{ i.react }}
+                                                        <i class="feather icon-thumbs-up"></i>
+                                                        <br>
+                                                        <a style="font-size: 14px;">{{ i.react }}</a>
                                                     </div>
                                                     <div style="width: 33.333%;float: left;">
                                                         <i class="feather icon-message-square"></i>
-                                                        {{ i.comment }}
+                                                        <br>
+                                                        <a style="font-size: 14px;">{{ i.comment }}</a>
                                                     </div>
                                                     <div style="width: 33.333%;float: left;">
                                                         <i class="feather icon-edit"></i>
-                                                        {{ i.posts }}
+                                                        <br>
+                                                        <a style="font-size: 14px;">{{ i.posts }}</a>
                                                     </div>
                                                 </div>
+                                                <br>
+                                                <a style="font-size: 10px;color: #000000;">Posted On {{ i.blog.time }}</a>
                                                 <br>
                                             </div>
                                         </div>

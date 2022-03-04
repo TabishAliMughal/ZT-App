@@ -17,13 +17,13 @@ def ManageBlogListView(request):
     blogs = []
     for k in Type.objects.all():
         blog_list = []
-        for i in Blog.objects.all():
+        for i in Blog.objects.all().order_by('time'):
             if str(i.type.pk) == str(k.pk):
                 reacts = int('0')
                 types = []
                 posts = int('0')
                 comment = int('0')
-                for v in Post.objects.all():
+                for v in Post.objects.all().order_by('time'):
                     if int(i.pk) == int(v.blog.pk):
                         posts = posts + 1
                         post_reacts = []
@@ -35,14 +35,7 @@ def ManageBlogListView(request):
                         for l in PostComment.objects.all():
                             if int(v.pk) == int(l.post.pk):
                                 comment = comment + 1
-                flow = []
-                for d in ReactTypes.objects.all():
-                    if int(types.count(d)) != int('0'):
-                        flow.append({"type":d.icon,"count":int(types.count(d))})
-                flow.sort(key=lambda x: x.get("count"))
-                icons = flow[::-1]
-                abc = ''
-                blog_list.append({'blog' : i , 'posts' : posts , 'react' : reacts , 'comment' : comment,'icons':icons[:2]})
+                blog_list.append({'blog' : i , 'posts' : posts , 'react' : reacts , 'comment' : comment})
         blogs.append({"type" : k , "blogs" : blog_list})
     context = {
         'user' : user ,
@@ -57,12 +50,12 @@ def ManageUserBlogListView(request,pk=None):
         blog_user = int(get_object_or_404(Creator,pk = pk).pk)
     else:
         blog_user = int(get_object_or_404(Creator,user = request.user.pk).pk)
-    for i in Blog.objects.all():
+    for i in Blog.objects.all().order_by('time'):
         if int(i.user) == blog_user:
             reacts = []
             posts = int('0')
             comment = int('0')
-            for v in Post.objects.all():
+            for v in Post.objects.all().order_by('time'):
                 if int(i.pk) == int(v.blog.pk):
                     posts = posts + 1
                     post_reacts = []

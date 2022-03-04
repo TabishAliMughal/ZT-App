@@ -23,7 +23,7 @@
                 </div>
                 <div class="card-body">                    
                     <div class="row">
-                        <div class="col-sm-12 col-xl-10">
+                        <div class="col-sm-12 col-xl-8">
                             {% if tags %}
                                 <div>
                                     {% for i in tags %}
@@ -35,7 +35,15 @@
                             <br>
                             <br>
                         </div>
-                        <div class="col-sm-12 col-xl-2">
+                        <div class="col-sm-12 col-xl-4 text-right">
+                            <div class="btn-group mb-2 mr-2">
+                                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Bunches Included</button>
+                                <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 43px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                    {% for i in bunches %}
+                                        <a class="dropdown-item" href="{% url 'blog_post:post_list_by_bunch_post' i.pk post.pk %}">{{ i.name }}</a>
+                                    {% endfor %}
+                                </div>
+                            </div>
                             <a class="btn btn-primary" href="{% url 'blog_post:post_list_by_blog' post.blog.pk %}">Go To Blog</a>
                         </div>
                     </div>

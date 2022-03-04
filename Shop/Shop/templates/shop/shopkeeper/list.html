@@ -8,20 +8,20 @@
     <li class="breadcrumb-item"><a href="javascript:">Shop</a></li>
 {% endblock %}
 {% block content %}
-{% if shop.active == False %}
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5>You Are Not Varified By Admins Yet !</h5>
-                </div>
-                <div class="card-body">
-                    <h3>Your Products Will Not Be Displayed Unless Admins Verify You</h3>
+    {% if shop.active == False %}
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>You Are Not Varified By Admins Yet !</h5>
+                    </div>
+                    <div class="card-body">
+                        <h3>Your Products Will Not Be Displayed Unless Admins Verify You</h3>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-{% endif %}
+    {% endif %}
     <div>
     <div class="row">
         <div class="col-sm-12">
@@ -42,49 +42,53 @@
                         <h3>All Products From {{ shop }}</h3>
                     {% endif %}
                     <div class="table-responsive">
-                        <table  class="table">
-                        <thead class="text-center">
-                            <tr>
-                                <th>Image</th>
-                                <th>Name</th>
-                                {% if request.user.is_authenticated %}
-                                    {% if user %}
-                                        {% for i in user %}
-                                            {% if i.name == "Creator" %}
-                                                <th>Action</th>
-                                            {% endif %}
-                                        {% endfor %}
+                        <table class="table">
+                            <thead class="text-center">
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Name</th>
+                                    {% if request.user.is_authenticated %}
+                                        {% if user %}
+                                            {% for i in user %}
+                                                {% if i.name == "Creator" %}
+                                                    <th>Action</th>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
                                     {% endif %}
-                                {% endif %}
-                            </tr>
-                        </thead>
-                        <tbody class="text-center">
-                        {% for i in products %}
-                            <tr>
-                                <td width="15%" height="10%">
-                                    <img width="100%" src="{% if i.image %}{% for v in i.image %}{{ v }}{% endfor %}{% else %}{% static 'assets/images/noimg.png' %}{% endif %}">
-                                </td>
-                                <td style="max-width: 35%;">
-                                    <textarea style="width: 95%;border: none;" readonly>{{ i.product.name }}</textarea>
-                                </td>
-                                {% if request.user.is_authenticated %}
-                                    {% if user %}
-                                        {% for v in user %}
-                                            {% if v.name == "Creator" %}
-                                                <td>
-                                                    <a class="btn btn-primary" href="{% url 'shop:shop_product_edit' i.product.pk %}"> Edit </a>
-                                                    <br>
-                                                    <a class="btn btn-primary" href="{% url 'shop:shop_product_sold' i.product.pk %}">Sold</a>
-                                                </td>
-                                            {% endif %}
-                                        {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                            {% for i in products %}
+                                <tr>
+                                    <td width="15%" height="10%" style="padding: 1.05rem 0rem;">
+                                        <img width="100%" src="{% if i.image %}{% for v in i.image %}{{ v.image.url }}{% endfor %}{% else %}{% static 'assets/images/noimg.png' %}{% endif %}">
+                                    </td>
+                                    <td style="max-width: 35%;padding: 1.05rem 0rem;">
+                                        <textarea style="width: 100%;font-size: 14px;border: none;height: 100px;" readonly>{{ i.product.name }}</textarea>                        
+                                    </td>
+                                    {% if request.user.is_authenticated %}
+                                        {% if user %}
+                                            {% for v in user %}
+                                                {% if v.name == "Creator" %}
+                                                    <td style="padding: 1.05rem 0rem;">
+                                                        <a class="btn btn-primary" href="{% url 'shop:shop_product_edit' i.product.pk %}"> Edit </a>
+                                                        <br>
+                                                        {% if i.product.available == True %}
+                                                            <a class="btn btn-primary" href="{% url 'shop:shop_product_sold' i.product.pk %}">Sold</a>
+                                                        {% else %}
+                                                            <a class="btn btn-danger" href="javascript:">Sold</a>
+                                                        {% endif %}
+                                                    </td>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
                                     {% endif %}
-                                {% endif %}
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-</div>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

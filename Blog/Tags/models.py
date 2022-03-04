@@ -4,7 +4,7 @@ from Blog.Post.models import Post
 
 
 class Tags(models.Model):
-    name = models.CharField(max_length=25)
+    name = models.CharField(max_length=25,unique=True)
     def __str__(self):
         return self.name
     class Meta:

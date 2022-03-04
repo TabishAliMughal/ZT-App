@@ -115,7 +115,7 @@ def ManageShopProductListView(request,shop=None):
             images = []
             for v in ProductImages.objects.all():
                 if int(i.pk) == int(v.product.pk):
-                    images.append(v.image.url)
+                    images.append(v)
                     break
             final_products.append({'product': i , 'image' : images})
         context = {

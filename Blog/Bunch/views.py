@@ -17,18 +17,27 @@ def ManageBunchListView(request,blog=None):
     bunch = []
     l = int('0')
     if blog :
-        blog = Blog.objects.all().filter(pk = blog)
+        blog = Blog.objects.all().order_by('time').filter(pk = blog)
     else:
-        blog = Blog.objects.all()
+        blog = Blog.objects.all().order_by('time')
     for i in Bunch.objects.all():
         for v in blog:
             if int(i.blog.pk) == int(v.pk):
                 posts = []
-                for k in BunchPost.objects.all():
+                for k in BunchPost.objects.all().order_by('serial'):
                     if int(k.bunch.pk) == int(i.pk):
                         posts.append(k.post)
                 bunch.append({'number' : l ,'bunch' : i , 'post' : posts})
                 l = l + 1
+    context = {
+        'user' : user ,
+        'bunch' : bunch ,
+    }
+    return render(request,'bunch/list.html',context)
+
+def ManageBunchNextPostView(request,bunch):
+    user = request.user.groups.values('name')
+    bunch = get_object_or_404(Bunch , pk = bunch)
     context = {
         'user' : user ,
         'bunch' : bunch ,
@@ -43,13 +52,13 @@ def ManageBunchCreateView(request):
         if not request.POST.get('blog'):
             bunch = get_object_or_404(Bunch,name = request.POST.get('name'))
             blog = get_object_or_404(Blog,pk = bunch.blog.pk)
-            posts = Post.objects.all().filter(blog = blog)
+            posts = Post.objects.all().order_by('time').filter(blog = blog)
             posts1 = []
             for i in posts:
                 posts1.append(i)
             sel_posts = []
             for i in posts :
-                for k in BunchPost.objects.all():
+                for k in BunchPost.objects.all().order_by('serial'):
                     if str(bunch.pk) == str(k.bunch.pk):
                         if k.post.pk == i.pk:
                             sel_posts.append(i)
@@ -69,7 +78,7 @@ def ManageBunchCreateView(request):
         bunch = form.save()
         bunch = get_object_or_404(Bunch,name = request.POST.get('name'))
         blog = get_object_or_404(Blog,pk = bunch.blog.pk)
-        posts = Post.objects.all().filter(blog = blog)
+        posts = Post.objects.all().order_by('time').filter(blog = blog)
         context = {
             'user' : user ,
             'bunch' : bunch ,
@@ -79,7 +88,7 @@ def ManageBunchCreateView(request):
     else:
         form = ManageBunchCreateForm()
         blog = []
-        for i in Blog.objects.all():
+        for i in Blog.objects.all().order_by('time'):
             if int(i.user) == int(get_object_or_404(Creator,user = request.user.pk).pk):
                 blog.append(i)
         context = {
@@ -94,25 +103,28 @@ def ManageBunchCreateView(request):
 def BunchAddPostsView(request):
     if request.method == 'POST':
         bunch = get_object_or_404(Bunch,pk = (request.POST.get('bunch')))
-        for i in BunchPost.objects.all():
+        for i in BunchPost.objects.all().order_by('serial'):
             if int(i.bunch.pk) == int(request.POST.get('bunch')):
                 i.delete()
+        p = int('0')
         for v in request.POST.getlist('posts'):
-            for i in Post.objects.all():
+            for i in Post.objects.all().order_by('time'):
                 if int(i.pk) == int(v):
                     form = ManageBunchPostCreateForm({
                         'bunch' : request.POST.get('bunch') ,
                         'post' : i ,
+                        'serial' : p ,
                     })
                     if form.is_valid:
                         form.save()
-    return redirect('blog_bunch:bunch_list',bunch.blog.pk)
+                        p = int(p)+int('1')
+    return redirect('blog_bunch:blog_bunch_list',bunch.blog.pk)
 
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Creator'])
-def ManageBunchEditView(request,pk):
+def ManageBunchEditView(request,bunch):
     user = request.user.groups.values('name')
-    bunch = get_object_or_404(Bunch , pk = pk)
+    bunch = get_object_or_404(Bunch , pk = bunch)
     if request.method == 'POST':
         form = ManageBunchCreateForm({
             'name' : request.POST.get('name') ,
@@ -135,9 +147,9 @@ def ManageBunchEditView(request,pk):
 
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Creator'])
-def ManageBunchDeleteView(request,pk):
+def ManageBunchDeleteView(request,bunch):
     user = request.user.groups.values('name')
-    bunch = get_object_or_404(Bunch,pk = pk)
+    bunch = get_object_or_404(Bunch,pk = bunch)
     bunch.delete()
     context = {
         'user' : user ,
