@@ -98,7 +98,7 @@
                                                 {% if k.name == 'Creator' %}
                                                     <a class="btn btn-primary" href="{% url 'blog_post:post_edit' i.post.pk %}">Edit</a>
                                                     <a class="btn btn-primary" href="{% url 'blog_tags:post_tags' i.post.pk %}">Tags</a>
-                                                    <a class="btn btn-primary" onclick="var result = confirm('Want to delete?');if (result) {window.location = '{% url 'blog_post:post_delete' i.post.pk %}';}">Delete</a>
+                                                    <a class="btn btn-primary" href="javascript:" onclick="var result = confirm('Want to delete?');if (result) {window.location = '{% url 'blog_post:post_delete' i.post.pk %}';}">Delete</a>
                                                 {% endif %}
                                             {% endfor %}
                                         {% endif %}

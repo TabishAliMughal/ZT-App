@@ -169,7 +169,7 @@ def ManageAccountShopPaymentView(request,shop):
                     rsize.append(int(275*(size[0]/size[1])))
                     rimg = image.resize(((rsize[1]),(rsize[0])),Image.ANTIALIAS)
                     img_io = BytesIO()
-                    rimg.save(img_io, format='JPEG', quality=100)
+                    rimg.save(img_io, format='JPEG', quality=75)
                     img_content = ContentFile(img_io.getvalue(),"img.jpg" )
                     form1 = ManagePaymentProofForm({
 

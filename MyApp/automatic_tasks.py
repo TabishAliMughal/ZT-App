@@ -5,10 +5,6 @@ from urllib.parse import parse_qs, urlparse
 from PIL import Image
 import requests
 from io import BytesIO
-import time
-import datetime
-from django.http.response import HttpResponseRedirect
-from django.utils import timezone
 from Blog.Post.forms import ManagePostCreateForm
 from django.core.files.base import ContentFile
 
@@ -38,7 +34,7 @@ def savePosts(s,t):
                 img.convert('RGB')
                 img.resize((img.size[0],img.size[1]),Image.ANTIALIAS)
                 img_io = BytesIO()
-                img.save(img_io, format='JPEG', quality=100)
+                img.save(img_io, format='JPEG', quality=75)
                 img_content = ContentFile(img_io.getvalue(),"img.jpg" )
                 url = (f'https://www.youtube.com/watch?v={v["snippet"]["resourceId"]["videoId"]}&list={playlist_id}&t=0s')
                 # video_data.append({"text" : title ,"description" : description ,"image" : img_content ,"url" : url})

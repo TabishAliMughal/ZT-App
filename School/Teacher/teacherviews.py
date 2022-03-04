@@ -126,7 +126,7 @@ def ManageAddStudentView(request,id):
             rsize.append(int(275*(size[0]/size[1])))
             rimg = image.resize(((rsize[1]),(rsize[0])),Image.ANTIALIAS)
             img_io = BytesIO()
-            rimg.save(img_io, format='JPEG', quality=100)
+            rimg.save(img_io, format='JPEG', quality=75)
             img_content = ContentFile(img_io.getvalue(),"img.jpg" )
         else:
             img_content = request.FILES.get('picture')
@@ -179,7 +179,7 @@ def ManageEditStudentView(request,id,pk):
             rsize.append(int(275*(size[0]/size[1])))
             rimg = image.resize(((rsize[1]),(rsize[0])),Image.ANTIALIAS)
             img_io = BytesIO()
-            rimg.save(img_io, format='JPEG', quality=100)
+            rimg.save(img_io, format='JPEG', quality=75)
             img_content = ContentFile(img_io.getvalue(),"img.jpg" )
         else:
             img_content = request.FILES.get('picture')

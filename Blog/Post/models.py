@@ -16,7 +16,7 @@ class Post(models.Model):
     text = models.CharField(max_length=50000,blank=True,null=True)
     image = models.FileField(upload_to='blogs/post/',blank=True,null=True)
     video = models.URLField(blank=True,null=True)
-    sound = models.FileField(blank=True,null=True,upload_to='blogs/post/')
+    sound = models.FileField(upload_to='blogs/post/',blank=True,null=True)
     blog = models.ForeignKey(Blog , on_delete=models.CASCADE)
     time = models.DateTimeField(auto_created=True,auto_now_add=True)
     def __str__(self):

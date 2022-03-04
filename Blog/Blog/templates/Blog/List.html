@@ -16,7 +16,7 @@
                         <div class="card-body">
                             <div class="row">
                                 {% for i in v.blogs %}
-                                    <div class="col-md-12 col-xl-4">
+                                    <div class="col-6 col-xl-4">
                                         <div class="card block-card">
                                             <div class="card-header">
                                                 <h5><a href="{% url 'blog_post:post_list_by_blog' i.blog.pk %}">{{ i.blog.name }}</a></h5>
@@ -42,7 +42,8 @@
                                                         {{ i.comment }}
                                                     </div>
                                                     <div style="width: 33.333%;float: left;">
-                                                        {{ i.posts }} Posts
+                                                        <i class="feather icon-edit"></i>
+                                                        {{ i.posts }}
                                                     </div>
                                                 </div>
                                                 <br>
