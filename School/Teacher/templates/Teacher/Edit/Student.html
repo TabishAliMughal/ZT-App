@@ -1,0 +1,62 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'school:main' %}">School</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Teacher</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Class</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Student</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Edit</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Edit Student</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <!-- <h2 class="text-center" style="font-family:sans-serif;">Adding My Student For Class {{ class.clas }} </h2><hr/> -->
+                        <div class="form-group">
+                            <label for="first_name">Name</label>
+                            <input class="form-control" type="text" name="name" maxlength="30" required="" id="id_name" value="{{ form.name.value }}">
+                        </div>
+                                
+                        <div class="form-group">
+                            <label for="first_name">Father</label>
+                            <input class="form-control" type="text" name="father_name" maxlength="30" required="" id="id_father_name" value="{{ form.father_name.value }}">
+                        </div>
+                                
+                        <div class="form-group">
+                            <label for="first_name">Contact</label>
+                            <input class="form-control" type="text" name="contact" maxlength="11" required="" id="id_contact" value="{{ form.contact.value }}">
+                        </div>
+                                
+                        <div class="form-group">
+                            <label for="first_name">Address</label>
+                            <input class="form-control" type="text" name="address" maxlength="250" required="" id="id_address" value="{{ form.address.value }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="first_name">Picture</label>
+                            {% if form.picture.value %}
+                                <div class="form-control">
+                                    Currently : <img style="width:10%;height:auto;" src="{{ form.picture.value.url }}">
+                                    <br>
+                                    Change : <input class="form-control" type="file" name="picture" accept="image/*" id="id_picture" >
+                                </div>
+                            {% else %}
+                                <input class="form-control" type="file" name="picture" accept="image/*" id="id_picture" >
+                            {% endif %}
+                        </div>
+                        <button class="btn btn-primary">Add</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

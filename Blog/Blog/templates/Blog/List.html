@@ -1,0 +1,64 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block address %}
+<li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+<li class="breadcrumb-item"><a href="javascript:">Blogs</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            {% for v in blogs %}
+                {% if v.blogs %}
+                    <div class="card">
+                        <div class="card-header">
+                        <h5>{{ v.type }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                {% for i in v.blogs %}
+                                    <div class="col-6 col-xl-4">
+                                        <div class="card block-card">
+                                            <div class="card-header">
+                                                <h5><a style="font-size: 14px;" href="{% url 'blog_post:post_list_by_blog' i.blog.pk %}">{{ i.blog.name }}</a></h5>
+                                            </div>
+                                            <div class="text-center">
+                                                <a href="{% url 'blog_post:post_list_by_blog' i.blog.pk %}">
+                                                    {% if i.blog.image.url %}
+                                                        <div><img class="col-9" style="padding-left: 0;padding-right: 0;" src="{{ i.blog.image.url }}"></div>
+                                                    {% else %}
+                                                        <div><img class="col-9" style="padding-left: 0;padding-right: 0;" src="{% static 'assets/images/noimg.png' %}"></div>
+                                                    {% endif %}
+                                                </a>
+                                                <br>
+                                                <div style="width: 100%;">
+                                                    <div style="width: 33.333%;float: left;">
+                                                        <i class="feather icon-thumbs-up"></i>
+                                                        <br>
+                                                        <a style="font-size: 14px;color: #888;">{{ i.react }}</a>
+                                                    </div>
+                                                    <div style="width: 33.333%;float: left;">
+                                                        <i class="feather icon-message-square"></i>
+                                                        <br>
+                                                        <a style="font-size: 14px;color: #888;">{{ i.comment }}</a>
+                                                    </div>
+                                                    <div style="width: 33.333%;float: left;">
+                                                        <i class="feather icon-edit"></i>
+                                                        <br>
+                                                        <a style="font-size: 14px;color: #888;">{{ i.posts }}</a>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <a style="font-size: 10px;color: #000000;">Posted On {{ i.blog.time }}</a>
+                                                <br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -32,38 +32,50 @@ def ManageProductListView(request, category_slug=None , shop=None , product_type
             selshop = Shops.objects.annotate(distance=Distance('address',user_location)).order_by('distance')
         products = []
         for i in selshop:
-            for d in Shops.objects.all():
-                if str(i.pk) == str(d.pk):
-                    if str(d.active) == str(True):
-                        for v in Product.objects.all():
-                            selshop = ''
-                            if shop:
-                                if str(shop) == str(v.shop.pk):
-                                    if v not in products:
-                                        products.append(v)
-                                        selshop = get_object_or_404(Shops , pk = int(shop) )
-                            if category_slug:
-                                if str(category_slug) == str(v.category.slug):
-                                    if product_type != None:
-                                        if str(v.condition) == str(product_type):
-                                            if v not in products:
-                                                products.append(v)
-                                                category = get_object_or_404(Category, slug = category_slug)
-                                    else:
-                                        if v not in products:
-                                            products.append(v)
-                                            category = get_object_or_404(Category, slug = category_slug)
-                            if not shop and not category_slug:
-                                if str(i.pk) == str(v.shop.pk):
-                                    if str(v.available) == 'True':
-                                        if v not in products:
-                                            products.append(v)
+            for d in Shops.objects.all().filter(pk = i.pk,active = 'True'):
+                selshop = ''
+                if shop:
+                    products = Product.objects.all().filter(shop = get_object_or_404(Shops , pk = shop))
+                if category_slug:
+                    if product_type != None:
+                        products = Product.objects.all().filter(category = get_object_or_404(Category , slug = category_slug),condition = product_type)
+                    else:
+                        products = Product.objects.all().filter(category = get_object_or_404(Category , slug = category_slug))
+                if not shop and not category_slug:
+                    products = Product.objects.all().filter(shop = i , available = 'True')
+        # for i in selshop:
+        #     for d in Shops.objects.all():
+        #         if str(i.pk) == str(d.pk):
+        #             if str(d.active) == str(True):
+                        # for v in Product.objects.all():
+                        #     selshop = ''
+                        #     if shop:
+                        #         if str(shop) == str(v.shop.pk):
+                        #             if v not in products:
+                        #                 products.append(v)
+                        #                 selshop = get_object_or_404(Shops , pk = int(shop) )
+                        #     if category_slug:
+                        #         if str(category_slug) == str(v.category.slug):
+                        #             if product_type != None:
+                        #                 if str(v.condition) == str(product_type):
+                        #                     if v not in products:
+                        #                         products.append(v)
+                        #                         category = get_object_or_404(Category, slug = category_slug)
+                        #             else:
+                        #                 if v not in products:
+                        #                     products.append(v)
+                        #                     category = get_object_or_404(Category, slug = category_slug)
+                        #     if not shop and not category_slug:
+                        #         if str(i.pk) == str(v.shop.pk):
+                        #             if str(v.available) == 'True':
+                        #                 if v not in products:
+                        #                     products.append(v)
         final_products = []
         for i in products:
             images = []
             for v in ProductImages.objects.all():
                 if int(i.pk) == int(v.product.pk):
-                    images.append(v.image.url)
+                    images.append(v)
                     break
             final_products.append({'product': i , 'image' : images})
         context = {

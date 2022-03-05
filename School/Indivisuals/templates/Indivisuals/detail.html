@@ -1,0 +1,64 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+  <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+  <li class="breadcrumb-item"><a href="{% url 'school:main' %}">School</a></li>
+  <li class="breadcrumb-item"><a href="javascript:">Add</a></li>
+  <li class="breadcrumb-item"><a href="javascript:">Individual</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Individual Detail</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table  class="table table-hover">
+                            <thead class="text-center">
+                                <tr>
+                                    <td><a style="color: #000000;">User</a></td>
+                                    <td>{{ indivisual.user }}</td>
+                                </tr>
+                                <tr>
+                                    <td><a style="color: #000000;">Name</a></td>
+                                    <td>{{ indivisual.name }}</td>
+                                </tr>
+                                <tr>
+                                    <td><a style="color: #000000;">Father Name</a></td>
+                                    <td>{{ indivisual.father_name }}</td>
+                                </tr>
+                                <tr>
+                                    <td><a style="color: #000000;">School</a></td>
+                                    <td>{{ indivisual.school }}</td>
+                                </tr>
+                                <tr>
+                                    <td><a style="color: #000000;">Mobile</a></td>
+                                    <td>{{ indivisual.mobile }}</td>
+                                </tr>
+                                <tr>
+                                    <td><a style="color: #000000;">Class</a></td>
+                                    <td>{{ indivisual.clas }}</td>
+                                </tr>
+                                <tr>
+                                    <td><a style="color: #000000;">Fees</a></td>
+                                    <td>{{ indivisual.fees }}</td>
+                                </tr>
+                                <tr>
+                                    <td><a style="color: #000000;">Password</a></td>
+                                    <td>{{ indivisual.password }}</td>
+                                </tr>
+                                <tr>
+                                    <td><a style="color: #000000;">Active</a></td>
+                                    <td>{{ indivisual.active }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                </div>
+        </div>
+
+{% endblock %}

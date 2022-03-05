@@ -1,11 +1,11 @@
 {% extends "MainPage.html" %}
 {% load static %}
 {% block title %}
-    Hello {{ request.user.username }}
+    Hello {{ request.user.first_name }}
 {% endblock %}
 {% block address %}
     <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
-    <li class="breadcrumb-item"><a href="{% url 'blog:blog_list' %}">Blogs</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'blog_blog:blog_list' %}">Blogs</a></li>
     <li class="breadcrumb-item"><a href="javascript:">Bunch</a></li>
     <li class="breadcrumb-item"><a href="javascript:">Add Posts</a></li>
 {% endblock %}
@@ -20,7 +20,7 @@
                     <h3>Your Bunch Has Been Created Successfully</h3>
                     <h3>You Can Now Add Posts</h3>
                     <br>
-                    <form method="POST" action="{% url 'bunch:bunch_post_add' %}">
+                    <form method="POST" action="{% url 'blog_bunch:bunch_post_add' %}">
                         <input type="hidden" name="bunch" value="{{ bunch.pk }}" />
                         <div class="table-responsive">
                         <table  class="table table-hover">

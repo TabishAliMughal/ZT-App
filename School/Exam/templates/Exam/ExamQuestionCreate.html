@@ -1,0 +1,40 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block content %}
+<form method="POST" enctype="multipart/form-data">
+    <div class="container">
+        <h2 class="text-center" style="font-family:sans-serif;">Add Exam Question</h2><hr/>
+       <div class="table-responsive">
+                        <table  class="table table-hover">
+            <thead class="text-center">
+                <tr>
+                    <th>Name</th>
+                    <th>Form</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                <tr>
+                    <td><input type="hidden" name="exam" value="{{ exam }}" /></td>
+                </tr>
+                <tr>
+                    <td>Question</td>
+                    <td>{{ form.question }}</td>
+                </tr>
+                <tr>
+                    <td>Marks</td>
+                    <td>{{ form.marks }}</td>
+                </tr>
+                <tr>
+                    <td>Submit</td>
+                    <td><input class="btn btn-primary" type="submit" value="Add Question"></td>
+                </tr>
+            </tbody>
+        </table>
+</div>
+    </div>
+    {% csrf_token %}
+</form>
+{% endblock %}

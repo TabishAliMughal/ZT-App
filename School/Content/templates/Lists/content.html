@@ -1,0 +1,154 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+  <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+  <li class="breadcrumb-item"><a href="{% url 'school:main' %}">School</a></li>
+  <li class="breadcrumb-item"><a href="">View</a></li>
+  <li class="breadcrumb-item"><a href="javascript:">Content</a></li>
+{% endblock %}
+{% block content %}
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header">
+          <h5>View All Contents</h5>
+        </div>
+        <div class="card-body">
+          {% if request.user.is_authenticated %}
+            {% for i in user %}
+              {% if i.name == 'Admin' %}
+                <a class="btn btn-primary" href="{% url 'school:content_form' %}">Add Another</a>
+                <a class="btn btn-primary" href="{% url 'school:content' %}">All</a>
+                <div class="row">
+                  <div class="col-sm-12 col-xl-4">
+                    <form method="POST">
+                      <input class="form-control" style="width: 65%;float: left;margin-right: 10px;" type="number" required name="day" >
+                      <button class="btn btn-primary">Search</button>
+                      {% csrf_token %}
+                    </form>
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-sm-12 col-xl-8">
+                    <form method="POST">
+                      <div class="row">
+                        <div class="col-sm-12 col-xl-4">
+                          <select class="form-control" required id="myclass" name="class">
+                            <option>-------------------</option> 
+                            {% for i in classes %}
+                              <option value="{{ i.pk }}">{{ i }}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                        <div class="col-sm-12 col-xl-4">
+                          <select class="form-control" required id="myclass" name="subject">
+                            <option>-------------------</option> 
+                            {% for i in subjects %}
+                              <option value="{{ i.pk }}">{{ i }}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                        <div class="col-sm-12 col-xl-4">
+                          <button class="btn btn-primary">Search</button>
+                        </div>
+                      </div>
+                      {% csrf_token %}
+                    </form>
+                  </div>
+                </div>
+              {% endif %}
+              {% if i.name == 'DataHandler' %}
+                <a class="btn btn-primary" href="{% url 'school:content_form' %}">Add Another</a>
+                <a class="btn btn-primary" href="{% url 'school:content' %}">All</a>
+                <form method="POST">
+                  <div class="row">
+                    <div class="col-sm-12 col-xl-4">
+                      <select class="form-control" required id="myclass" name="class">
+                        <option>-------------------</option> 
+                        {% for i in classes %}
+                          <option value="{{ i.pk }}">{{ i }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="col-sm-12 col-xl-4">
+                      <select class="form-control" required id="myclass" name="subject">
+                        <option>-------------------</option> 
+                        {% for i in subjects %}
+                          <option value="{{ i.pk }}">{{ i }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="col-sm-12 col-xl-4">
+                      <button class="btn btn-primary">Search</button>
+                    </div>
+                  </div>
+                  {% csrf_token %}
+                </form> 
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          <div class="table-responsive">
+                        <table  class="table table-hover">
+            <thead class="text-center">
+              <tr>
+                <th>Class<br>Module</th>
+                <th>Subject<br>Day</th>
+                {% if request.user.is_authenticated %}
+                  {% for i in user %}
+                    {% if i.name == 'Admin' %}
+                      <th rowspan="2">Action</th>
+                    {% elif i.name == 'DataHandler' %}
+                      <th>Action</th>
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+              </tr>
+            </thead>
+            {% for i in list %}
+              <tbody class="text-center">
+                <tr>
+                  <td><a href="{% url 'school:content' i.pk %}">{{ i.class_name }}</a></td>
+                  <td hidden>{{ i.day }}</td>
+                  <td>{{ i.subject }}</td>
+                  {% if request.user.is_authenticated %}
+                    {% for v in user %}
+                      {% if v.name == 'Admin' %}
+                        <td><a class="btn btn-primary" href="{% url 'school:content_edit' i.pk %}">Edit</a></td>
+                      {% elif v.name == 'DataHandler' %}
+                        <td><a class="btn btn-primary" href="{% url 'school:content_edit' i.pk %}">Edit</a></td>
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+                </tr>
+                <tr>
+                  <td>{{ i.module }}</td>
+                  <td id="day">{{ i.day }}</td>
+                  {% if request.user.is_authenticated %}
+                    {% for v in user %}
+                      {% if v.name == 'Admin' %}
+                        <td><a href="{% url 'school:content_delete' i.pk %}" class="btn btn-primary">Delete</a></td>
+                      {% elif v.name == 'DataHandler' %}
+                        <td></td>
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+                </tr>
+                <tr>
+                  <td><hr></td>
+                  <td hidden>{{ i.day }}</td>
+                  <td><hr></td>
+                  <td><hr></td>
+                </tr>
+              </tbody>
+            {% endfor %}
+          </table>
+</div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

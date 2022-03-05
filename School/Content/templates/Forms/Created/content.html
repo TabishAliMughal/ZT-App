@@ -1,0 +1,19 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                </div>
+                <div class="card-body">
+                    <h1>Your Content {{ return }}</h1>
+                    <a class="btn btn-primary" href="{% url 'school:content' %}">Content List</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -2,8 +2,6 @@ from django.contrib.gis.db import models
 from Blog.Blog.models import Blog
 from django.contrib.auth.models import User
 
-
-
 class ReactTypes(models.Model):
     name = models.CharField(max_length=15)
     icon = models.CharField(max_length=25)
@@ -14,11 +12,11 @@ class ReactTypes(models.Model):
 
 class Post(models.Model):
     name = models.CharField(max_length=50)
-    description = models.CharField(max_length=50)
-    text = models.CharField(max_length=5000)
-    image = models.FileField(blank=True,null=True,upload_to='blogs/post/')
+    description = models.CharField(max_length=500,blank=True,null=True)
+    text = models.CharField(max_length=50000,blank=True,null=True)
+    image = models.FileField(upload_to='blogs/post/',blank=True,null=True)
     video = models.URLField(blank=True,null=True)
-    sound = models.FileField(blank=True,null=True,upload_to='blogs/post/')
+    sound = models.FileField(upload_to='blogs/post/',blank=True,null=True)
     blog = models.ForeignKey(Blog , on_delete=models.CASCADE)
     time = models.DateTimeField(auto_created=True,auto_now_add=True)
     def __str__(self):
@@ -32,7 +30,7 @@ class PostReact(models.Model):
     post = models.ForeignKey(Post,on_delete=models.CASCADE)
     react = models.ForeignKey(ReactTypes , on_delete=models.CASCADE)
     class Meta:
-        verbose_name_plural = 'Post Reacts'
+        verbose_name_plural = 'Reacts'
     def __str__(self):
         return "{} > {}".format(self.post,self.react)
 

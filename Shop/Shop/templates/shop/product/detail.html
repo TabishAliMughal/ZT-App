@@ -1,7 +1,7 @@
 {% extends "MainPage.html" %}
 {% load static %}
 {% block title %}
-    Hello {{ request.user.username }}
+    Hello {{ request.user.first_name }}
 {% endblock %}
 {% block address %}
     <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
@@ -57,18 +57,16 @@
                         </div>
                         <div class="col-xl-4 col-md-6">
                             <div class="card user-list" style="box-shadow:none">
-                                <div class="card-block">
+                                <div class="card-block" style="padding:0px 25px;">
                                     <div class="row align-items-center m-b-20">
                                         <div class="col-xl-12">
-                                            <h1 class="f-w-300 d-flex align-items-center float-left m-0">{{ product.product.name }}</h1>
+                                            <h4 class="f-w-300 d-flex align-items-center float-left m-0">{{ product.product.name }}</h4>
                                         </div>
                                     </div>
                                     <div class="row m-b-20">
                                         <div class="col-xl-12">
-                                            <h4 class="align-items-center float-left">RS {{ product.product.price }} / {{ product.product.unit }}</h4>
+                                            <h4 class="align-items-center float-left"><a style="font-weight:bold;">RS {{ product.product.price }} / {{ product.product.unit }}</a></h4>
                                         </div>
-                                        <br>
-                                        <br>
                                         <br>
                                         <div class="col-xl-12">
                                             <h6 class="align-items-center float-left">{{ product.product.description|linebreaks }}</h6>
@@ -121,6 +119,7 @@
                                                                     <br>
                                                                     <button class="btn btn-primary form-control">Add To Cart</button>
                                                                 </form>
+                                                            {% elif i.name == 'Individuals' %}
                                                             {% else %}
                                                                 <h3>Cant Create Order</h3>
                                                             {% endif %}

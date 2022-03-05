@@ -1,17 +1,17 @@
 {% extends "MainPage.html" %}
 {% load static %}
 {% block title %}
-    Hello {{ request.user.username }}
+    Hello {{ request.user.first_name }}
 {% endblock %}
 {% block content %}
     <div class="card">
         <div class="card-body text-center">
             <h1>Oops !!!</h1>
             <h3>You Are Not Authorized To View This Page</h3>
+            <h4>Please Try A Different Account</h4>
         </div>
         <div class="text-center" style="width: 20%;margin:auto;">
             <a class="btn btn-primary" href="/">Home</a>
-            <a href="javascript:" onclick="showLogin()" class="btn btn-primary">Login</a>
         </div>
         <br>
     </div>

@@ -1,0 +1,97 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'school:main' %}">School</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Checker</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Check</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Checking Copy Of {{ student.name }}</h5>
+                </div>
+                <div class="card-body">
+                    {% if answers == 'No Answers' %}
+                        <h1>No Answers Submitted</h1>
+                    {% elif answers == 'Copies Already Checked' %}
+                        <h1>Copies Already Checked</h1>
+                    {% elif answers == 'Copies Checking Already Pending' %}
+                        <h1>Some Other Person Checking</h1>
+                    {% else %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        <h6>Total Marks = {{ marks }}</h6>
+                        {% for i in questions %}
+                            <div class="row">
+                                <div class="col-sm-12 col-xl-6">
+                                    <label for="id_name">{{ i.question }} ( {{ i.marks }} )</label>
+                                </div>
+                                <div class="col-sm-12 col-xl-6">
+                                    <input class="form-control" type="number" name='{{ i.pk }}' min="0" max="{{i.marks}}" value='{{i.mar}}' required/>
+                                </div>
+                            </div>
+                            <br>
+                        {% endfor %}
+                        {% for i in answers %}
+                            <!-- <img src="{{ i.picture.url }}"/> -->
+                            <div class="mySlides" data-index="{{ i.count }}" style="text-align: center;">
+                                <img style="border: 5px solid transparent;align-items: center;display: block;background-color: transparent;width:95%;" src="{{ i.picture.url }}">
+                                <div style="width: fit-content;margin: auto;">
+                                    <ul class="pagination">
+                                        <li class="page-item"><a class="page-link" href="javascript:" onclick="plusSlides(-1)" aria-label="Previous"><span aria-hidden="true">«</span><span class="sr-only">Previous</span></a></li>
+                                        <li class="page-item"><a class="page-link" href="javascript:">{{ i.count }} / {{ total_answers }}</a></li>
+                                        <li class="page-item"><a class="page-link" href="javascript:" onclick="plusSlides(1)" aria-label="Next"><span aria-hidden="true">»</span><span class="sr-only">Next</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        
+                    
+                    
+                </div>
+</form>
+{% endif %}
+{% endblock %}
+{% block scripts %}
+    <script>
+        var slideIndex = 1;
+            showSlides(slideIndex);
+
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        function showSlides(n) {
+            var i;
+            var slides = document.getElementsByClassName("mySlides");
+            var dots = document.getElementsByClassName("dot");
+            if (n > slides.length) {
+                slideIndex = 1
+            }
+            if (n < 1) {
+                slideIndex = slides.length
+            }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";  
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex-1].style.display = "block";  
+            dots[slideIndex-1].className += " active";
+        }
+    </script>
+{% endblock %}
+
+
+

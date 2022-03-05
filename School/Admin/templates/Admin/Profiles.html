@@ -1,0 +1,129 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="javascript:">School</a></li>
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Visits</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                        <table  class="table table-hover">
+                    <tbody class="text-center">
+                            <tr>
+                                <td><a href="{% url 'school_visitors:visited_Teachers_list' %}">Teacher Visit </a>Url</td>
+                                <td> = </td>
+                                <td><a href="{% url 'school_visitors:visited_Teachers_create' %}">Form</a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="{% url 'school_visitors:visited_Schools_list' %}">School Visit </a>Url</td>
+                                <td> = </td>
+                                <td><a href="{% url 'school_visitors:visited_Schools_create' %}">Form</a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="{% url 'school_visitors:visited_Parents_list' %}">Parent Visit </a>Url</td>
+                                <td> = </td>
+                                <td><a href="{% url 'school_visitors:visited_Parents_create' %}">Form</a></td>
+                            </tr>
+                    </tbody>
+                </table>
+</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h5>All Registered Teachers</h5>                    
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                        <table  class="table table-hover">
+                    <tbody class="text-center">
+                        <tr>
+                            <th>Teacher</th>
+                            <th>Students</th>
+                        </tr>
+                        {% for i in students %}
+                            <tr>
+                                <td>{{ i.teacher }}</td>
+                                <td>{{ i.students }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+</div>                    
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h5>All Registered Schools</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                        <table  class="table table-hover">
+                    <tbody class="text-center">
+                        <tr>
+                            <th>School</th>
+                            <th>Students</th>
+                            <th>Active-Students</th>
+                            <th>Deactive-Students</th>
+                        </tr>
+                        {% for i in individuals %}
+                            <tr>
+                                <td>Digital School</td>
+                                <td>{{ i.students.total }}</td>
+                                <td>{{ i.students.active }}</td>
+                                <td>{{ i.students.deactive }}</td>
+                            </tr>
+                        {% endfor %}
+                        {% for i in schoolstudents %}
+                            <tr>
+                                <td>{{ i.school }}</td>
+                                <td>{{ i.students.total }}</td>
+                                <td>{{ i.students.active }}</td>
+                                <td>{{ i.students.deactive }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+</div>                
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h5>All Registered Checkers</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                        <table  class="table table-hover">
+                    <tbody class="text-center">
+                        {% for i in checkers %}
+                            <tr>
+                                <td>{{ i }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+</div>                
+            </div>
+        </div>
+        <h2 class="text-center" style="font-family:sans-serif;"></h2><hr/>
+        <br>
+        <a class="btn btn-primary form-control" href="{% url 'school_admin:active_deactive' %}">Active And Deactive</a>
+        {% for i in visit %}
+        <br>
+        <br>
+        <hr>
+        <a>
+            <h6 style="text-align:center; font-family:fantasy;">We Got <span style="font-size:25px; font-weight:bolder;">{{ i.visits }}</span> Visits On <span style="font-size:25px; font-weight:bolder;">{{ i.page }}</span> Page Today</h6><hr/>
+        </a>
+        {% endfor %}
+        </div>
+{% endblock %}

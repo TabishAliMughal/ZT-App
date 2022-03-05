@@ -1,0 +1,19 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h5>Answer Paper Of {{student.name}} Added Successfully </h5>
+       <div class="table-responsive">
+                        <table  class="table table-hover">
+            <tbody class="text-center">
+                <tr>
+                    <td><a class="btn btn-primary" href="{% url 'school_exam:exam_upload_pictures' exam.pk student.pk %}">Upload Another</a></td>
+                </tr>
+            </tbody>
+        </table>
+</div>
+    </div>
+{% endblock %}

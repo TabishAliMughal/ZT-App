@@ -1,0 +1,8 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block content %}
+<h3>Your Question {{return}}</h3>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'school:main' %}">School</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Checker</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Create</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Class</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Current Students {{ class.subject.subject_name }}</h5>
+                </div>
+                <div class="card-body">
+                    {% for i in exam %}
+                        {{i}}
+                    {% endfor %}
+                    <div class="table-responsive">
+                        <table  class="table table-hover">
+                            <tbody class="text-center">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Number Of Copies</th>
+                                    <th>Status</th>
+                                    <th>Obtained</th>
+                                    <th>Pick</th>
+                                </tr>
+                                {% for i in students %}
+                                    <tr>
+                                        <td>{{ i.name }}</td>
+                                        {% if i.count == '0' %}
+                                            <td>0</td><!>
+                                            <td>Not Checked</td><!>
+                                            <td>0</td><!>
+                                            <td>Cant Check</td><!>
+                                        {% else %}
+                                            <td>{{ i.count }}</td>
+                                            {% if i.status == '' %}
+                                                <td>Not Checked</td><!>
+                                                <td>0</td><!>
+                                                <td><a href="{% url 'school_checker:student_copy_check' i.pk checker.pk class.pk %}">Check</a></td>
+                                            {% elif i.status == 'Pending' %}
+                                                <td>Pending</td>
+                                                <td>0</td><!>
+                                                {% if i.checker == checker %}
+                                                    <td><a href="{% url 'school_checker:student_copy_check' i.pk checker.pk class.pk %}">Check</a></td>
+                                                {% else %}
+                                                    <td><a>Cant Check</a></td><!>
+                                                {% endif %}
+                                            {% elif i.status == 'Claimed' %}
+                                                <td>Claimed</td>
+                                                <td>{{i.numbers}}</td>
+                                                {% if i.checker == checker %}
+                                                    <td><a href="{% url 'school_checker:student_copy_check' i.pk checker.pk class.pk %}">Check</a></td>
+                                                {% else %}
+                                                    <td><a>Cant Check</a></td><!>
+                                                {% endif %}
+                                            {% else %}
+                                                <td>{{ i.status }}</td>
+                                                <td>{{i.numbers}}</td>
+                                                {% if i.checker == checker %}
+                                                    <td><a href="{% url 'school_checker:student_copy_check' i.pk checker.pk class.pk  %}">ReCheck</a></td>
+                                                {% else %}
+                                                    <td>Cant Recheck</td>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

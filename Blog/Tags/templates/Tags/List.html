@@ -1,0 +1,58 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block link %}
+    <link rel="stylesheet" href="{% static 'assets/css/tags.css' %}">
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'blog_blog:blog_list' %}">Blogs</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Tags</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Tags</h5>
+                </div>
+                <div class="card-body">
+                    <input type="text" class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Search for tags.." title="Type in a name" autocomplete="off">
+                    <br>
+                    <div style="width:100%;">
+                        <ul id="myUL">
+                            {% for i in tags %}
+                                <li class="tags" style="list-style-type: none;cursor: pointer;" href="{% url 'blog_tags:tag_detail' i.pk %}"><a style="color:black;margin:5px;">{{ i }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script>
+        function myFunction() {
+            var input, filter, ul, li, a, i, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("myUL");
+            li = ul.getElementsByTagName("li");
+            for (i = 0; i < li.length; i++) {
+                a = li[i].getElementsByTagName("a")[0];
+                txtValue = a.textContent || a.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+{% endblock %}

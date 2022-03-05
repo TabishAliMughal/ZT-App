@@ -10,7 +10,7 @@ class CityAdmin(ImportExportModelAdmin):
         models.PointField: {"widget": GooglePointFieldWidget(settings=CUSTOM_MAP_SETTINGS)}
     }
 
-shopsite.register(DeliveryPerson)
+shopsite.register(DeliveryPerson,CityAdmin)
 shopsite.register(DeliveryTasks,CityAdmin)
 shopsite.register(DeliveryProof)
 

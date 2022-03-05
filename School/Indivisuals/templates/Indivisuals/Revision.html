@@ -1,0 +1,21 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h2 class="text-center">Select Content</h2><hr/>
+    <div class="table-responsive">
+                        <table  class="table table-hover">
+        <tbody class="text-center">
+        {% for i in content %}
+        <tr>
+            <td><a href="{% url 'school_individuals:indivisual_content' i.pk %}">{{ i.text }}</a><br><br></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,150 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ individual }}
+{% endblock %}
+{% block address %}
+  <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+  <li class="breadcrumb-item"><a href="{% url 'school:main' %}">School</a></li>
+  <li class="breadcrumb-item"><a href="javascript:">Student</a></li>
+  <li class="breadcrumb-item"><a href="javascript:">Profile</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            {% if slide %}
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Deadlines</h5>
+                    </div>
+                    <div class="card-body">
+                            <h5>{{ slide }}</h5>
+                            <h5>You Can Use <a href="javascript:" onclick="showProcedure()">This Method</a> Or Come To School To Submit Fees</h5>
+                        <div id="procedure" style="display: none;">
+                            <ol>
+                                <li>Step # 1 : Submit 500 Rupees</li>
+                                <li>Submit The Amount  At : 
+                                    <ul>
+                                        <li>Easypaisa Account = Zahid Ali Mughal(03123379978)</li>
+                                        OR
+                                        <li>Bank IBAN Number = PK73MEZN0001890101742064</li>
+                                    </ul>
+                                </li>
+                                <li>Take A Picture Of The Receipt(Or Message) And Whatsapp It To 03123379978 With :
+                                    <ul>
+                                        <li>< Your Name ></li>
+                                        <li>< Your Child Name ></li>
+                                        <li>< Your Child Class ></li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>            
+            {% endif %}
+            <div class="card">
+                <div class="card-header">
+                    <h5>Starter</h5>
+                </div>
+                <div class="card-body">
+                    <div class="col-9" style="margin: auto;">
+                        <div class="video-div">
+                            <iframe class="video-frame" src="https://www.youtube-nocookie.com/embed/X4DpywWlRbM" ></iframe>
+                        </div>
+                        <br>
+                        <div class="video-div">
+                            <iframe class="video-frame" src="https://www.youtube-nocookie.com/embed/38UUz15fEzo" ></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h5>Content</h5>
+                </div>
+                <div class="card-body">
+                    {% if content == 'No' and prev_content == 'No' %}
+                        <h2 style="color: grey;" class="text-center">Today Is Revision</h2>
+                        <h3 class="text-center">Select Subject</h3><hr/>
+                        <div class="table-responsive">
+                        <table  class="table table-hover">
+                            <tbody class="text-center">
+                                {% for i in class_subjects %}
+                                    <tr>
+                                        <td><a href="{% url 'school_individuals:revision_subject' individual.code individual.clas.code i.subject_name.code %}">{{ i.subject_name }}</a></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+</div>
+                    {% else %}
+                        <h2 class="text-center" style="font-family:sans-serif;">Content</h2><hr/>
+                        <div class="table-responsive">
+                        <table  class="table table-hover">
+                            <tbody class="text-center">
+                                {% for i in content %}
+                                    <tr>
+                                        <td><br><a href="{% url 'school_individuals:indivisual_content' i.content.pk %}">Period : {{ i.period }}</a><br><br></td>
+                                        <td><br><a href="{% url 'school_individuals:indivisual_content' i.content.pk %}">{{ i.content.subject }}</a><br><br></td>
+                                    </tr>
+                                {% endfor %}
+                                {% for i in exam %}
+                                    <tr>
+                                        <td><br><a href="{% url 'school_exam:teacher_class_exam' i.exam.pk %}">Period : {{ i.period }}</a><br><br></td>
+                                        <td><br><a href="{% url 'school_exam:teacher_class_exam' i.exam.pk %}">{{ i.exam.subject }} Exam</a><br><br></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+</div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h5>Here Is Your Time Table</h5>
+                </div>
+                <div class="card-body">
+                    {% if clas == 'pre' %}
+                        {% include 'Indivisuals/M-PTimeTable.html' %}
+                    {% elif clas == 'primary' %}
+                        {% include 'Indivisuals/1-8TimeTable.html' %}
+                    {% elif clas == 'ninth' %}
+                        {% include 'Indivisuals/9TimeTable.html' %}
+                    {% elif clas == 'tenth' %}
+                        {% include 'Indivisuals/10TimeTable.html' %}
+                    {% endif %}
+                </div>
+            </div>
+            {% if prev_content %}
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Previous</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table  class="table table-hover">
+                                <tbody class="text-center">
+                                    {% for i in prev_content %}
+                                    <tr>
+                                        <td><a href="{% url 'school_individuals:indivisual_content' i.content.pk %}">Period : {{ i.period }}</a><br><br></td>
+                                        <td><a href="{% url 'school_individuals:indivisual_content' i.content.pk %}">{{ i.content.subject }}</a><br><br></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script>
+        function showProcedure() {
+            var procedure = document.getElementById("procedure");
+            procedure.style.display = "block";
+        }
+    </script>
+{% endblock %}

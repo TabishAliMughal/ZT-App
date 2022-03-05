@@ -75,7 +75,6 @@ def ManageShopsEditView(request,shop):
     lon = ''
     if request.method == 'POST':
         data = request.POST
-        print(data.get('address'))
         form = ManageShopCreateForm({
             'name' : data.get('name') ,
             'user' : data.get('user') ,
@@ -116,7 +115,7 @@ def ManageShopProductListView(request,shop=None):
             images = []
             for v in ProductImages.objects.all():
                 if int(i.pk) == int(v.product.pk):
-                    images.append(v.image.url)
+                    images.append(v)
                     break
             final_products.append({'product': i , 'image' : images})
         context = {
@@ -171,7 +170,7 @@ def ManageShopProductCreateView(request,shop):
             rsize.append(int(275*(size[0]/size[1])))
             rimg = image.resize(((rsize[1]),(rsize[0])),Image.ANTIALIAS)
             img_io = BytesIO()
-            rimg.save(img_io, format='JPEG', quality=100)
+            rimg.save(img_io, format='JPEG', quality=75)
             img_content = ContentFile(img_io.getvalue(),"img.jpg" )
             img = ManageProductImageCreateForm({
                 'product' : k ,
@@ -237,7 +236,7 @@ def ManageShopProductEditView(request,product):
             rsize.append(int(275*(size[0]/size[1])))
             rimg = image.resize(((rsize[1]),(rsize[0])),Image.ANTIALIAS)
             img_io = BytesIO()
-            rimg.save(img_io, format='JPEG', quality=100)
+            rimg.save(img_io, format='JPEG', quality=75)
             img_content = ContentFile(img_io.getvalue(),"img.jpg" )
             img = ManageProductImageCreateForm({
                 'product' : k ,
@@ -339,6 +338,7 @@ def ManageShopOrdersListView(request):
     context = {
         'orders': orders ,
         'user' : user ,
+        'shop' : shop ,
     }
     return render(request,'shop/shopkeeper/Orders/list.html',context)
 

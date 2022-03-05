@@ -1,0 +1,214 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'blog_blog:blog_list' %}">Blogs</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Post</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Create</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Bulk</a></li>
+{% endblock %}
+{% block content %}
+<style type="text/css">
+.container {
+  position: relative;
+  width: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+}
+
+.dash {
+  margin: 0 15px;
+  width: 35px;
+  height: 15px;
+  border-radius: 8px;
+  background: #038fcf;
+  box-shadow: 0 0 10px 0 #fff;
+}
+
+.uno {
+  margin-right: -18px;
+  transform-origin: center left;
+  animation: spin 3s linear infinite;  
+}
+
+.dos {
+  transform-origin: center right;
+  animation: spin2 3s linear infinite;
+  animation-delay: .2s;
+}
+
+.tres {
+  transform-origin: center right;
+  animation: spin3 3s linear infinite;
+  animation-delay: .3s;
+}
+
+.cuatro {
+  transform-origin: center right;
+  animation: spin4 3s linear infinite;
+  animation-delay: .4s;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(360deg);
+  }
+  30% {
+    transform: rotate(370deg);
+  }
+  35% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin2 {
+  0% {
+    transform: rotate(0deg);
+  }
+  20% {
+    transform: rotate(0deg);
+  }
+  30% {
+    transform: rotate(-180deg);
+  }
+  35% {
+    transform: rotate(-190deg);
+  }
+  40% {
+    transform: rotate(-180deg);
+  }
+  78% {
+    transform: rotate(-180deg);
+  }
+  95% {
+    transform: rotate(-360deg);
+  }
+  98% {
+    transform: rotate(-370deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes spin3 {
+  0% {
+    transform: rotate(0deg);
+  }
+  27% {
+    transform: rotate(0deg);  
+  }
+  40% {
+    transform: rotate(180deg);
+  }
+  45% {
+    transform: rotate(190deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  62% {
+    transform: rotate(180deg);
+  }
+  75% {
+    transform: rotate(360deg);
+  }
+  80% {
+    transform: rotate(370deg);
+  }
+  85% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin4 {
+  0% {
+    transform: rotate(0deg);
+  }
+  38% {
+    transform: rotate(0deg);
+  }
+  60% {
+    transform: rotate(-360deg);
+  }
+  65% {
+    transform: rotate(-370deg);
+  }
+  75% {
+    transform: rotate(-360deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+</style>
+    <div class="row">
+        <div class="col-sm-12">
+            <div id="id_create_post" style="display: block;">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Create Post</h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" enctype="multipart/form-data" id="form">
+                            <div class="form-group">
+                                <label for="id_height">Name</label>
+                                <input class="form-control" type="text" name="name" maxlength="50" required id="id_name">
+                                <small>This Name Will Be Inserted In Every Title With Numbers</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="id_playlist">Playlist</label>
+                                <input class="form-control" type="url" name="playlist" required id="id_playlist">
+                                <small>Please Enter A Valid Youtube Playlist</small>
+                            </div>
+                            <button class="btn btn-primary" >Add</button>
+                            {% csrf_token %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div id="id_loader" style="display: none;">
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Creating Posts</h5>
+                    </div>
+                    <div class="card-body">
+                        <div style="width: fit-content;margin: auto;margin-top: 5%;margin-bottom: 5%;">
+                            <div class="container">
+                                <div class="dash uno"></div>
+                                <div class="dash dos"></div>
+                                <div class="dash tres"></div>
+                                <div class="dash cuatro"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script>
+        document.getElementById('form').addEventListener('submit', function(evt){
+            evt.preventDefault();
+            document.getElementById('form').submit() ;
+            document.getElementById('id_create_post').style.display = 'none';
+            document.getElementById('id_loader').style.display = 'block';
+        })
+    </script>
+{% endblock %}

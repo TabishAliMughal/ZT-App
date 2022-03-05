@@ -1,0 +1,53 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'school:main' %}">School</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Teacher</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Class</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Students</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>My Students</h5>
+                </div>
+                <div class="card-body">
+                    <a class="btn btn-primary" href="{% url 'school_teacher:add_student' teacherclass.pk %}">Add New Student</a>
+                    {% if exam == 'Active' %}<a  href="{% url 'school_result:teacher_class_result' teacherclass.pk %}" class="btn btn-primary">View Result</a>{% endif %}
+                    <div class="table-responsive">
+                        <table  class="table table-hover">
+                            <thead class="text-center">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Father</th>
+                                    <th>Action</th>
+                                    {% if exam == 'Active' %}
+                                        <th>Result</th>
+                                    {% endif %}
+                                </tr>
+                            </thead>{{ teacher }}
+                            <tbody class="text-center">
+                                {% for i in class %}
+                                    <tr>
+                                        <td>{{ i.name }}</td>
+                                        <td>{{ i.father_name }}</td>
+                                        <td><a href="{% url 'school_teacher:edit_student' teacherclass.pk i.pk %}" class="btn btn-primary">Edit</a><a href="{% url 'school_teacher:delete_student' teacherclass.pk i.pk %}" class="btn btn-primary">Delete</a></td>
+                                        {% if exam == 'Active' %}
+                                            <td><a  href="{% url 'school_result:teacher_class_student_result' teacherclass.pk i.pk %}" class="btn btn-primary">View Result</a></td>
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,7 +1,6 @@
 from django import forms
 from .models import *
-
-
+from mapwidgets.widgets import GooglePointFieldWidget
 
 class ManageDeliveryPersonDataForm(forms.ModelForm):
     class Meta:
@@ -12,7 +11,15 @@ class ManageDeliveryPersonDataForm(forms.ModelForm):
             'start_time',
             'end_time',
             'active',
+            'mobile',
+            'nic',
+            'bank_account',
+            'easypaisa',
+            'area',
         ]
+        widgets = {
+            'area': GooglePointFieldWidget,
+        }
 
 class ManageDeliveryPersonTasksForm(forms.ModelForm):
     class Meta:
@@ -23,7 +30,6 @@ class ManageDeliveryPersonTasksForm(forms.ModelForm):
             'task_from' ,
             'task_to' ,
             'status' ,
-            'date' ,
         ]
 
 

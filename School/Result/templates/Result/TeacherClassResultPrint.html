@@ -1,0 +1,72 @@
+<title>Result</title>
+{% for i in result %}
+    <div style="page-break-after: always;">
+        <div class="container">
+            <h2 class="text-center" style="font-family:sans-serif;">Student Of {{ teacher_class }}</h2><hr/>
+        <div class="table-responsive">
+                        <table  class="table table-hover">
+                <tbody class="text-center">
+                    <tr>
+                        <th><a>Name</a></th>
+                        <th><a>=</a></th>
+                        <th><a>{{ i.name }}</a></th>
+                    </tr>
+                    <tr>
+                        <th><a>Father</a></th>
+                        <th><a>=</a></th>
+                        <th><a>{{ i.father }}</a></th>
+                    </tr>
+                </tbody>
+            </table>
+</div>
+        </div>
+        <div class="container">
+        <div class="table-responsive">
+                        <table  class="table table-hover">
+                <tbody class="text-center">
+                    <tr>
+                        <th><a>Subjects</a></th>
+                        <th><a>Total Marks</a></th>
+                        <th><a>Obtained Marks</a></th>
+                        <th><a>Percentage</a></th>
+                    </tr>
+                    {% for v in i.numbers %}
+                        <tr>
+                            <td>{{ v.subject }}</td>
+                            <td>{{ v.total }}</td>
+                            <td>{{ v.obtained }}</td>
+                            <td>{{ v.percent }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+</div>
+        </div>
+        <br>
+        <br>
+        <div class="container">
+        <div class="table-responsive">
+                        <table  class="table table-hover">
+                <tbody class="text-center">
+                    <tr>
+                        <td><a>Total Marks</a></td>
+                        <td><a>{{ i.tnumbers }}</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Total Obtained</a></td>
+                        <td><a>{{ i.onumbers }}</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Total Percentage</a></td>
+                        <td><a>{{ i.perc }}%</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Grade</a></td>
+                        <td><a>{{ i.grade }}</a></td>
+                    </tr>
+                </tbody>
+            </table>
+</div>
+        </div>
+    </div>
+{% endfor %}
