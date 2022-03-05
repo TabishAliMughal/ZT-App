@@ -1,0 +1,100 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'blog_blog:blog_list' %}">Blogs</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Post</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Tags</a></li>
+{% endblock %}
+{% block link %}
+    <link rel="stylesheet" href="{% static 'assets/css/tags.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Create Tags</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data" submit="false" onkeydown="return event.key != 'Enter';">
+                        {% for i in selected_tags %}
+                            <div class="tags"><a style="color:black;margin:5px;">{{ i }}</a><input type="hidden" name="tags" value="{{ i }}"><i class="feather icon-x-circle" onclick="remove(this, '{{ i }}')"></i></div>
+                        {% endfor %}
+                        <div id="hidden_tags">
+                        </div>
+                        <br>
+                        <br>
+                        <br>
+                        <div class="form-group">
+                            <input class="form-control" list="tags" type="text" id="tag_input" autocomplete="off" >
+                            <datalist id="tags">
+                                {% for i in tags %}
+                                    <option value="#{{ i }}">
+                                {% endfor %}
+                            </datalist>
+                        </div>
+                        {% csrf_token %}
+                        <a href="javascript:" onclick="removeTags()" class="btn btn-primary">Remove All</a>
+                        <button class="btn btn-primary">Add Tags</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script>
+        const ul = document.getElementById('tags'),
+        hdiv = document.getElementById('hidden_tags'),
+        input = document.getElementById("tag_input"),
+        tagNumb = document.querySelector(".details span");
+
+        tags = [];
+
+        countTags();
+        createTag();
+
+        function countTags(){
+            input.focus();
+        }
+
+        function createTag(){
+            hdiv.querySelectorAll("div").forEach(div => div.remove());
+            tags.slice().reverse().forEach(tag =>{
+                let hTag = `<div class="tags"><a style="color:black;margin:5px;">${tag}</a><input type="hidden" name="tags" value="${tag}"><i class="feather icon-x-circle" onclick="remove(this, '${tag}')"></i></div>`;
+                hdiv.insertAdjacentHTML("afterbegin", hTag);
+            });
+            countTags();
+        }
+
+        function remove(element, tag){
+            let index  = tags.indexOf(tag);
+            tags = [...tags.slice(0, index), ...tags.slice(index + 1)];
+            element.parentElement.remove();
+            countTags();
+        }
+
+        function addTag(e){
+            if(e.key == "Enter"){
+                let tag = e.target.value.replace(/\s+/g, ' ');
+                if(tag.length > 1 && !tags.includes(tag)){
+                    tag.split(',').forEach(tag => {
+                        tags.push(tag);
+                        createTag();
+                    });
+                }
+                e.target.value = "";
+            }
+        }
+
+        input.addEventListener("keyup", addTag);
+
+        function removeTags(){
+            hdiv.querySelectorAll("div").forEach(div => div.remove());
+        }
+    </script>
+{% endblock %}

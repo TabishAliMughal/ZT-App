@@ -1,0 +1,53 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'shop:product_list' %}">Shop</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'shop_delivery:delivery_person_data' %}">Rider</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Pick Order</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Pick Any Order</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table  class="table table-hover">
+                            <thead class="text-center">
+                                <tr>
+                                    <th>Order</th>
+                                    <th>Distance</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            {% for i in orders %}
+                                <tbody class="text-center">
+                                    <tr>
+                                        <td>{{ i.order }}</td>
+                                        <td>{{ i.distance }} KM</td>
+                                        <td>
+                                            <form method="POST">
+                                                <input type="hidden" name="order" value="{{ i.order.pk }}">
+                                                <input type="hidden" name="rider" value="{{ request.user.pk }}">
+                                                <input type="hidden" name="from" value="{{ i.pick.pk }}">
+                                                <input type="hidden" name="to" value="{{ i.drop.pk }}">
+                                                {% csrf_token %}
+                                                <button class="btn btn-primary" >Pick</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

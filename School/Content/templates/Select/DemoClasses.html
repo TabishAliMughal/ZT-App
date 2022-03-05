@@ -1,0 +1,35 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'school:main' %}">School</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'school:demo' %}">Demo</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Class</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Select Class</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table  class="table table-hover">
+                        <tbody class="text-center">
+                            {% for i in classes %}
+                                <tr>
+                                    <td class="text-center"><a href="{% url 'school:demo_content' day i.pk %}">{{ i.class_name }}</a></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

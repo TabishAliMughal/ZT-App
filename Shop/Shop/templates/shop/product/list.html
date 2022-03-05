@@ -23,10 +23,10 @@
                                         <a style="text-align:center" href="{% url 'shop:product_detail' v.product.pk v.product.slug %}">
                                             {% if v.image %}
                                                 {% for k in v.image %}
-                                                        <div class="align-items-center" ><img class="col-9" style="height:300px;width:auto;" style="height:300px;width:auto;" src="{{ k }}"></div>
+                                                        <div class="align-items-center" ><img class="col-9" style="height:auto;width:100%;" style="height:auto;width:100%;" src="{{ k }}"></div>
                                                 {% endfor %}
                                             {% else %}
-                                                    <div class="align-items-center" ><img class="col-9" style="height:300px;width:auto;" style="height:300px;width:auto;" src="{% static 'assets/images/noimg.png' %}"></div>
+                                                    <div class="align-items-center" ><img class="col-9" style="height:auto;width:100%;" style="height:auto;width:100%;" src="{% static 'assets/images/noimg.png' %}"></div>
                                             {% endif %}
                                         </a>
                                         <br>
@@ -69,7 +69,7 @@
                 </div>
             </div>
             <div class="card">
-                <div class="tab-content" id="pills-tabContent">
+                <div class="tab-content" style="padding: 0;" id="pills-tabContent">
                     <div class="tab-pane fade active show" id="pill-New" role="tabpanel" aria-labelledby="pills-home-tab">
                         <div class="card-header">
                             <h5>New Products</h5>
@@ -80,27 +80,27 @@
                                     <h5>{{ i.category }}</h5>
                                     <div class="row">
                                         {% for v in i.products %}
-                                            <div class="col-md-12 col-xl-4">
+                                            <div class="col-6 col-xl-4">
                                                 <div class="card block-card">
                                                     <div class="card-header">
-                                                        <h5><a class="catogery" href="{% url 'shop:product_detail' v.product.pk v.product.slug %}">{{ v.product.name }}</a></h5>
+                                                        <h5><a style="overflow-wrap: break-word;" href="{% url 'shop:product_detail' v.product.pk v.product.slug %}">{{ v.product.name }}</a></h5>
                                                     </div>
-                                                        <a style="text-align:center" href="{% url 'shop:product_detail' v.product.pk v.product.slug %}">
-                                                            {% if v.image %}
-                                                                {% for k in v.image %}
-                                                                        <div class="align-items-center" ><img class="col-9" style="height:300px;width:auto;" src="{{ k }}"></div>
-                                                                {% endfor %}
-                                                            {% else %}
-                                                                    <div class="align-items-center" ><img class="col-9" style="height:300px;width:auto;" src="{% static 'assets/images/noimg.png' %}"></div>
-                                                            {% endif %}
-                                                        </a>
-                                                        <br>
+                                                    <a  class="text-center" href="{% url 'shop:product_detail' v.product.pk v.product.slug %}">
+                                                        {% if v.image %}
+                                                            {% for k in v.image %}
+                                                                    <div class="align-items-center" ><img style="padding-left: 0;padding-right: 0;" class="col-9" style="height:auto;width:100%;" src="{{ k }}"></div>
+                                                            {% endfor %}
+                                                        {% else %}
+                                                                <div class="align-items-center" ><img style="padding-left: 0;padding-right: 0;" class="col-9" style="height:auto;width:100%;" src="{% static 'assets/images/noimg.png' %}"></div>
+                                                        {% endif %}
+                                                    </a>
+                                                    <br>
                                                     <h6 class="text-center mb-1">PKR {{ v.product.price }} / {{ v.product.unit }}</h6>
-                                                    </div>
+                                                </div>
                                             </div>
                                         {% endfor %}
                                     </div>
-                                    <div style="text-align:center">
+                                    <div class="text-center">
                                         <a class="btn btn-primary" style="width:80%;" href="{% url 'shop:shop_product_list_by_category_and_type' i.category.slug i.type %}">More Products</a>
                                     </div>
                                     <hr>
@@ -124,13 +124,13 @@
                                                     <div class="card-header">
                                                         <h5><a class="catogery" href="{% url 'shop:product_detail' v.product.pk v.product.slug %}">{{ v.product.name }}</a></h5>
                                                     </div>
-                                                        <a style="text-align:center" href="{% url 'shop:product_detail' v.product.pk v.product.slug %}">
+                                                        <a class="text-center" href="{% url 'shop:product_detail' v.product.pk v.product.slug %}">
                                                             {% if v.image %}
                                                                 {% for k in v.image %}
-                                                                        <div class="align-items-center" ><img class="col-9" style="height:300px;width:auto;" src="{{ k }}"></div>
+                                                                        <div class="align-items-center" ><img class="col-9" style="height:auto;width:100%;" src="{{ k }}"></div>
                                                                 {% endfor %}
                                                             {% else %}
-                                                                    <div class="align-items-center" ><img class="col-9" style="height:300px;width:auto;" style="height:300px;width:auto;" src="{% static 'assets/images/noimg.png' %}"></div>
+                                                                    <div class="align-items-center" ><img class="col-9" style="height:auto;width:100%;" style="height:auto;width:100%;" src="{% static 'assets/images/noimg.png' %}"></div>
                                                             {% endif %}
                                                         </a>
                                                         <br>
@@ -139,7 +139,7 @@
                                             </div>
                                         {% endfor %}
                                     </div>
-                                    <div style="text-align:center">
+                                    <div class="text-center">
                                         <a class="btn btn-primary" style="width:80%;" href="{% url 'shop:shop_product_list_by_category_and_type' i.category.slug i.type %}">More Products</a>
                                     </div>
                                     <hr>

@@ -1,0 +1,10 @@
+.tags {
+    color: black;
+    border: 1px solid;
+    padding: 6px;
+    margin: 6px;
+    border-radius: 20px;
+    vertical-align: middle;
+    width: fit-content;
+    float: left;
+}

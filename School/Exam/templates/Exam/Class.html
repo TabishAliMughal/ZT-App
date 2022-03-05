@@ -1,0 +1,48 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'school:main' %}">School</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Teacher</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Exam</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Class</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>My Students</h5>
+                </div>
+                <div class="card-body">
+                    <h5 class="text-center" style="font-family:sans-serif;">{{ exam }}</h5><hr/>
+                    <div class="table-responsive">
+                        <table  class="table table-hover">
+                            <thead class="text-center">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Father</th>
+                                    <th>Action</th>
+                                    <th>Pics</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                {% for i in class %}
+                                    <tr>
+                                        <td>{{ i.name }}</td>
+                                        <td>{{ i.father_name }}</td>
+                                        <td><a class='btn btn-primary' href="{% url 'school_exam:exam_upload_pictures' exam.pk i.pk %}">Upload Answers</a></td>
+                                        <td>{{ i.picsqty }} Uploaded</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

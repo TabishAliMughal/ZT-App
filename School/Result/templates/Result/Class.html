@@ -1,0 +1,37 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h2 class="text-center" style="font-family:sans-serif;">Result Of Class</h2><hr/>
+        <a class="btn btn-primary" href="{% url 'school_result:teacher_class_result_print' teacher_class.pk %}">Print</a>
+       <div class="table-responsive">
+                        <table  class="table table-hover">
+            <tbody class="text-center">
+                <tr>
+                    <th><a>Name</a></th>
+                    <th><a>Father</a></th>
+                        {% for i in subjects %}
+                            <th><a>{{ i }}</a></th>
+                        {% endfor %}
+                    <th><a>%</a></th>
+                    <th><a>Grade</a></th>
+                </tr>
+                {% for v in result %}
+                    <tr>
+                        <td>{{ v.name }}</td>
+                        <td>{{ v.father }}</td>
+                        {% for i in v.numbers %}
+                            <td>{{ i.obtained }}</td>
+                        {% endfor %}
+                        <td>{{ v.perc }}</td>
+                        <td>{{ v.grade }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+</div>
+    </div>
+{% endblock %}

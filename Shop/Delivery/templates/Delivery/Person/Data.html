@@ -1,0 +1,189 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'shop:product_list' %}">Shop</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'shop_delivery:delivery_person_data' %}">Rider</a></li>
+{% endblock %}
+{% block link %}
+    <link href="{% static 'mapwidgets/css/map_widgets.css' %}" type="text/css" media="all" rel="stylesheet">
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&amp;language=en&amp;key=AIzaSyBgzluEvlveyfNKaigwEClXvhSaUyTmLLI"></script>
+    
+    <script src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+    <script src="{% static 'admin/js/jquery.init.js' %}"></script>
+    <script src="{% static 'mapwidgets/js/jquery_init.js' %}"></script>
+    <script src="{% static 'admin/js/core.js' %}"></script>
+    <script src="{% static 'mapwidgets/js/jquery_class.js' %}"></script>
+    <script src="{% static 'admin/js/admin/RelatedObjectLookups.js' %}"></script>
+    <script src="{% static 'mapwidgets/js/django_mw_base.js' %}"></script>
+    <script src="{% static 'admin/js/actions.js' %}"></script>
+    <script src="{% static 'mapwidgets/js/mw_google_point_field.js' %}"></script>
+    <script src="{% static 'admin/js/urlify.js' %}"></script>
+    <script src="{% static 'admin/js/prepopulate.js' %}"></script>
+    <script src="{% static 'admin/js/vendor/xregexp/xregexp.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>User Data</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="first_name">First Name :</label>
+                            {% if form.name.value %}
+                                <input class="form-control" type="text" name="name" value="{{ form.name.value }}" maxlength="50" required="" id="id_name" >
+                            {% else %}
+                                <input class="form-control" type="text" name="name" maxlength="50" required="" id="id_name" >
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="first_name">Start Time :</label>
+                            {% if form.start_time.value %}
+                                <input class="form-control" type="time" value="{{ stime }}" name="start_time" required="" >
+                            {% else %}
+                                <input class="form-control" type="time" name="start_time" required="" >
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="first_name">End Time :</label>
+                            {% if form.end_time.value %}
+                                <input class="form-control" type="time" value="{{ etime }}" name="end_time" required="" >
+                            {% else %}
+                                <input class="form-control" type="time" value="" name="end_time" required="" >
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="first_name">Mobile :</label>
+                            {% if form.mobile.value %}
+                                <input class="form-control" type="number" value="{{ form.mobile.value }}" name="mobile" required="" >
+                            {% else %}
+                                <input class="form-control" type="number" value="" name="mobile" required="" >
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="first_name">NIC :</label>
+                            {% if form.nic.value %}
+                                <input class="form-control" type="number" value="{{ form.nic.value }}" name="nic" required="" >
+                            {% else %}
+                                <input class="form-control" type="number" value="" name="nic" required="" >
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="first_name">Bank Account :</label>
+                            {% if form.bank_account.value %}
+                                <input class="form-control" type="number" value="{{ form.bank_account.value }}" name="bank_account" >
+                            {% else %}
+                                <input class="form-control" type="number" value="" name="bank_account" >
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="first_name">Easypaisa :</label>
+                            {% if form.easypaisa.value %}
+                                <input class="form-control" type="number" value="{{ form.easypaisa.value }}" name="easypaisa" required="" >
+                            {% else %}
+                                <input class="form-control" type="number" value="" name="easypaisa" required="" >
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="first_name">Area :</label>
+                            <div class="mw-wrap" id="area-mw-wrap" style="width: 100%;min-width: 20px;">
+                                <div class="mw-header">
+                                    <div class="mw-coordinates-wrap">
+                                        <a  class="btn btn-primary mw-btn-coordinates">Coordinates <i class="icon-down-dir" ></i></a>
+                                        <div class="mw-coordinates-overlay hide">
+                                            <label for="area-mw-overlay-latitude">
+                                                Latitude:
+                                                <input type="text" id="area-mw-overlay-latitude" class="form-control mw-overlay-input mw-overlay-latitude" placeholder="Ex: 41.015137"/>
+                                            </label>
+                                            <label for="area-mw-overlay-longitude">
+                                                Longitude:
+                                                <input type="text" id="area-mw-overlay-longitude" class="form-control mw-overlay-input mw-overlay-longitude" placeholder="Ex: 28.979530"/>
+                                            </label>
+                                            <a class="btn btn-primary mw-btn-coordinates-done pull-right">Done</a>
+                                        </div>
+                                    </div>
+                                    <a class="btn btn-primary mw-btn-my-location" >Use My Location</a>
+                                    <a class="mw-btn mw-btn-warning mw-btn-add-marker" ><i class="icon-location"></i></a>
+                                    <div class="mw-adress-input-wrap pull-right">
+                                        <input type="text" class="form-control pull-right" id="area-mw-google-address-input" placeholder="Enter or update the address here"/>
+                                    </div>
+                                </div>
+                                <div class="mw-map-wrapper">
+                                    <div class="mw-loader-overlay hide" >
+                                        <div class="mw-loader"></div>
+                                    </div>
+                                    <div id="area-map-elem" class="mw-map"></div>
+                                    <div style="display: none" class="hide">
+                                        <textarea id="id_area" name="area">POINT (0 0)</textarea>
+                                    </div>
+                                </div>
+                                <div class="mw-footer">
+                                    <span class="mw-help-text help-text"></span>
+                                    <a class="mw-btn mw-btn-delete pull-right mw-btn-danger" ><i class="icon-trash-empty"></i></a>
+                                </div>
+                                <div class="animated-loader"></div>
+                            </div>
+                            <input hidden type="text" value="{{ lat }}" id="lat" class="form-control">
+                            <input hidden type="text" value="{{ lon }}" id="lon" class="form-control">
+                        </div>
+                        {% csrf_token %}
+                        <button class="btn btn-primary" >Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script type="application/javascript">
+        (function($) {
+            var lat = document.getElementById('lat').value;
+            var lon = document.getElementById('lon').value;
+
+            var mapOptions = JSON.parse("{\u0022mapCenterLocationName\u0022: \u0022karachi\u0022, \u0022mapCenterLocation\u0022: [30, 70], \u0022zoom\u0022: 15, \u0022GooglePlaceAutocompleteOptions\u0022: {\u0022componentRestrictions\u0022: {\u0022country\u0022: \u0022pakistan\u0022}}, \u0022markerFitZoom\u0022: 12, \u0022streetViewControl\u0022: true}");
+            if(lat == "" , lon == ""){
+                var field_value = JSON.parse("{}");
+            }else{
+                var field_value = JSON.parse("{\u0022lng\u0022: "+ lon +", \u0022lat\u0022: "+ lat +"}");
+            }
+
+            var wrapElemSelector = "#area-mw-wrap";
+            var mapElemID = "area-map-elem";
+            var googleAutoInputID = "area-mw-google-address-input";
+            var locationInputID = "#id_area";
+
+            var mapWidgetOptions = {
+                locationInput: $(locationInputID),
+                wrapElemSelector: wrapElemSelector,
+                locationFieldValue: field_value,
+                mapElement: document.getElementById(mapElemID),
+                mapCenterLocationName: mapOptions.mapCenterLocationName,
+                mapCenterLocation: mapOptions.mapCenterLocation,
+                coordinatesOverlayToggleBtn: $(".mw-btn-coordinates", wrapElemSelector),
+                coordinatesOverlayDoneBtn: $(".mw-btn-coordinates-done", wrapElemSelector),
+                coordinatesOverlayInputs: $(".mw-overlay-input", wrapElemSelector),
+                coordinatesOverlay: $(".mw-coordinates-overlay", wrapElemSelector),
+                myLocationBtn: $(".mw-btn-my-location", wrapElemSelector),
+                addressAutoCompleteInput: document.getElementById(googleAutoInputID),
+                deleteBtn: $(".mw-btn-delete", wrapElemSelector),
+                addMarkerBtn: $(".mw-btn-add-marker", wrapElemSelector),
+                loaderOverlayElem: $(".mw-loader-overlay", wrapElemSelector),
+                zoom: mapOptions.zoom,
+                markerFitZoom: mapOptions.markerFitZoom,
+                GooglePlaceAutocompleteOptions: mapOptions.GooglePlaceAutocompleteOptions,
+                streetViewControl: mapOptions.streetViewControl,
+                markerCreateTriggerNameSpace: "google_point_map_widget:marker_create",
+                markerChangeTriggerNameSpace: "google_point_map_widget:marker_change",
+                markerDeleteTriggerNameSpace: "google_point_map_widget:marker_delete",
+                placeChangedTriggerNameSpace: "google_point_map_widget:place_changed"
+            };
+            var widget = new DjangoGooglePointFieldWidget(mapWidgetOptions);            
+        })(mapWidgets.jQuery);
+    </script>
+{% endblock %}

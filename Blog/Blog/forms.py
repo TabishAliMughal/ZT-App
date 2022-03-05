@@ -7,6 +7,7 @@ class ManageBlogCreateForm(forms.ModelForm):
         model = Blog
         fields = [
             'name' ,
+            'description',
             'image' ,
             'type' ,
             'user' ,

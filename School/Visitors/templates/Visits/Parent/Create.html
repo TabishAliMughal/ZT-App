@@ -1,0 +1,79 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'school:main' %}">School</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Register As Parent</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Fill This Form To Register Your Child</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="form-group">
+                            <label for="first_name">Your Name :</label>
+                            <input class="form-control" type="text" name="name" maxlength="50" required="" id="id_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="first_name">Student Name :</label>
+                            <input class="form-control" type="text" name="student_name" maxlength="50" required="" id="id_student_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="first_name">Contact :</label>
+                            <input class="form-control" type="text" name="phone" maxlength="11" required="" id="id_phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="first_name">Email :</label>
+                            <input class="form-control" type="email" name="email" maxlength="254" id="id_email">
+                        </div>
+                        <div class="form-group" hidden>
+                            <label for="first_name">Status :</label>
+                            <input class="form-control" class="form-control" type="checkbox" name="seen">
+                        </div>
+                        <button class="btn btn-primary">Send Request</button>
+
+                        {% csrf_token %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Follow These Steps To Register Your Child</h5>
+                </div>
+                <div class="card-body">
+                    <ol>
+                        <li>Step # 1 : Submit 500 Rupees</li>
+                        <li>Submit The Amount  At : 
+                            <ul>
+                                <li>Easypaisa Account = Zahid Ali Mughal(03123379978)</li>
+                                OR
+                                <li>Bank IBAN Number = PK73MEZN0001890101742064</li>
+                            </ul>
+                        </li>
+                        <li>Take A Picture Of The Receipt(Or Message) And Whatsapp It To 03123379978 With :
+                            <ul>
+                                <li>< Your Name ></li>
+                                <li>< Your Child Name ></li>
+                                <li>< Your Child Class ></li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="video-div">
+    <iframe src="https://www.youtube-nocookie.com/embed/mLo96AcqcUE" class="video-frame" allowfullscreen></iframe>
+</div>
+{% endblock %}

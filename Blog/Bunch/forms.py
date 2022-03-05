@@ -17,4 +17,5 @@ class ManageBunchPostCreateForm(forms.ModelForm):
         fields = [
             'bunch' ,
             'post' ,
+            'serial' ,
         ]

@@ -1,0 +1,50 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h5>About Us</h5>
+        </div>
+        <div class="card-body">
+            
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h5>Our Team</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12 col-xl-4">
+                    <div class="card block-card">
+                        <div class="card-header">
+                            <h5><a class="catogery" href="">Tabish Ali Mughal</a></h5>
+                        </div>
+                            <a style="text-align:center" href="">
+                                <div class="align-items-center" ><img class="col-9" style="height:300px;width:auto;" style="height:300px;width:auto;" src="{% static 'assets/images/AboutUs/Tabish.jpg' %}"></div>
+                            </a>
+                            <br>
+                        <h6 class="text-center mb-1">Developer</h6>
+                        <h6 class="text-center mb-1">tabishalimughal@gmail.com</h6>
+                    </div>
+                </div>
+                <div class="col-md-12 col-xl-4">
+                    <div class="card block-card">
+                        <div class="card-header">
+                            <h5><a class="catogery" href="">Zahid Ali Mughal</a></h5>
+                        </div>
+                            <a style="text-align:center" href="">
+                                <div class="align-items-center" ><img class="col-9" style="height:300px;width:auto;" style="height:300px;width:auto;" src="{% static 'assets/images/AboutUs/Zahid.png' %}"></div>
+                            </a>
+                            <br>
+                        <h6 class="text-center mb-1">Project Manager</h6>
+                        <h6 class="text-center mb-1">zahid.a.mughal@gmail.com</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,11 +1,11 @@
 {% extends "MainPage.html" %}
 {% load static %}
 {% block title %}
-    Hello {{ request.user.username }}
+    Hello {{ request.user.first_name }}
 {% endblock %}
 {% block address %}
     <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
-    <li class="breadcrumb-item"><a href="{% url 'blog:blog_list' %}">Blogs</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'blog_blog:blog_list' %}">Blogs</a></li>
     <li class="breadcrumb-item"><a href="javascript:">Bunch</a></li>
     <li class="breadcrumb-item"><a href="javascript:">Created</a></li>
 {% endblock %}
@@ -18,7 +18,7 @@
                 </div>
                 <div class="card-body">
                     <h1>Your Bunch Has Been Added SuccessFully</h1>
-                    <a class="btn btn-primary" href="{% url 'bunch:bunch_list' %}">Go To My Bunches</a>
+                    <a class="btn btn-primary" href="{% url 'blog_bunch:bunch_list' %}">Go To My Bunches</a>
                 </div>
             </div>
         </div>

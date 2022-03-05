@@ -1,38 +1,53 @@
 from django.http.response import HttpResponseRedirect
+from django.utils import timezone
 from Blog.Blog.models import Blog
 from django.shortcuts import get_object_or_404, redirect, render
+from Blog.Bunch.models import Bunch, BunchPost
 from .models import Post, PostComment, PostReact, ReactTypes
 from .forms import ManagePostCommentForm, ManagePostCreateForm, ManagePostReactForm
 from django.contrib.auth.decorators import login_required
-from Authentication.user_handeling import unauthenticated_user, allowed_users, admin_only
+from Authentication.user_handeling import allowed_users
 from io import BytesIO
 from PIL import Image
 from django.core.files.base import ContentFile
 from django.contrib.auth.models import User
+from Blog.Tags.models import BlogTags, PostTags
+from django.db.models import DateTimeField
+from django.db.models.functions import Trunc
 
-
-def ManagePostListView(request,pk=None):
+def ManagePostListView(request,blog=None,bunch=None,post=None):
     user = request.user.groups.values('name')
     posts = []
-    post = []
-    blog = ''
-    if pk:
-        blog = get_object_or_404(Blog , pk = pk)
-        for i in Post.objects.all():
-            if int(i.blog.pk) == int(blog.pk):
-                post.append(i)
-    else:
-        for i in Post.objects.all():
-            post.append(i)
-    for l in post:
+    my_post = []
+    my_blog = 'None'
+    bunches = []
+    my_bunch = 'None'
+    tags = []
+    my_tags = 'None'
+    if blog:
+        my_blog = get_object_or_404(Blog , pk = blog)
+        my_post = Post.objects.all().order_by('time').order_by('time').filter(blog = my_blog)
+        bunches = Bunch.objects.all().filter(blog = my_blog)
+    if bunch:
+        my_bunch = get_object_or_404(Bunch , pk = bunch)
+        my_blog = get_object_or_404(Blog , pk = my_bunch.blog.pk)
+        for i in BunchPost.objects.all().order_by('serial').filter(bunch = my_bunch):
+            if str(i.post.pk) == str(post):
+                i.post.selected = 'True'
+            else:
+                i.post.selected = 'False'
+            my_post.append(i.post)
+        for i in Bunch.objects.all().filter(blog = my_blog.pk):
+            bunches.append(i)
+    if not blog and not bunch:
+        my_post = Post.objects.all().order_by('time')
+    if my_blog:
+        tags = (BlogTags.objects.all().filter(blog = my_blog))
+    time = []
+    for l in my_post:
         reacts = []
         for k in ReactTypes.objects.all():
-            v = int('0')
-            for i in PostReact.objects.all():
-                if int(i.react.pk) == int(k.pk):
-                    if int(i.post.pk) == int(l.pk):
-                        v = v + 1
-            reacts.append({'type' : k , 'total' : v })
+            reacts.append({'type' : k , 'total' : int(len(PostReact.objects.all().filter(react = k , post = l))) })
         try:
             length = int(100/len(reacts))
         except:
@@ -40,8 +55,11 @@ def ManagePostListView(request,pk=None):
         posts.append({'post' : l , 'reacts' : reacts , 'width' : length })
     context = {
         'user' : user ,
-        'blog' : blog ,
+        'my_blog' : my_blog ,
+        'my_bunch' : my_bunch ,
         'posts' : posts,
+        'bunches' : bunches,
+        'tags' : tags ,
     }
     return render(request,'post/list.html',context)
 
@@ -69,13 +87,16 @@ def ManagePostDetailView(request,pk):
             v = v + 1
     comments = {'comment' : comment , 'total' : v}
     if int(len(post.text)) >= int('150'):
-        print(len(post.text))
         setattr(post,'stext',post.text[:150])
         setattr(post,'ltext',post.text[150:])
+    bunches = [i.bunch for i in BunchPost.objects.all().filter(post = post)]
+    tags = PostTags.objects.all().filter(post = post)
     context = {
         'react' : react ,
         'user' : user ,
         'post' : post ,
+        'tags' : tags ,
+        'bunches' : bunches ,
         'comments' : comments ,
     }
     return render(request,'post/detail.html',context)
@@ -93,7 +114,7 @@ def ManagePostReactView(request,pk):
         'react' : int(request.POST.get('react'))
     })
     form.save()
-    return redirect('post:post_detail',post.pk)
+    return redirect('blog_post:post_detail',post.pk)
 
 @login_required(login_url='main_login')
 def ManagePostCommentView(request,pk):
@@ -103,9 +124,8 @@ def ManagePostCommentView(request,pk):
         'post' : post ,
         'comment' : request.POST.get('comment')
     })
-    print(form)
     form.save()
-    return redirect('post:post_detail',post.pk)
+    return redirect('blog_post:post_detail',post.pk)
 
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Creator'])
@@ -122,7 +142,7 @@ def ManagePostCreateView(request,pk):
         rsize.append(int(275*(size[0]/size[1])))
         rimg = image.resize(((rsize[1]),(rsize[0])),Image.ANTIALIAS)
         img_io = BytesIO()
-        rimg.save(img_io, format='JPEG', quality=100)
+        rimg.save(img_io, format='JPEG', quality=75)
         img_content = ContentFile(img_io.getvalue(),"img.jpg" )
         form = ManagePostCreateForm({
             'name' : request.POST.get('name') ,
@@ -163,7 +183,7 @@ def ManagePostEditView(request,pk):
             rsize.append(int(275*(size[0]/size[1])))
             rimg = image.resize(((rsize[1]),(rsize[0])),Image.ANTIALIAS)
             img_io = BytesIO()
-            rimg.save(img_io, format='JPEG', quality=100)
+            rimg.save(img_io, format='JPEG', quality=75)
             img_content = ContentFile(img_io.getvalue(),"img.jpg" )
         else:
             img_content = request.FILES.get('image')
@@ -203,4 +223,21 @@ def ManagePostDeleteView(request,pk):
         'blog' : blog ,
     }
     return render(request,'post/deleted.html',context)
+
+from MyApp import automatic_tasks
+@login_required(login_url='main_login')
+@allowed_users(allowed_roles=['Admin'])
+def ManageBulkPostCreateView(request,pk):
+    user = request.user.groups.values('name')
+    blog = get_object_or_404(Blog,pk = pk)
+    if request.method == 'POST':
+        automatic_tasks.savePosts(request.POST,blog.pk)
+        return redirect('blog_post:post_list_by_blog',blog.pk)
+    else:
+        context = {
+            'user' : user ,
+            'blog' : blog ,
+        }
+        return render(request,'post/BulkCreate.html',context)
+
 

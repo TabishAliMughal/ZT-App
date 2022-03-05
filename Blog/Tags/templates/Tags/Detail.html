@@ -1,0 +1,82 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'blog_blog:blog_list' %}">Blogs</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'blog_tags:tags_list' %}">Tag</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">#{{ tag }}</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Blogs</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for i in blogs %}
+                            <div class="col-md-12 col-xl-4">
+                                <div class="card block-card">
+                                    <div class="card-header">
+                                        <h5><a href="{% url 'blog_post:post_list_by_blog' i.blog.pk %}">{{ i.blog.name }}</a></h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="text-center">
+                                            <a href="{% url 'blog_post:post_list_by_blog' i.blog.pk %}">
+                                                {% if i.blog.image.url %}
+                                                    <div><img class="col-9" src="{{ i.blog.image.url }}"></div>
+                                                {% else %}
+                                                        <div><img class="col-9" src="{% static 'assets/images/noimg.png' %}"></div>
+                                                {% endif %}
+                                            </a>
+                                            <br>
+                                            {{ i.blog.type }}
+                                        </div>
+                                        <a style="font-size: 10px;color: #000000;padding-left: 5px;padding-bottom: 5px;">Posted By {{ i.creator.user.first_name }} On {{ i.blog.time }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h5>Posts</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for i in posts %}
+                            <div class="col-md-12 col-xl-4">
+                                <div class="card block-card">
+                                    <div class="card-header">
+                                        <h5><a href="{% url 'blog_post:post_detail' i.post.pk %}">{{ i.post.name }}</a></h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="text-center">{{ i.post.description }}</div>
+                                        <br>
+                                        <div class="text-center">
+                                            <a href="{% url 'blog_post:post_detail' i.post.pk %}">
+                                                {% if i.post.image %}
+                                                    <div><img class="col-9" src="{{ i.post.image.url }}"></div>
+                                                {% else %}
+                                                        <div><img class="col-9" src="{% static 'assets/images/noimg.png' %}"></div>
+                                                {% endif %}
+                                            </a>
+                                        </div>
+                                        <a style="font-size: 10px;color: #000000;padding-left: 5px;padding-bottom: 5px;">Posted By {{ i.creator.user.first_name }} On {{ i.post.time }}</a>
+                                        <br>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

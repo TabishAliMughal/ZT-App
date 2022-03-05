@@ -1,0 +1,93 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+<li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+<li class="breadcrumb-item"><a href="{% url 'school:main' %}">School</a></li>
+<li class="breadcrumb-item"><a href="{% url 'school:select_to_add' %}">Add</a></li>
+<li class="breadcrumb-item"><a href="javascript:">Content</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="text-center" style="font-family:sans-serif;">Add Content</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="id_name">Class Name</label>
+                            <select class="form-control" name="class_name" required="" id="id_class_name">
+                                {% for i in form1.class_name %}
+                                    {{ i }}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_name">Subject Name</label>
+                            <select class="form-control" name="subject" required="" id="id_subject_name">
+                                {% for i in form1.subject %}
+                                    {{ i }}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_name">Module Name</label>
+                            <select class="form-control" name="module" required="" id="id_module_name">
+                                {% for i in form1.module %}
+                                    {{ i }}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_name">Day</label>
+                            <input class="form-control" type="number" name="day" required="" />
+                        </div>
+                        <div class="form-group">
+                            <label for="id_name">Title</label>
+                            <input class="form-control" type="text" name="title" maxlength="250" required="" id="id_title">
+                        </div>
+                        <div class="form-group">
+                            <label for="id_name">Text</label>
+                            <input class="form-control" type="text" name="text"  required="" />
+                        </div>
+                        <div class="form-group">
+                            <label for="id_name">For</label>
+                            <select class="form-control" name="therefor" required="" id="id_therefor">
+                                {% for i in form1.therefor %}
+                                    {{ i }}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group" id="url">
+                            <label for="id_name">Youtube Video URL</label>
+                            <div id="div-to-add-url"><input class="form-control" type="url" name="url"  required="" /></div>
+                            <br>
+                            <button class="btn btn-primary"type="button" onClick="clone1()" id="add-row">+</button>
+
+                            <input type="hidden" value="1" id="total-url-fields">
+                        </div>
+                        <div class="form-group" id="image">
+                            <label for="id_name">Images</label>
+                            <input class="form-control" type="file" name="image" accept="image/*" capture="camera/*" multiple />
+                        </div>
+                        <button class="btn btn-primary form-control" >Add</button>
+                        {% csrf_token %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script>
+        function clone1(){
+            var new_chq_no = parseInt($('#total-url-fields').val()) + 1;
+            var new_input = '<input class="form-control" type="text" name="url" id="' + new_chq_no + '" />';
+            $('#div-to-add-url').append('<br>'+new_input);
+        };        
+    </script>
+{% endblock %}

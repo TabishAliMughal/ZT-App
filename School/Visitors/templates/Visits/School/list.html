@@ -1,0 +1,48 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'school:main' %}">School</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Visits</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">School Owners</a></li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>All Visited School Owners</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table  class="table table-hover">
+                        <thead class="text-center">
+                            <tr>
+                                <th>School Name</th>
+                                <th>Contact</th>
+                                <th>Seen</th>
+                            </tr>
+                        </thead>
+                        {% for i in Schools %}
+                            <tbody class="text-center">
+                                <tr>
+                                    <td>{{ i.school_name }}</td>
+                                    <td>{{ i.phone }}</td>
+                                    {% if i.seen == True %}
+                                        <td>Seen</td>
+                                    {% else %}
+                                        <td>Pending</td>
+                                    {% endif %}
+                                </tr>
+                            </tbody>
+                        {% endfor %}
+                    </table>
+</div>
+                </div>
+            </div>
+        </div>                        
+    </div>
+{% endblock %}

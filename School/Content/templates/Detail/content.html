@@ -1,0 +1,48 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h2 class="text-center" style="font-family:sans-serif;">Content Detail</h2><hr/>
+       <div class="table-responsive">
+                        <table  class="table table-hover">
+            <tbody class="text-center">
+                <tr>
+                    <td>Class Name</td>
+                    <td>{{ detail.class_name }}</td>
+                </tr>
+                <tr>
+                    <td>Subject Name</td>
+                    <td>{{ detail.subject }}</td>
+                </tr>
+                <tr>
+                    <td>Module Name</td>
+                    <td>{{ detail.module }}</td>
+                </tr>
+                <tr>
+                    <td>Date</td>
+                    <td>{{ detail.day }}</td>
+                </tr>
+                <tr>
+                    <td>Title</td>
+                    <td>{{ detail.title }}</td>
+                </tr>
+                <tr>
+                    <td>Text</td>
+                    <td>{{ detail.text }}</td>
+                </tr>
+                <tr>
+                    <td>File</td>
+                    <td>{{ detail.file }}</td>
+                </tr>
+                <tr>
+                    <td>Youtube Url(Embed)</td>
+                    <td>{{ detail.url }}</td>
+                </tr>
+            </tbody>
+        </table>
+</div>
+    </div>
+{% endblock %}
