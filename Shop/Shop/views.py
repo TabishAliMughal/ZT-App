@@ -39,6 +39,7 @@ def ManageProductListView(request, category_slug=None , shop=None , product_type
                 if category_slug:
                     if product_type != None:
                         products = Product.objects.all().filter(category = get_object_or_404(Category , slug = category_slug),condition = product_type)
+                        category = get_object_or_404(Category , slug = category_slug)
                     else:
                         products = Product.objects.all().filter(category = get_object_or_404(Category , slug = category_slug))
                 if not shop and not category_slug:

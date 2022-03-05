@@ -10,7 +10,7 @@
         {% if all == 'Selected' %}
             <div class="card">
                 <div class="card-header">
-                    <h5>{% if category %} {{ category.name }}{% else %}All Products{% endif %}</h5>
+                    <h5>{% if category %}{{ category.name }}{% else %}All Products{% endif %}</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -23,7 +23,7 @@
                                         <a style="text-align:center" href="{% url 'shop:product_detail' v.product.pk v.product.slug %}">
                                             {% if v.image %}
                                                 {% for k in v.image %}
-                                                        <div class="align-items-center" ><img class="col-9" style="height:auto;width:100%;" style="height:auto;width:100%;" src="{{ k }}"></div>
+                                                    <div class="align-items-center" ><img class="col-9" style="height:auto;width:100%;" style="height:auto;width:100%;" src="{{ k.image.url }}"></div>
                                                 {% endfor %}
                                             {% else %}
                                                     <div class="align-items-center" ><img class="col-9" style="height:auto;width:100%;" style="height:auto;width:100%;" src="{% static 'assets/images/noimg.png' %}"></div>
@@ -90,7 +90,7 @@
                                                         <a  class="text-center" href="{% url 'shop:product_detail' v.product.pk v.product.slug %}">
                                                             {% if v.image %}
                                                                 {% for k in v.image %}
-                                                                        <div class="align-items-center" ><img style="padding-left: 0;padding-right: 0;" class="col-9" style="height:auto;width:100%;" src="{{ k }}"></div>
+                                                                        <div class="align-items-center" ><img style="padding-left: 0;padding-right: 0;" class="col-9" style="height:auto;width:100%;" src="{{ k.image.url }}"></div>
                                                                 {% endfor %}
                                                             {% else %}
                                                                     <div class="align-items-center" ><img style="padding-left: 0;padding-right: 0;" class="col-9" style="height:auto;width:100%;" src="{% static 'assets/images/noimg.png' %}"></div>
@@ -131,7 +131,7 @@
                                                             <a class="text-center" href="{% url 'shop:product_detail' v.product.pk v.product.slug %}">
                                                                 {% if v.image %}
                                                                     {% for k in v.image %}
-                                                                            <div class="align-items-center" ><img class="col-9" style="height:auto;width:100%;" src="{{ k }}"></div>
+                                                                            <div class="align-items-center" ><img class="col-9" style="height:auto;width:100%;" src="{{ k.image.url }}"></div>
                                                                     {% endfor %}
                                                                 {% else %}
                                                                         <div class="align-items-center" ><img class="col-9" style="height:auto;width:100%;" style="height:auto;width:100%;" src="{% static 'assets/images/noimg.png' %}"></div>
