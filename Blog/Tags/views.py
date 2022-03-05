@@ -18,9 +18,11 @@ def ManageBlogAddTagsView(request,pk):
             i.delete()
         for i in request.POST.getlist('tags'):
             try:
-                tag = get_object_or_404(Tags , name = i)
+                tag = get_object_or_404(Tags , name = str(i.replace(' ','_').replace('#','')))
             except:
-                tag = ManageTagsCreateForm({'name' : i.replace(' ','_').replace('#','')}).save()
+                tag = ManageTagsCreateForm({'name' : i.replace(' ','_').replace('#','')})
+                print(tag)
+                tag.save()
             BlogTags.objects.update_or_create(blog = blog , tag = tag)
         return redirect('blog_post:post_list_by_blog',blog.pk)
     else:
@@ -43,7 +45,7 @@ def ManagePostAddTagsView(request,pk):
             i.delete()
         for i in request.POST.getlist('tags'):
             try:
-                tag = get_object_or_404(Tags , name = str(i.replace("#","")))
+                tag = get_object_or_404(Tags , name = str(i.replace(' ','_').replace('#','')))
             except:
                 tag = ManageTagsCreateForm({'name' : i.replace(' ','_').replace('#','')}).save()
             PostTags.objects.update_or_create(post = post , tag = tag)

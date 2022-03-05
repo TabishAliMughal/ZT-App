@@ -50,14 +50,18 @@
                                 {% for k in i.icons %}
                                     <i class="feather {{ k.type }}"></i>
                                 {% endfor %}
+                                <br>
                                 {{ i.react }}
                             </div>
                             <div class="col-md-12 col-xl-4">
                                 <i class="feather icon-message-square"></i>
+                                <br>
                                 {{ i.comment }}
                             </div>
                             <div class="col-md-12 col-xl-4">
-                                {{ i.posts }} Posts
+                                <i class="feather icon-edit"></i>
+                                <br>
+                                {{ i.posts }}
                             </div>
                         </div>
                         <br>

@@ -26,10 +26,8 @@ def ManagePostListView(request,blog=None,bunch=None,post=None):
     my_tags = 'None'
     if blog:
         my_blog = get_object_or_404(Blog , pk = blog)
-        for i in Post.objects.all().order_by('time').order_by('time').filter(blog = my_blog):
-            my_post.append(i)
-        for i in Bunch.objects.all().filter(blog = my_blog):
-            bunches.append(i)
+        my_post = Post.objects.all().order_by('time').order_by('time').filter(blog = my_blog)
+        bunches = Bunch.objects.all().filter(blog = my_blog)
     if bunch:
         my_bunch = get_object_or_404(Bunch , pk = bunch)
         my_blog = get_object_or_404(Blog , pk = my_bunch.blog.pk)
@@ -42,21 +40,14 @@ def ManagePostListView(request,blog=None,bunch=None,post=None):
         for i in Bunch.objects.all().filter(blog = my_blog.pk):
             bunches.append(i)
     if not blog and not bunch:
-        for i in Post.objects.all().order_by('time'):
-            my_post.append(i)
+        my_post = Post.objects.all().order_by('time')
     if my_blog:
-        for i in BlogTags.objects.all().filter(blog = my_blog):
-            tags.append(i)
+        tags = (BlogTags.objects.all().filter(blog = my_blog))
     time = []
     for l in my_post:
         reacts = []
         for k in ReactTypes.objects.all():
-            v = int('0')
-            for i in PostReact.objects.all():
-                if int(i.react.pk) == int(k.pk):
-                    if int(i.post.pk) == int(l.pk):
-                        v = v + 1
-            reacts.append({'type' : k , 'total' : v })
+            reacts.append({'type' : k , 'total' : int(len(PostReact.objects.all().filter(react = k , post = l))) })
         try:
             length = int(100/len(reacts))
         except:

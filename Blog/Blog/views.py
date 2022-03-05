@@ -17,25 +17,15 @@ def ManageBlogListView(request):
     blogs = []
     for k in Type.objects.all():
         blog_list = []
-        for i in Blog.objects.all().order_by('time'):
-            if str(i.type.pk) == str(k.pk):
-                reacts = int('0')
-                types = []
-                posts = int('0')
-                comment = int('0')
-                for v in Post.objects.all().order_by('time'):
-                    if int(i.pk) == int(v.blog.pk):
-                        posts = posts + 1
-                        post_reacts = []
-                        for l in ReactTypes.objects.all():
-                            for b in PostReact.objects.all():
-                                if b.post.pk == v.pk and b.react.pk == l.pk:
-                                    reacts = reacts + int('1')
-                                    types.append(b.react)
-                        for l in PostComment.objects.all():
-                            if int(v.pk) == int(l.post.pk):
-                                comment = comment + 1
-                blog_list.append({'blog' : i , 'posts' : posts , 'react' : reacts , 'comment' : comment})
+        for i in Blog.objects.all().order_by('time').filter(type = k):
+            reacts = int('0')
+            posts = int('0')
+            comment = int('0')
+            for v in Post.objects.all().order_by('time').filter(blog = i):
+                posts = posts + 1
+                reacts = int(reacts) + int(len(PostReact.objects.all().filter(post = v)))
+                comment = int(comment) + int(len(PostComment.objects.all().filter(post = v)))
+            blog_list.append({'blog' : i , 'posts' : posts , 'react' : reacts , 'comment' : comment})
         blogs.append({"type" : k , "blogs" : blog_list})
     context = {
         'user' : user ,
@@ -67,9 +57,7 @@ def ManageUserBlogListView(request,pk=None):
                             pass
                     if post_reacts not in reacts:
                         reacts.append(post_reacts)
-            for l in PostComment.objects.all():
-                if int(v.pk) == int(l.post.pk):
-                    comment = comment + 1
+            comment = int(len(PostComment.objects.all().filter(post = v)))
             total_reacts = int('0')
             flow = []
             for p in ReactTypes.objects.all():
@@ -77,10 +65,11 @@ def ManageUserBlogListView(request,pk=None):
                     for t in l:
                         if str(t.get(p.name)) != "None":
                             total_reacts = total_reacts+int(t.get(p.name))
-                            flow.append({"type":p.icon,"count":int(t.get(p.name))})
+                            if p.icon not in [i.get('type') for i in flow]:
+                                flow.append({"type":p.icon,"count":int(t.get(p.name))})
             flow.sort(key=lambda x: x.get("count"))
             icons = flow[::-1]
-            blogs.append({'blog' : i , 'posts' : posts , 'react' : total_reacts , 'comment' : comment,'icons':icons})
+            blogs.append({'blog' : i , 'posts' : posts , 'react' : total_reacts , 'comment' : comment,'icons':icons[:2]})
     context = {
         'user' : user ,
         'blogs' : blogs ,
