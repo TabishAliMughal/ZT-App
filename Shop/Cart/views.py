@@ -7,7 +7,7 @@ from .forms import CartAddProductForm
 from .calculations import LatLonCalculator
 from .models import DeliveryCharge
 from django.contrib.auth.decorators import login_required
-from Authentication.user_handeling import allowed_users
+from App.Authentication.user_handeling import allowed_users
 
 
 @login_required(login_url='main_login')

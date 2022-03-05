@@ -2,7 +2,7 @@ from django.http import request
 from django.shortcuts import render , redirect , get_object_or_404 , get_list_or_404 , HttpResponse
 from .models import *
 from .forms import *
-from Authentication.forms import *
+from App.Authentication.forms import *
 import random
 from django.contrib.auth.models import User , Group
 from School.Content.models import *
@@ -10,7 +10,7 @@ import datetime
 from datetime import timedelta
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group , User
-from Authentication.user_handeling import unauthenticated_user, allowed_users, admin_only
+from App.Authentication.user_handeling import unauthenticated_user, allowed_users, admin_only
 from School.Exam.models import *
 from django.template import loader
 

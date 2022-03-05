@@ -8,7 +8,7 @@ from io import BytesIO
 from PIL import Image
 from django.core.files.base import ContentFile
 from django.contrib.auth.decorators import login_required
-from Authentication.user_handeling import allowed_users
+from App.Authentication.user_handeling import allowed_users
 from math import sin, cos, sqrt, atan2, radians
 
 

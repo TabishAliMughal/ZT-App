@@ -2,10 +2,10 @@ from Blog.Blog.models import Blog
 from Blog.Post.models import Post
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
-from Authentication.user_handeling import allowed_users
+from App.Authentication.user_handeling import allowed_users
 from .models import Tags , BlogTags , PostTags
 from .forms import ManageTagsCreateForm , ManagePostTagsCreateForm , ManageBlogTagsCreateForm
-from Creator.models import Creator
+from App.Creator.models import Creator
 
 
 @login_required(login_url='main_login')

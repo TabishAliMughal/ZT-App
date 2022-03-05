@@ -1,13 +1,13 @@
-from Creator.models import Creator
+from App.Creator.models import Creator
 from django.shortcuts import render, get_object_or_404 , redirect
 
 from Shop.Customer.models import UserData
 from .models import Product , Shops , ProductImages , ProductVideos
 from .forms import ManageProductCreateForm , ManageShopCreateForm , ManageUnitCreateForm , ManageProductImageCreateForm , ManageProductVideoCreateForm
-from Authentication.models import *
+from App.Authentication.models import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from Authentication.user_handeling import allowed_users
+from App.Authentication.user_handeling import allowed_users
 from Shop.Orders.models import Order , OrderItem
 from Shop.Delivery.models import DeliveryPerson 
 from datetime import datetime

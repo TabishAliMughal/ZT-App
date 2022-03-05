@@ -2,11 +2,11 @@ from webbrowser import get
 from django.shortcuts import redirect, render , HttpResponseRedirect , get_object_or_404
 from Blog.Blog.models import Blog
 from Blog.Post.models import Post
-from Creator.models import Creator
+from App.Creator.models import Creator
 from .models import Bunch, BunchPost
 from .forms import ManageBunchCreateForm , ManageBunchPostCreateForm
 from django.contrib.auth.decorators import login_required
-from Authentication.user_handeling import unauthenticated_user, allowed_users, admin_only
+from App.Authentication.user_handeling import unauthenticated_user, allowed_users, admin_only
 from django.contrib.auth.models import User
 
 

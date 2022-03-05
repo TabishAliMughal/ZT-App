@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path , include
-from Main import views
+from App.Main import views
 from MyApp.admin import blogsite , shopsite , matrinomialsite , schoolsite
 
 urlpatterns = [
@@ -25,14 +25,14 @@ urlpatterns = [
     path('social-auth/rejected/facebook',views.Rejected),
     path('social-auth/',include('social_django.urls', namespace='shop_social')),
     # Main Urls
-    path('', include('Main.urls')),
+    path('', include('App.Main.urls')),
     path('blogsite/', blogsite.urls),
     path('shopsite/', shopsite.urls),
     path('adminsite/', admin.site.urls),
     path('schoolsite/', schoolsite.urls),
     path('matrinomialsite/', matrinomialsite.urls),
-    path('creator/', include('Creator.urls', namespace='creator')),
-    path('user/log/', include('Authentication.urls', namespace='auth')),
+    path('creator/', include('App.Creator.urls', namespace='creator')),
+    path('user/log/', include('App.Authentication.urls', namespace='auth')),
     # Shop Urls
     path('shopping/', include('Shop.Shop.urls', namespace='shop')),
     path('shopping/cart/', include('Shop.Cart.urls', namespace='shop_cart')),
@@ -60,5 +60,5 @@ urlpatterns = [
     path('relationships/', include('Relationships.Info.urls', namespace='relationships')),
     path('relationships/match/', include('Relationships.Matching.urls', namespace='relationships_matching')),
 ]
-handler404 = "Main.views.PageNotFoundView"
-handler500 = "Main.views.PageNotFoundView"
+handler404 = "App.Main.views.PageNotFoundView"
+handler500 = "App.Main.views.PageNotFoundView"

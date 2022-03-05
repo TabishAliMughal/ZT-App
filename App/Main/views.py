@@ -1,8 +1,8 @@
 import re
 from django.shortcuts import get_object_or_404, render , redirect
-from Creator.forms import ManageCreatorCreateForm
+from App.Creator.forms import ManageCreatorCreateForm
 from django.contrib.auth.models import Group
-from Creator.models import Creator
+from App.Creator.models import Creator
 from School.Indivisuals.models import Indivisuals
 from Shop.Shop.models import Shops
 from django.contrib.auth.models import User

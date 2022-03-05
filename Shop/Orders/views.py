@@ -6,7 +6,7 @@ from Shop.Cart.cart import Cart
 from Shop.Shop.models import Product , Shops
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group , User
-from Authentication.user_handeling import unauthenticated_user, allowed_users, admin_only
+from App.Authentication.user_handeling import unauthenticated_user, allowed_users, admin_only
 from Shop.Cart.calculations import LatLonCalculator
 from Shop.Cart.models import DeliveryCharge
 import random

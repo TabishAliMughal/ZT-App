@@ -1,7 +1,7 @@
 from django.shortcuts import render , get_object_or_404 , get_list_or_404 , redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group , User
-from Authentication.user_handeling import unauthenticated_user, allowed_users, admin_only
+from App.Authentication.user_handeling import unauthenticated_user, allowed_users, admin_only
 from School.Teacher.models import *
 from School.Checker.models import *
 from .forms import *

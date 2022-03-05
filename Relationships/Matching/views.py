@@ -3,7 +3,7 @@ from Relationships.Candidate.models import Candidates
 from django.contrib.auth.decorators import login_required
 from Relationships.Matching.forms import ManageCandidateMatchForm
 from .models import Match
-from Authentication.user_handeling import unauthenticated_user, allowed_users, admin_only
+from App.Authentication.user_handeling import unauthenticated_user, allowed_users, admin_only
 from django.contrib.auth.models import User
 
 

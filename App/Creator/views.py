@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 import random
 from django.contrib.auth.models import Group , User
-from Authentication.forms import UserCreationForm
+from App.Authentication.forms import UserCreationForm
 from .forms import ManageCreatorCreateForm
 from .models import Creator
 from django.contrib.auth import authenticate, login
@@ -59,3 +59,4 @@ def ManageCreatorProfileView(request):
         'creator' : creator ,
     }
     return render(request , 'creator/profile.html' , context)
+

@@ -2,12 +2,12 @@ from datetime import datetime
 from django.shortcuts import render , redirect , get_object_or_404
 from .models import *
 from .forms import *
-from Authentication.forms import *
+from App.Authentication.forms import *
 import random
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group , User
-from Authentication.user_handeling import unauthenticated_user, allowed_users, admin_only
+from App.Authentication.user_handeling import unauthenticated_user, allowed_users, admin_only
 
 
 @login_required(login_url='main_login')

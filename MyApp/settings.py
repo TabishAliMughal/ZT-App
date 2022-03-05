@@ -4,7 +4,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = 'dd^d35%b(x!ee+rnaewa_(l9#++ke@uh^gmwu6=eyt30ft^*jv'
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['localhost','www.localhost.com','zandt.pk','www.zandt.pk','zandt.pk','127.0.0.1']
 
@@ -16,9 +16,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
-    'Authentication',
-    'Main',
-    'Creator',
+    'App.Authentication',
+    'App.Main',
+    'App.Creator',
+    'App.Points',
     'Shop.Shop',
     'Shop.Cart',
     'Shop.Orders',
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
     'storages',
     'import_export',
     'background_task',
+    'user_visit',
 ]
 
 SOCIAL_AUTH_FACEBOOK_KEY = '154485483318786' # Facebook App ID
@@ -76,6 +78,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'user_visit.middleware.UserVisitMiddleware',
 ]
 
 ROOT_URLCONF = 'MyApp.urls'
@@ -240,7 +243,7 @@ EMAIL_USE_TLS = True
 
 DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
-SECURE_SSL_REDIRECT = True
+# SECURE_SSL_REDIRECT = True
 
 CART_SESSION_ID = 'cart'
 

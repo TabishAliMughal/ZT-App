@@ -1,10 +1,10 @@
-from Creator.models import Creator
+from App.Creator.models import Creator
 from Blog.Blog.forms import ManageBlogCreateForm 
 from django.shortcuts import get_object_or_404, render,get_list_or_404
 from .models import Blog, Type
 from Blog.Post.models import Post, PostComment, PostReact, ReactTypes
 from django.contrib.auth.decorators import login_required
-from Authentication.user_handeling import allowed_users
+from App.Authentication.user_handeling import allowed_users
 from io import BytesIO
 from PIL import Image
 from django.core.files.base import ContentFile

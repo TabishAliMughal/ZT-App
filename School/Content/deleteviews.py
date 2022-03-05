@@ -4,7 +4,7 @@ from .models import *
 from .forms import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
-from Authentication.user_handeling import unauthenticated_user, allowed_users, admin_only
+from App.Authentication.user_handeling import unauthenticated_user, allowed_users, admin_only
 
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Admin'])

@@ -6,7 +6,7 @@ from Blog.Bunch.models import Bunch, BunchPost
 from .models import Post, PostComment, PostReact, ReactTypes
 from .forms import ManagePostCommentForm, ManagePostCreateForm, ManagePostReactForm
 from django.contrib.auth.decorators import login_required
-from Authentication.user_handeling import allowed_users
+from App.Authentication.user_handeling import allowed_users
 from io import BytesIO
 from PIL import Image
 from django.core.files.base import ContentFile

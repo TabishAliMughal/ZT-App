@@ -3,8 +3,8 @@ from School.Requirments.models import *
 from .models import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
-from Authentication.user_handeling import unauthenticated_user, allowed_users, admin_only
-from Authentication.views import *
+from App.Authentication.user_handeling import unauthenticated_user, allowed_users, admin_only
+from App.Authentication.views import *
 from School.Teacher.models import *
 from .forms import *
 import datetime

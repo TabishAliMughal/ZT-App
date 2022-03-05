@@ -4,7 +4,7 @@ from Shop.Accounts.models import ShopkeperPayment , ShopAdminShare , DeliveryPer
 from Shop.Shop.models import Shops
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group , User
-from Authentication.user_handeling import unauthenticated_user, allowed_users, admin_only
+from App.Authentication.user_handeling import unauthenticated_user, allowed_users, admin_only
 from .forms import ManageShopkeperPaymentForm , ManageDeliveryPersonPaymentForm , ManagePaymentProofForm
 from Shop.Delivery.models import DeliveryTasks , DeliveryPerson
 import math
