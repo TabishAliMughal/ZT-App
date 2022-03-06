@@ -33,7 +33,7 @@
                     {% if request.user.is_authenticated %}
                         {% if user %}
                             {% for i in user %}
-                                {% if i.name == "Creator" %}
+                                {% if i.name == "Shop_Creator" %}
                                     <a class="btn btn-primary" href="{% url 'shop:shop_product_create' shop.pk %}">Add</a>
                                 {% endif %}
                             {% endfor %}
@@ -50,7 +50,7 @@
                                     {% if request.user.is_authenticated %}
                                         {% if user %}
                                             {% for i in user %}
-                                                {% if i.name == "Creator" %}
+                                                {% if i.name == "Shop_Creator" %}
                                                     <th>Action</th>
                                                 {% endif %}
                                             {% endfor %}
@@ -70,7 +70,7 @@
                                     {% if request.user.is_authenticated %}
                                         {% if user %}
                                             {% for v in user %}
-                                                {% if v.name == "Creator" %}
+                                                {% if v.name == "Shop_Creator" %}
                                                     <td style="padding: 1.05rem 0rem;">
                                                         <a class="btn btn-primary" href="{% url 'shop:shop_product_edit' i.product.pk %}"> Edit </a>
                                                         <br>
