@@ -10,7 +10,7 @@ from App.User.forms import ManageUserDataForm
 def ManageAuth(request):
     group = Group.objects.get(name='Public')
     request.user.groups.add(group)
-    user = get_object_or_404(User , pk = request.user)
+    user = get_object_or_404(User , pk = request.user.pk)
     try:
         user_data_form = ManageUserDataForm({'first_name':user.first_name}or None , instance = get_object_or_404(UserData , user = request.user)).save()
     except:
