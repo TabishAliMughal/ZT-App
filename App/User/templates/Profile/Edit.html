@@ -56,7 +56,7 @@
                                 <input type="file" name="picture" accept="image/*" id="id_picture">
                             </div>
                         {% else %}
-                            <input class="form-control" type="file" name="picture" accept="image/*" required="" id="id_picture">
+                            <input class="form-control" type="file" name="picture" accept="image/*" id="id_picture">
                         {% endif %}
                     </div>
                     <div class="form-group">
@@ -123,11 +123,11 @@
                     </div>
                     <div class="form-group">
                         <label>City :</label>
-                        <input class="form-control" type="text" name="city" maxlength="250" required="" id="id_city" value="{% if user_data_form.city.value %}{{ user_data_form.city.value }}{% endif %}">
+                        <input class="form-control" type="text" name="city" maxlength="250" id="id_city" value="{% if user_data_form.city.value %}{{ user_data_form.city.value }}{% endif %}">
                     </div>
                     <div class="form-group">
                         <label>Mobile :</label>
-                        <input class="form-control" type="text" name="mobile" maxlength="11" required="" id="id_mobile" value="{% if user_data_form.mobile.value %}{{ user_data_form.mobile.value }}{% endif %}">
+                        <input class="form-control" type="text" name="mobile" maxlength="11" id="id_mobile" value="{% if user_data_form.mobile.value %}{{ user_data_form.mobile.value }}{% endif %}">
                     </div>
                     <div class="form-group">
                         <label>NIC :</label>
@@ -148,7 +148,7 @@
                         <div style="display:none;" >{{ user_change_form.date_joined }}</div>
                     </div>
                     <div class="form-group" hidden>
-                        <label>Date Joined :</label>
+                        <label>Is Active :</label>
                         <input class="form-control" type="checkbox" name="is_active" id="id_is_active" checked>
                         <div style="display:none;" >{{ user_change_form.date_joined }}</div>
                     </div>
