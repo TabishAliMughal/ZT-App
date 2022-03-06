@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from Shop.Shop.models import Product , Shops , ProductImages
-from Shop.Customer.models import UserData
+from App.User.models import UserData
 from .cart import Cart
 from .forms import CartAddProductForm
 from .calculations import LatLonCalculator
@@ -35,7 +35,7 @@ def ManageCartDetailView(request):
                 pro.append({ 'product' : p , 'total_price' : k ,'form' : q , 'img' : img })
         if pro != []:
             for u in UserData.objects.all():
-                if int(u.user) == int(request.user.pk):
+                if int(u.user.pk) == int(request.user.pk):
                     t = LatLonCalculator(u.address,i.address)
                     for j in DeliveryCharge.objects.all():
                         delivery = int(j.compulsory) + (int(j.per_km)*int(t))

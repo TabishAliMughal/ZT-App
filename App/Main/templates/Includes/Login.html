@@ -48,7 +48,7 @@
                             document.getElementById('id03').style.display='block';
                             ">Activate Your Shop</a>
                         {% else %}
-                            <a role="button" class="btn btn-primary shadow-2 mb-4 form-control" href="javascript:" onclick="showCreatorForm()">Be A Creator</a>
+                            {% comment %} <a role="button" class="btn btn-primary shadow-2 mb-4 form-control" href="javascript:" onclick="showCreatorForm()">Be A Creator</a> {% endcomment %}
                         {% endif %}
                     {% endif %}
                 </div>
@@ -56,7 +56,7 @@
         </div>
     </div>
 </div>
-<div id="creator" style="display: none;" class="row">
+{% comment %} <div id="creator" style="display: none;" class="row">
     <div class="auth-wrapper">
         <div class="auth-content">
             <div class="card">
@@ -109,4 +109,4 @@
             </div>
         </div>
     </div>
-</div>
+</div> {% endcomment %}

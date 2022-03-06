@@ -14,7 +14,7 @@ from django.core.files.base import ContentFile
 
 
 @login_required(login_url='auth:login_url')
-@allowed_users(allowed_roles=['Creator'])
+@allowed_users(allowed_roles=['Shop_Creator'])
 def ManageShopAccountView(request):
     user = request.user.groups.values('name')
     unpaid_orders = []

@@ -1,4 +1,4 @@
-from App.Creator.models import Creator
+from App.User.models import Creator, UserData
 from Blog.Blog.forms import ManageBlogCreateForm 
 from django.shortcuts import get_object_or_404, render,get_list_or_404
 from .models import Blog, Type
@@ -37,9 +37,9 @@ def ManageUserBlogListView(request,pk=None):
     user = request.user.groups.values('name')
     blogs = []
     if pk:
-        blog_user = int(get_object_or_404(Creator,pk = pk).pk)
+        blog_user = int(get_object_or_404(UserData,pk = pk).pk)
     else:
-        blog_user = int(get_object_or_404(Creator,user = request.user.pk).pk)
+        blog_user = int(get_object_or_404(UserData,user = request.user).pk)
     for i in Blog.objects.all().order_by('time'):
         if int(i.user) == blog_user:
             reacts = []
@@ -77,13 +77,13 @@ def ManageUserBlogListView(request,pk=None):
     return render(request,'Blog/User/List.html',context)
 
 @login_required(login_url='not_authorized')
-@allowed_users(allowed_roles=['Creator'])
+@allowed_users(allowed_roles=['Blog_Creator'])
 def ManageBlogCreateView(request):
     user = request.user.groups.values('name')
     if request.method == 'POST':
         user = ''
-        for i in Creator.objects.all():
-            if int(get_object_or_404(User,pk= i.user.pk).pk) == int(request.user.pk):
+        for i in UserData.objects.all():
+            if int((get_object_or_404(User,pk= i.user.pk)).pk) == int(request.user.pk):
                 cur_user = i
         image = Image.open(request.FILES.get('image'))
         size = image.size
@@ -117,7 +117,7 @@ def ManageBlogCreateView(request):
         return render(request,'Blog/User/Create.html',context)
 
 @login_required(login_url='main_login')
-@allowed_users(allowed_roles=['Creator'])
+@allowed_users(allowed_roles=['Blog_Creator'])
 def ManageBlogEditView(request,pk):
     user = request.user.groups.values('name')
     blog = get_object_or_404(Blog , pk = pk)
@@ -157,7 +157,7 @@ def ManageBlogEditView(request,pk):
         return render(request,'Blog/User/Edit.html',context)
 
 @login_required(login_url='main_login')
-@allowed_users(allowed_roles=['Creator'])
+@allowed_users(allowed_roles=['Blog_Creator'])
 def ManageBlogDeleteView(request,pk):
     user = request.user.groups.values('name')
     blog = get_object_or_404(Blog,pk = pk)

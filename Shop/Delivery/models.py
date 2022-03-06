@@ -2,7 +2,6 @@ from django.contrib.gis.db import models
 from django.contrib.auth.models import User
 from Shop.Orders.models import Order , OrderItem
 from Shop.Shop.models import Shops
-from Shop.Customer.models import UserData
 from django.contrib.gis.geos import Point
 
 
@@ -27,7 +26,8 @@ class DeliveryTasks(models.Model):
     person = models.ForeignKey(DeliveryPerson , on_delete=models.CASCADE)
     order = models.ForeignKey(Order , on_delete=models.CASCADE)
     task_from = models.ForeignKey(Shops,on_delete=models.CASCADE)
-    task_to = models.ForeignKey(UserData,on_delete=models.CASCADE)
+    # task_to = models.ForeignKey(UserData,on_delete=models.CASCADE)
+    task_to = models.IntegerField()
     date = models.DateTimeField(auto_now_add=True)
     pick = models.DateTimeField(blank=True,null=True)
     drop = models.DateTimeField(blank=True,null=True)

@@ -2,7 +2,7 @@ from webbrowser import get
 from django.shortcuts import redirect, render , HttpResponseRedirect , get_object_or_404
 from Blog.Blog.models import Blog
 from Blog.Post.models import Post
-from App.Creator.models import Creator
+from App.User.models import Creator
 from .models import Bunch, BunchPost
 from .forms import ManageBunchCreateForm , ManageBunchPostCreateForm
 from django.contrib.auth.decorators import login_required
@@ -45,7 +45,7 @@ def ManageBunchNextPostView(request,bunch):
     return render(request,'bunch/list.html',context)
 
 @login_required(login_url='main_login')
-@allowed_users(allowed_roles=['Creator'])
+@allowed_users(allowed_roles=['Blog_Creator'])
 def ManageBunchCreateView(request):
     user = request.user.groups.values('name')
     if request.method == 'POST':
@@ -99,7 +99,7 @@ def ManageBunchCreateView(request):
         return render(request,'bunch/create.html',context)
 
 @login_required(login_url='main_login')
-@allowed_users(allowed_roles=['Creator'])
+@allowed_users(allowed_roles=['Blog_Creator'])
 def BunchAddPostsView(request):
     if request.method == 'POST':
         bunch = get_object_or_404(Bunch,pk = (request.POST.get('bunch')))
@@ -121,7 +121,7 @@ def BunchAddPostsView(request):
     return redirect('blog_bunch:blog_bunch_list',bunch.blog.pk)
 
 @login_required(login_url='main_login')
-@allowed_users(allowed_roles=['Creator'])
+@allowed_users(allowed_roles=['Blog_Creator'])
 def ManageBunchEditView(request,bunch):
     user = request.user.groups.values('name')
     bunch = get_object_or_404(Bunch , pk = bunch)
@@ -146,7 +146,7 @@ def ManageBunchEditView(request,bunch):
         return render(request,'bunch/edit.html',context)
 
 @login_required(login_url='main_login')
-@allowed_users(allowed_roles=['Creator'])
+@allowed_users(allowed_roles=['Blog_Creator'])
 def ManageBunchDeleteView(request,bunch):
     user = request.user.groups.values('name')
     bunch = get_object_or_404(Bunch,pk = bunch)

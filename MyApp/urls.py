@@ -31,7 +31,7 @@ urlpatterns = [
     path('adminsite/', admin.site.urls),
     path('schoolsite/', schoolsite.urls),
     path('matrinomialsite/', matrinomialsite.urls),
-    path('creator/', include('App.Creator.urls', namespace='creator')),
+    path('user/', include('App.User.urls', namespace='user')),
     path('user/log/', include('App.Authentication.urls', namespace='auth')),
     # Shop Urls
     path('shopping/', include('Shop.Shop.urls', namespace='shop')),

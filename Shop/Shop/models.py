@@ -1,7 +1,7 @@
 from django.contrib.gis.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
-from App.Creator.models import Creator
+from App.User.models import Creator
 
 
 class Units(models.Model):

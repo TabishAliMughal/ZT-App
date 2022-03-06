@@ -128,7 +128,7 @@ def ManagePostCommentView(request,pk):
     return redirect('blog_post:post_detail',post.pk)
 
 @login_required(login_url='main_login')
-@allowed_users(allowed_roles=['Creator'])
+@allowed_users(allowed_roles=['Blog_Creator'])
 def ManagePostCreateView(request,pk):
     user = request.user.groups.values('name')
     if request.method == 'POST':
@@ -169,7 +169,7 @@ def ManagePostCreateView(request,pk):
         return render(request,'post/create.html',context)
 
 @login_required(login_url='main_login')
-@allowed_users(allowed_roles=['Creator'])
+@allowed_users(allowed_roles=['Blog_Creator'])
 def ManagePostEditView(request,pk):
     user = request.user.groups.values('name')
     post = get_object_or_404(Post , pk = pk)
@@ -212,7 +212,7 @@ def ManagePostEditView(request,pk):
         return render(request,'post/edit.html',context)
 
 @login_required(login_url='main_login')
-@allowed_users(allowed_roles=['Creator'])
+@allowed_users(allowed_roles=['Blog_Creator'])
 def ManagePostDeleteView(request,pk):
     user = request.user.groups.values('name')
     post = get_object_or_404(Post,pk = pk)

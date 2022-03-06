@@ -1,15 +1,20 @@
-import re
 from django.shortcuts import get_object_or_404, render , redirect
-from App.Creator.forms import ManageCreatorCreateForm
+from App.User.forms import ManageCreatorCreateForm
 from django.contrib.auth.models import Group
-from App.Creator.models import Creator
+from App.User.models import Creator, UserData
 from School.Indivisuals.models import Indivisuals
 from Shop.Shop.models import Shops
 from django.contrib.auth.models import User
+from App.User.forms import ManageUserDataForm
 
 def ManageAuth(request):
     group = Group.objects.get(name='Public')
     request.user.groups.add(group)
+    user = get_object_or_404(User , pk = request.user)
+    try:
+        user_data_form = ManageUserDataForm({'first_name':user.first_name}or None , instance = get_object_or_404(UserData , user = request.user)).save()
+    except:
+        user_data_form = ManageUserDataForm({'first_name':user.first_name}).save()
     return redirect('main')
 
 def Rejected(request):
@@ -18,6 +23,20 @@ def Rejected(request):
         'user' : user ,
     }
     return render(request,'Includes/Rejected.html',context)
+
+def PrivicyPolicy(request):
+    user = request.user.groups.values('name')
+    context = {
+        'user' : user ,
+    }
+    return render(request,'PrivacyPolicy.html',context)
+
+def TermsAndConditions(request):
+    user = request.user.groups.values('name')
+    context = {
+        'user' : user ,
+    }
+    return render(request,'TermsAndConditions.html',context)
 
 def NotAuthorized(request):
     user = request.user.groups.values('name')
@@ -67,16 +86,6 @@ def PageNotFoundView(request,exception=None):
         'user' : user ,
     }
     return render(request,'Includes/404.html',context)
-
-def ManageUserProfileView(request):
-    user = request.user.groups.values('name')
-    if request.user.is_authenticated:
-        cur_user = get_object_or_404(User , pk = request.user.pk)
-    context = {
-        'user' : user ,
-        'cur_user' : cur_user ,
-    }
-    return render(request,'Profile.html',context)
 
 def ManageAboutUsView(request):
     user = request.user.groups.values('name')

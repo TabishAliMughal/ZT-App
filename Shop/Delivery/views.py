@@ -1,5 +1,7 @@
 from multiprocessing import context
 from django.shortcuts import render , redirect , get_object_or_404
+
+from App.User.models import UserData
 from .models import *
 from .forms import *
 from Shop.Orders.forms import *
@@ -106,7 +108,8 @@ def ManageDeliveryPersonTaskDetailView(request,task):
     user = request.user.groups.values('name')
     task = get_object_or_404(DeliveryTasks, pk = int(task))
     task_from = {'lat': task.task_from.address[1] , 'lon': task.task_from.address[0]}
-    task_to = {'lat': task.task_to.address[1] , 'lon': task.task_to.address[0]}
+    print()
+    task_to = {'lat': (get_object_or_404(UserData , pk = task.task_to)).address[1] , 'lon': (get_object_or_404(UserData , pk = task.task_to)).address[0]}
     price = int('0')
     proof = []
     for i in OrderItem.objects.all():
@@ -142,9 +145,10 @@ def ManageDeliveryPersonTasksCreateView(request):
             'person' : rider ,
             'order' : order ,
             'task_from' : get_object_or_404(Shops ,pk = data.get('from')) ,
-            'task_to' : get_object_or_404(UserData , pk = data.get('to')) ,
+            'task_to' : get_object_or_404(UserData , pk = data.get('to')).pk ,
             'status' : 'Processing' ,
         })
+        print(form)
         task = form.save()
         Order.objects.filter(pk = order.pk).update(status = 'OrderPickProcessing')
         DeliveryPerson.objects.filter(pk = rider.pk).update(active = 'Bussy')
@@ -155,7 +159,7 @@ def ManageDeliveryPersonTasksCreateView(request):
             for k in OrderItem.objects.all().filter(order = i):
                 pick = k.product.shop
                 break
-            drop = i.user
+            drop = get_object_or_404(UserData,pk = i.user)
             R = 6373.0
             lat1 = radians(pick.address[0])
             lon1 = radians(pick.address[1])

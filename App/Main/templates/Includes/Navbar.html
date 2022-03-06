@@ -29,7 +29,7 @@
                             <li><a href="{% url 'shop:product_list' %}" >Home</a></li>
                             {% if user %}
                                 {% for i in user %}
-                                    {% if i.name == "Creator" %}
+                                    {% if i.name == "Shop_Creator" %}
                                         {% if shop == 'NoShop' %}
                                             <li><a href="{% url 'shop:shop_products' %}" >Register Shop</a></li>
                                         {% else %}
@@ -39,7 +39,6 @@
                                     {% elif i.name == "Public" %}
                                         <li><a href="{% url 'shop_cart:cart_detail' %}">My Cart</a></li>
                                         <li><a href="{% url 'shop_costumer:previous_orders' %}">My Orders</a></li>
-                                        <li><a href="{% url 'shop_costumer:costumer_data' %}">My Data</a></li>
                                     {% elif i.name == "Delivery" %}
                                         <li><a href="{% url 'shop_delivery:delivery_person_tasks' %}">My Tasks</a></li>
                                         <li><a href="{% url 'shop_delivery:delivery_person_data' %}">My Data</a></li>
@@ -76,8 +75,6 @@
                                     <li><a href="{% url 'school_reg_school:school_profile' %}">My Profile</a></li>
                                 {% elif i.name == 'Parent' %}
                                     <li><a href="{% url 'school_parents:parent_profile' %}">My Profile</a></li>
-                                {% elif i.name == 'Student' %}
-                                    <li><a href="{% url 'school_student:student_profile' request.user.pk %}">My Profile</a></li>
                                 {% elif i.name == 'Individuals' %}
                                     <li><a href="{% url 'school_individuals:indivisual_profile' %}">My Profile</a></li>
                                 {% elif i.name == 'Public' %}
@@ -151,7 +148,7 @@
                             <li><a href="{% url 'blog_blog:blog_list' %}" class="nav-link">Home</a></li>
                             {% if user %}            
                                 {% for i in user %}
-                                    {% if i.name == "Creator" %}
+                                    {% if i.name == "Blog_Creator" %}
                                         <li><a href="{% url 'blog_blog:user_blog_list' %}" >My Blogs</a></li>
                                     {% elif i.name == "Public" %}
                                     {% elif i.name == "Admin" %}
@@ -174,11 +171,9 @@
                             <li><a href="{% url 'relationships:home' %}" class="nav-link">Home</a></li>
                             {% if user %}
                                 {% for i in user %}
-                                    {% if i.name == "Creator" %}
-                                    {% elif i.name == "Public" %}
+                                    {% if i.name == "Public" %}
                                         <li><a href="{% url 'candidate:info' %}" class="nav-link">My Info</a></li>
                                         <li><a href="{% url 'candidate:candidate_matches' %}" class="nav-link">My Matches</a></li>
-                                    {% elif i.name == "Admin" %}
                                     {% elif i.name == "RAdmin" %}
                                         <li><a href="{% url 'candidate:candidate_list' %}" class="nav-link">All Info</a></li>
                                         <li><a href="{% url 'relationships_matching:matched_list' %}" class="nav-link">Matched List</a></li>
@@ -202,12 +197,14 @@
                     <a href="https://www.facebook.com"" class="nav-link "><span class="pcoded-micon"><i class="feather icon-facebook"></i></span><span class="pcoded-mtext">Facebook</span></a>
                 </li>
                 <br>
-                <li data-username="" class="nav-item ">
-                    <a href="{% url 'user_profle' %}" class="nav-link">
-                        <span class="pcoded-micon"><i class="feather icon-user"></i></span><span class="pcoded-mtext">My Profile</span>
-                    </a>
-                </li>
-                <br>
+                {% if request.user.is_authenticated %}
+                    <li data-username="" class="nav-item ">
+                        <a href="{% url 'user:user_profle' %}" class="nav-link">
+                            <span class="pcoded-micon"><i class="feather icon-user"></i></span><span class="pcoded-mtext">My Profile</span>
+                        </a>
+                    </li>
+                    <br>
+                {% endif %}
                 <li data-username="" class="nav-item ">
                     <a href="{% url 'about_us' %}" class="nav-link">
                         <span class="pcoded-micon"><i class="feather icon-user"></i></span><span class="pcoded-mtext">About Us</span>

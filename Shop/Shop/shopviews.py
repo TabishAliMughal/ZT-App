@@ -1,7 +1,5 @@
-from App.Creator.models import Creator
+from App.User.models import Creator, UserData
 from django.shortcuts import render, get_object_or_404 , redirect
-
-from Shop.Customer.models import UserData
 from .models import Product , Shops , ProductImages , ProductVideos
 from .forms import ManageProductCreateForm , ManageShopCreateForm , ManageUnitCreateForm , ManageProductImageCreateForm , ManageProductVideoCreateForm
 from App.Authentication.models import *
@@ -31,7 +29,7 @@ def ManageShopsListView(request):
     return render(request , 'shop/list.html' , context)
 
 @login_required(login_url='main_login')
-@allowed_users(allowed_roles=['Creator'])
+@allowed_users(allowed_roles=['Shop_Creator'])
 def ManageShopCreateView(request):
     user = request.user.groups.values('name')
     if request.method == 'POST':
@@ -101,7 +99,7 @@ def ManageShopProductListView(request,shop=None):
     sel_shop = None
     if shop == None:
         for i in Shops.objects.all():
-            if str(i.user) == str(get_object_or_404(Creator , user = request.user.pk).pk):
+            if int(i.user) == int(get_object_or_404(UserData , user = request.user).pk):
                 sel_shop = i
     else:
         sel_shop = get_object_or_404(Shops , pk = int(shop))
@@ -131,7 +129,7 @@ def ManageShopProductListView(request,shop=None):
         return render(request,'shop/request.html',context)
 
 @login_required(login_url='main_login')
-@allowed_users(allowed_roles=['Creator'])
+@allowed_users(allowed_roles=['Shop_Creator'])
 def ManageShopProductCreateView(request,shop):
     user = request.user.groups.values('name')
     form = {
@@ -199,7 +197,7 @@ def ManageShopProductCreateView(request,shop):
         return render(request,'shop/shopkeeper/create.html',context)
 
 @login_required(login_url='main_login')
-@allowed_users(allowed_roles=['Creator'])
+@allowed_users(allowed_roles=['Shop_Creator'])
 def ManageShopProductEditView(request,product):
     user = request.user.groups.values('name')
     product = get_object_or_404(Product, pk = int(product))
@@ -278,7 +276,7 @@ def ManageShopProductEditView(request,product):
         return render(request,'shop/shopkeeper/create.html',context)
 
 @login_required(login_url='main_login')
-@allowed_users(allowed_roles=['Creator'])
+@allowed_users(allowed_roles=['Shop_Creator'])
 def ManageShopProductSoldView(request,product):
     product = get_object_or_404(Product, pk = int(product))
     form = ManageProductCreateForm({
@@ -296,7 +294,7 @@ def ManageShopProductSoldView(request,product):
     return redirect('shop:shop_products')
 
 @login_required(login_url='main_login')
-@allowed_users(allowed_roles=['Creator'])
+@allowed_users(allowed_roles=['Shop_Creator'])
 def ManageShopProductPictureDeleteView(request,picture):
     picture = get_object_or_404(ProductImages, pk = int(picture))
     product = picture.product.pk
@@ -304,7 +302,7 @@ def ManageShopProductPictureDeleteView(request,picture):
     return redirect('shop:shop_product_edit',product)
 
 @login_required(login_url='main_login')
-@allowed_users(allowed_roles=['Creator'])
+@allowed_users(allowed_roles=['Shop_Creator'])
 def ManageShopProductVideoDeleteView(request,video):
     video = get_object_or_404(ProductVideos, pk = int(video))
     product = video.product.pk
@@ -312,12 +310,12 @@ def ManageShopProductVideoDeleteView(request,video):
     return redirect('shop:shop_product_edit',product)
 
 @login_required(login_url='main_login')
-@allowed_users(allowed_roles=['Creator'])
+@allowed_users(allowed_roles=['Shop_Creator'])
 def ManageShopOrdersListView(request):
     user = request.user.groups.values('name')
     shop = ''
     for i in Shops.objects.all():
-        if int(i.user) == int(get_object_or_404(Creator,user = request.user.pk).pk):
+        if int(i.user) == int(get_object_or_404(UserData,user = request.user.pk).pk):
             shop = i
     orders = []
     for v in Order.objects.all():
@@ -335,6 +333,7 @@ def ManageShopOrdersListView(request):
         for k in orders:
             if k.get('products') == []:
                 orders.remove(k)
+    orders = orders[::-1]
     context = {
         'orders': orders ,
         'user' : user ,
@@ -343,12 +342,12 @@ def ManageShopOrdersListView(request):
     return render(request,'shop/shopkeeper/Orders/list.html',context)
 
 @login_required(login_url='main_login')
-@allowed_users(allowed_roles=['Creator'])
+@allowed_users(allowed_roles=['Shop_Creator'])
 def ManageShopOrderDetailView(request,order):
     user = request.user.groups.values('name')
     shop = ''
     for i in Shops.objects.all():
-        if int(i.user) == int(get_object_or_404(Creator,user = request.user.pk).pk):
+        if int(i.user) == int(get_object_or_404(UserData,user = request.user.pk).pk):
             shop = i
     order = get_object_or_404(Order , pk = int(order) )
     products = []

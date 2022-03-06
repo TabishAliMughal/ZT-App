@@ -75,7 +75,7 @@
                     <br>
                     <br>
                     <a role="button" class="sign-in" href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">Sign in with Google</a>
-                    {% if request.path == '/' %}
+                    <!-- {% if request.path == '/' %}
                         {% if request.user.is_authenticated %}
                             <br>
                             <br>
@@ -89,7 +89,7 @@
                             document.getElementById('id03').style.display='block';
                             ">Be A Creator</a>
                         {% endif %}
-                    {% endif %}
+                    {% endif %} -->
 
                 </div>
             </div>
@@ -102,7 +102,7 @@
     <script src="{% static 'assets/js/pcoded.min.js' %}"></script>
 </body>
 </html>
-<div id="id03" class="modal">
+<!-- <div id="id03" class="modal">
     <form autocomplete="off" class="modal-content animate" action="{% url 'creator:creator_create' %}" method="POST" >
         {% csrf_token %}
         <div class="container">
@@ -163,4 +163,4 @@
             text.style.display = "none"
         }
         });
-    </script>
+    </script> -->

@@ -15,7 +15,7 @@
                 <div class="card-body">
                     {% if request.user.is_authenticated %}
                         {% for i in user %}
-                            {% if i.name == 'Creator' %}
+                            {% if i.name == 'Blog_Creator' %}
                                 <a class="btn btn-primary" href="{% url 'blog_blog:blog_create' %}">Create Blog</a>
                             {% elif i.name == 'Public' %}
                                 <a class="btn btn-primary" href="{% url 'blog_bunch:bunch_list' %}">Bunch List</a>

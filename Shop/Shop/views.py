@@ -5,7 +5,7 @@ from Shop.Cart.forms import CartAddProductForm
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.geos import Point
 import geocoder
-from App.Creator.models import Creator
+from App.User.models import Creator
 from django.template import loader
 
 

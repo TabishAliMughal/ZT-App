@@ -1,0 +1,211 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block link %}
+    <link href="{% static 'mapwidgets/css/map_widgets.css' %}" type="text/css" media="all" rel="stylesheet">
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&amp;language=en&amp;key=AIzaSyBgzluEvlveyfNKaigwEClXvhSaUyTmLLI"></script>
+    
+    <script src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+    <script src="{% static 'admin/js/jquery.init.js' %}"></script>
+    <script src="{% static 'mapwidgets/js/jquery_init.js' %}"></script>
+    <script src="{% static 'admin/js/core.js' %}"></script>
+    <script src="{% static 'mapwidgets/js/jquery_class.js' %}"></script>
+    <script src="{% static 'admin/js/admin/RelatedObjectLookups.js' %}"></script>
+    <script src="{% static 'mapwidgets/js/django_mw_base.js' %}"></script>
+    <script src="{% static 'admin/js/actions.js' %}"></script>
+    <script src="{% static 'mapwidgets/js/mw_google_point_field.js' %}"></script>
+    <script src="{% static 'admin/js/urlify.js' %}"></script>
+    <script src="{% static 'admin/js/prepopulate.js' %}"></script>
+    <script src="{% static 'admin/js/vendor/xregexp/xregexp.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h5>User Profile Edit</h5>
+        </div>
+        <div class="card-body">
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="form-group" hidden>
+                        <label>User</label>
+                        <input class="form-control" type="text" name="user" id="id_user" value="{{ request.user.pk }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input class="form-control" type="text" name="username" id="id_username" readonly value="{{ user_change_form.username.value }}">
+                        <small>You Cannot Change Your Username</small>
+                    </div>
+                    <div class="form-group">
+                        <label>First Name :</label>
+                        <input class="form-control" type="text" name="first_name" maxlength="150" id="id_first_name" value="{{ user_change_form.first_name.value }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name :</label>
+                        <input class="form-control" name="last_name" maxlength="150" id="id_last_name" value="{{ user_change_form.last_name.value }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Image :</label>
+                        {% if user_data_form.picture.value %}
+                            <div class="form-control">
+                                Currently : <img style="width:100px;" src="{{ user_data_form.picture.value.url }}">
+                                <br>
+                                <br>
+                                <label>Change :</label>
+                                <input type="file" name="picture" accept="image/*" id="id_picture">
+                            </div>
+                        {% else %}
+                            <input class="form-control" type="file" name="picture" accept="image/*" required="" id="id_picture">
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label>Email :</label>
+                        <input class="form-control" type="email" name="email" maxlength="254" id="id_email" value="{{ user_change_form.email.value }}">
+                    </div>
+                    <div class="form-group" hidden>
+                        <label for="id_groups">Groups:</label>
+                        <select class="form-control" name="groups" id="id_groups" multiple readonly="readonly">
+                            {% for i in user_change_form.groups %}
+                                {{ i }}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_address">Address:</label>
+                        <div class="mw-wrap" id="address-mw-wrap" style="width: 100%;min-width: 20px;">
+                            <div class="mw-header">
+                                <div class="mw-coordinates-wrap">
+                                    <a class="btn btn-primary mw-btn-coordinates">Coordinates <i class="icon-down-dir" ></i></a>
+                                    <div class="mw-coordinates-overlay hide">
+                                        <label for="address-mw-overlay-latitude">
+                                            Latitude:
+                                            <input type="text" id="address-mw-overlay-latitude" class="form-control mw-overlay-input mw-overlay-latitude" placeholder="Ex: 41.015137" style="width: 100%;"/>
+                                        </label>
+                                        <label for="address-mw-overlay-longitude">
+                                            Longitude:
+                                            <input type="text" id="address-mw-overlay-longitude" class="form-control mw-overlay-input mw-overlay-longitude" placeholder="Ex: 28.979530" style="width: 100%;"/>
+                                        </label>
+                                        <br>
+                                        <br>
+                                        <button type="button" class="btn btn-primary mw-btn-coordinates-done"><a>Done</a></button>
+                                    </div>
+                                </div>
+                                <a class="btn btn-primary mw-btn-my-location" >Current</a>
+                                <a class="mw-btn mw-btn-warning mw-btn-add-marker" ><i class="icon-location"></i></a>
+                                <br>
+                                <br>
+                                <div class="mw-adress-input-wrap" style="width: 100%;">
+                                    <input type="text" class="form-control pull-right" id="address-mw-google-address-input" placeholder="Enter or update the address here"/>
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div style="width: 100%;">
+                                <div class="mw-map-wrapper">
+                                    <div class="mw-loader-overlay hide" >
+                                        <div class="mw-loader"></div>
+                                    </div>
+                                    <div id="address-map-elem" class="mw-map"></div>
+                                    <div style="display: none" class="hide">
+                                        <textarea id="id_address" name="address">POINT (67.14330946075596 24.83546661590558)</textarea>
+                                    </div>
+                                </div>
+                                <div class="mw-footer">
+                                    <span class="mw-help-text help-text"></span>
+                                    <a class="mw-btn mw-btn-delete pull-right mw-btn-danger" ><i class="icon-trash-empty"></i></a>
+                                </div>
+                                <div class="animated-loader"></div>
+                            </div>
+                        </div>
+                            <input hidden type="text" value="{{ lat }}" id="lat" class="form-control">
+                            <input hidden type="text" value="{{ lon }}" id="lon" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>City :</label>
+                        <input class="form-control" type="text" name="city" maxlength="250" required="" id="id_city" value="{% if user_data_form.city.value %}{{ user_data_form.city.value }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label>Mobile :</label>
+                        <input class="form-control" type="text" name="mobile" maxlength="11" required="" id="id_mobile" value="{% if user_data_form.mobile.value %}{{ user_data_form.mobile.value }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label>NIC :</label>
+                        <input class="form-control" type="text" name="nic" maxlength="15" id="id_nic" value="{% if user_data_form.nic.value %}{{ user_data_form.nic.value }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label>Bank Account :</label>
+                        <input class="form-control" type="text" name="bank_account" maxlength="24" id="id_bank_account" value="{% if user_data_form.bank_account.value %}{{ user_data_form.bank_account.value }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label>Easypaisa :</label>
+                        <input class="form-control" type="text" name="easypaisa" maxlength="11" id="id_easypaisa" value="{% if user_data_form.easypaisa.value %}{{ user_data_form.easypaisa.value }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label>Date Joined :</label>
+                        <input class="form-control" type="datetime" name="" value="{{ user_change_form.date_joined.value }}" required="" readonly id="id_date_joined">
+                        <small>You Cannot Change Your Joining Date</small>
+                        <div style="display:none;" >{{ user_change_form.date_joined }}</div>
+                    </div>
+                    <div class="form-group" hidden>
+                        <label>Date Joined :</label>
+                        <input class="form-control" type="checkbox" name="is_active" id="id_is_active" checked>
+                        <div style="display:none;" >{{ user_change_form.date_joined }}</div>
+                    </div>
+                    {% csrf_token %}
+                    <button class="btn btn-primary">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script type="application/javascript">
+        (function($) {
+            var lat = document.getElementById('lat').value;
+            var lon = document.getElementById('lon').value;
+
+            var mapOptions = JSON.parse("{\u0022mapCenterLocationName\u0022: \u0022karachi\u0022, \u0022mapCenterLocation\u0022: [30, 70], \u0022zoom\u0022: 15, \u0022GooglePlaceAutocompleteOptions\u0022: {\u0022componentRestrictions\u0022: {\u0022country\u0022: \u0022pakistan\u0022}}, \u0022markerFitZoom\u0022: 12, \u0022streetViewControl\u0022: true}");
+            if(lat == "" , lon == ""){
+                var field_value = JSON.parse("{}");
+            }else{
+                var field_value = JSON.parse("{\u0022lng\u0022: "+ lon +", \u0022lat\u0022: "+ lat +"}");
+            }
+
+            var wrapElemSelector = "#address-mw-wrap";
+            var mapElemID = "address-map-elem";
+            var googleAutoInputID = "address-mw-google-address-input";
+            var locationInputID = "#id_address";
+
+            var mapWidgetOptions = {
+                locationInput: $(locationInputID),
+                wrapElemSelector: wrapElemSelector,
+                locationFieldValue: field_value,
+                mapElement: document.getElementById(mapElemID),
+                mapCenterLocationName: mapOptions.mapCenterLocationName,
+                mapCenterLocation: mapOptions.mapCenterLocation,
+                coordinatesOverlayToggleBtn: $(".mw-btn-coordinates", wrapElemSelector),
+                coordinatesOverlayDoneBtn: $(".mw-btn-coordinates-done", wrapElemSelector),
+                coordinatesOverlayInputs: $(".mw-overlay-input", wrapElemSelector),
+                coordinatesOverlay: $(".mw-coordinates-overlay", wrapElemSelector),
+                myLocationBtn: $(".mw-btn-my-location", wrapElemSelector),
+                addressAutoCompleteInput: document.getElementById(googleAutoInputID),
+                deleteBtn: $(".mw-btn-delete", wrapElemSelector),
+                addMarkerBtn: $(".mw-btn-add-marker", wrapElemSelector),
+                loaderOverlayElem: $(".mw-loader-overlay", wrapElemSelector),
+                zoom: mapOptions.zoom,
+                markerFitZoom: mapOptions.markerFitZoom,
+                GooglePlaceAutocompleteOptions: mapOptions.GooglePlaceAutocompleteOptions,
+                streetViewControl: mapOptions.streetViewControl,
+                markerCreateTriggerNameSpace: "google_point_map_widget:marker_create",
+                markerChangeTriggerNameSpace: "google_point_map_widget:marker_change",
+                markerDeleteTriggerNameSpace: "google_point_map_widget:marker_delete",
+                placeChangedTriggerNameSpace: "google_point_map_widget:place_changed"
+            };
+            var widget = new DjangoGooglePointFieldWidget(mapWidgetOptions);
+            
+
+            
+        })(mapWidgets.jQuery);
+    </script>
+{% endblock %}

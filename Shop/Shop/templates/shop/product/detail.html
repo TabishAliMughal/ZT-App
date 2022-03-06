@@ -125,7 +125,7 @@
                                                             {% endif %}
                                                         {% endfor %}
                                                     {% else %}
-                                                        <h6>Cant Create Order <a href="{% url 'costumer:costumer_data' %}">Fill Your Data</a></h6>
+                                                        <h6>Cant Create Order <a href="{% url 'user:user_profle_edit' %}">Fill Your Data</a></h6>
                                                     {% endif %}
                                                 {% else %}
                                                     <span><a href="{% url 'main_login' %}?next={{ request.path }}">Log In</a>To Create Order</span>

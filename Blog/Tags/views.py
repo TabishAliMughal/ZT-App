@@ -5,11 +5,11 @@ from django.contrib.auth.decorators import login_required
 from App.Authentication.user_handeling import allowed_users
 from .models import Tags , BlogTags , PostTags
 from .forms import ManageTagsCreateForm , ManagePostTagsCreateForm , ManageBlogTagsCreateForm
-from App.Creator.models import Creator
+from App.User.models import Creator
 
 
 @login_required(login_url='main_login')
-@allowed_users(allowed_roles=['Creator'])
+@allowed_users(allowed_roles=['Blog_Creator'])
 def ManageBlogAddTagsView(request,pk):
     user = request.user.groups.values('name')
     blog = get_object_or_404(Blog , pk = pk)
@@ -36,7 +36,7 @@ def ManageBlogAddTagsView(request,pk):
         return render(request,'Tags/Blog/Tags.html',context)
 
 @login_required(login_url='main_login')
-@allowed_users(allowed_roles=['Creator'])
+@allowed_users(allowed_roles=['Blog_Creator'])
 def ManagePostAddTagsView(request,pk):
     user = request.user.groups.values('name')
     post = get_object_or_404(Post , pk = pk)

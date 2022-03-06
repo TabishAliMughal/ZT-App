@@ -1,0 +1,50 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h5>User Profile</h5>
+        </div>
+        <div class="card-body">
+            <a href="{% url 'user:user_profle_edit' %}" class="btn btn-primary float-right"><i class="feather icon-edit"></i>Edit</a>
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-md">
+                    <div class="card block-card">
+                        <div class="card-body">
+                            {% for i in cur_user %}
+                                {% for v in i.data %}
+                                    <img style="border-radius: 50%;width: 100%;" src="{{ v.picture.url }}">
+                                {% endfor %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8" style="height: 100%;">
+                    <div class="card block-card">
+                        <div class="card-body">
+                            {% for i in cur_user %}
+                                <a class="text-left" style="color: black;">Name</a><span style="float:right;color: grey;">{{ i.user.first_name }} {{ i.user.last_name }}</span><br>
+                                <a class="text-left" style="color: black;">Email Address</a><span style="float:right;color: grey;">{{ i.user.email }}</span><br>
+                                <a class="text-left" style="color: black;">Logged In As</a><span style="float:right;color: grey;">{% for i in user %}{{ i.name }}{% endfor %}</span><br>
+                                <a class="text-left" style="color: black;">User Since</a><span style="float:right;color: grey;">{{ i.user.date_joined }}</span><br>
+                                {% for v in i.data %}
+                                    <a class="text-left" style="color: black;">City</a><span style="float:right;color:grey;">{{ v.city }}</span><br>
+                                    <a class="text-left" style="color: black;">Mobile</a><span style="float:right;color:grey;">{{ v.mobile }}</span><br>
+                                    <a class="text-left" style="color: black;">NIC</a><span style="float:right;color:grey;">{{ v.nic }}</span><br>
+                                    <a class="text-left" style="color: black;">Bank Account</a><span style="float:right;color:grey;">{{ v.bank_account }}</span><br>
+                                    <a class="text-left" style="color: black;">Easypaisa</a><span style="float:right;color:grey;">{{ v.easypaisa }}</span><br>
+                                {% endfor %}
+                            {% endfor %}
+                            {{ request.user.facebookprofile }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,7 +1,7 @@
 from django.shortcuts import render , get_object_or_404 , redirect
 from .models import OrderItem , Order
 from .forms import OrderCreateForm , OrderItemsCreateForm
-from Shop.Customer.models import UserData
+from App.User.models import UserData
 from Shop.Cart.cart import Cart
 from Shop.Shop.models import Product , Shops
 from django.contrib.auth.decorators import login_required
@@ -34,7 +34,7 @@ def ManageOrderCreateView(request,user):
                 pro.append({ 'product' : p , 'total_price' : k ,'quantity' : q})
         if pro != []:
             for u in UserData.objects.all():
-                if int(u.user) == int(request.user.pk):
+                if int(u.user.pk) == int(request.user.pk):
                     t = LatLonCalculator(u.address,i.address)
                     curr_user = u
                     for j in DeliveryCharge.objects.all():
@@ -47,7 +47,7 @@ def ManageOrderCreateView(request,user):
         if cart:
             for i in cart:
                 order_form = OrderCreateForm({
-                    'user' : curr_user ,
+                    'user' : curr_user.pk ,
                     'paid' : False ,
                     'status' : "Pending" ,
                     'price' : sum(t.get('total_price')for t in i.get('item')) ,
@@ -75,7 +75,7 @@ def ManageOrderCreateView(request,user):
     else:
         user = []
         for i in UserData.objects.all():
-            if str(i.user) == str(request.user.pk):
+            if int(i.user.pk) == int(request.user.pk):
                 user.append(i)
         address = []
         for i in user:
@@ -93,7 +93,7 @@ def ManageOrderCreateView(request,user):
         return render(request,'orders/order/create.html',context)
 
 @login_required(login_url='main_login')
-@allowed_users(allowed_roles=['Creator'])
+@allowed_users(allowed_roles=['Shop_Creator'])
 def ManageDeliveryPersonCallView(request):
     if request.method == 'POST':
         data = request.POST

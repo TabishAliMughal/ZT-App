@@ -4,9 +4,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = 'dd^d35%b(x!ee+rnaewa_(l9#++ke@uh^gmwu6=eyt30ft^*jv'
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['localhost','www.localhost.com','zandt.pk','www.zandt.pk','zandt.pk','127.0.0.1']
+ALLOWED_HOSTS = ['localhost','www.localhost.com','zandt.pk','www.zandt.pk','zandt.pk','127.0.0.1','zt-app.pk']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -18,7 +18,7 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     'App.Authentication',
     'App.Main',
-    'App.Creator',
+    'App.User',
     'App.Points',
     'Shop.Shop',
     'Shop.Cart',
@@ -54,6 +54,14 @@ INSTALLED_APPS = [
 
 SOCIAL_AUTH_FACEBOOK_KEY = '154485483318786' # Facebook App ID
 SOCIAL_AUTH_FACEBOOK_SECRET = '6878449e81a93b8b55feeae65fc8efae' # Facebook App Secret
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', 'user_link']
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {'fields': 'id, name, email, link'}
+SOCIAL_AUTH_FACEBOOK_EXTRA_DATA = [
+    ('name', 'name'),
+    ('email', 'email'),
+    ('picture', 'picture'),
+    ('link', 'profile_url'),
+]
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '792973645164-72jeaeme574usd1h671vp0kmnahtuph4.apps.googleusercontent.com' # Google Consumer Key
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'L6yMwg-1DkATJujbY0uIAHwh' # Google Consumer Secret
@@ -228,7 +236,7 @@ SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    'Authentication.Authentication.EmailAuthBackend',
+    'App.Authentication.Authentication.EmailAuthBackend',
     'social_core.backends.google.GoogleOAuth2',
     'social_core.backends.facebook.FacebookOAuth2',
 ]
@@ -243,7 +251,7 @@ EMAIL_USE_TLS = True
 
 DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
-# SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = True
 
 CART_SESSION_ID = 'cart'
 

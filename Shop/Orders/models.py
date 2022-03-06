@@ -1,11 +1,12 @@
 from django.contrib.gis.db import models
 from Shop.Shop.models import Product
-from Shop.Customer.models import UserData
+from App.User.models import UserData
 from django.contrib.auth.models import User
 
 
 class Order(models.Model):
-    user = models.ForeignKey(UserData,on_delete=models.CASCADE)
+    # user = models.ForeignKey(UserData,on_delete=models.CASCADE)
+    user = models.IntegerField()
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False)
