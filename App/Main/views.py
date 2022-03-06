@@ -12,9 +12,9 @@ def ManageAuth(request):
     request.user.groups.add(group)
     user = get_object_or_404(User , pk = request.user.pk)
     try:
-        user_data_form = ManageUserDataForm({'first_name':user.first_name}or None , instance = get_object_or_404(UserData , user = request.user)).save()
+        ManageUserDataForm({'user':user ,'first_name':user.first_name}or None , instance = get_object_or_404(UserData , user = request.user)).save()
     except:
-        user_data_form = ManageUserDataForm({'first_name':user.first_name}).save()
+        ManageUserDataForm({'user':user ,'first_name':user.first_name}).save()
     return redirect('main')
 
 def Rejected(request):
