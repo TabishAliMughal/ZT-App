@@ -18,7 +18,9 @@
                         <div class="card-body">
                             {% for i in cur_user %}
                                 {% for v in i.data %}
-                                    <img style="border-radius: 50%;width: 100%;" src="{{ v.picture.url }}">
+                                    {% if v.picture %}
+                                        <img style="border-radius: 50%;width: 100%;" src="{{ v.picture.url }}">
+                                    {% endif %}
                                 {% endfor %}
                             {% endfor %}
                         </div>
