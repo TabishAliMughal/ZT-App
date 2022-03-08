@@ -1,0 +1,112 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h5>User Points</h5>
+    </div>
+    <div class="card-body">
+        <div class="card block-card">
+            <div class="card-header" id="from_shop">
+                <h5 class="mb-0"><a href="javascript:" data-toggle="collapse" data-target="#points_from_shop" aria-expanded="false" aria-controls="collapseOne" class="collapsed">Shop</a></h5>
+            </div>
+            <div id="points_from_shop" class="card-body collapse" aria-labelledby="from_shop" data-parent="#accordionExample" style="">
+                Here Will Appear Points From Shop
+            </div>
+        </div>
+        <div class="card block-card">
+            <div class="card-header" id="from_blog">
+                <h5 class="mb-0"><a href="javascript:" data-toggle="collapse" data-target="#points_from_blog" aria-expanded="false" aria-controls="collapseOne" class="collapsed">Blog</a></h5>
+                <div style="float:right;color: black;">{{ blog_status.total_points }}</div>
+            </div>
+            <div id="points_from_blog" class="card-body collapse" aria-labelledby="from_blog" data-parent="#accordionExample" style="">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Points From Reactions</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Total</th>
+                                        <th>Points</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for i in blog_status.total_reacts %}
+                                        <tr>
+                                            <td>{{ i.type }}</td>
+                                            <td>{{ i.total }}</td>
+                                            <td>{{ i.points }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    <tr style="color: black;">
+                                        <th>Total</th>
+                                        <th>=</th>
+                                        <th>{{ blog_status.total_react_points }}</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Points From Posts</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <tbody>
+                                    <tr>
+                                        <td>Posts</td>
+                                        <td>{{ blog_status.total_posts }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Views</td>
+                                        <td>{{ blog_status.total_post_views }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Points</td>
+                                        <td><a style="color: black;">{{ blog_status.total_post_points }}</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Points From Blogs</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <tbody>
+                                    <tr>
+                                        <td>Blogs</td>
+                                        <td>{{ blog_status.total_blogs }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Views</td>
+                                        <td>{{ blog_status.total_blog_views }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Points</td>
+                                        <td><a style="color: black;">{{ blog_status.total_blog_points }}</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -16,7 +16,7 @@ import json
 
 
 @login_required(login_url='main_login')
-@allowed_users(allowed_roles=['Public'])
+@allowed_users(allowed_roles=['Shop_Public'])
 def ManageOrderCreateView(request,user):
     user = request.user.groups.values('name')
     unorder_cart = Cart(request)

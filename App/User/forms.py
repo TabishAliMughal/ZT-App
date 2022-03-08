@@ -3,17 +3,17 @@ from .models import Creator , UserData
 
 
 
-class ManageCreatorCreateForm(forms.ModelForm):
-    class Meta:
-        model = Creator
-        fields = [
-            'name' ,
-            'user' ,
-            'mobile' ,
-            'nic' ,
-            'bank_account' ,
-            'easypaisa' ,
-        ]
+# class ManageCreatorCreateForm(forms.ModelForm):
+#     class Meta:
+#         model = Creator
+#         fields = [
+#             'name' ,
+#             'user' ,
+#             'mobile' ,
+#             'nic' ,
+#             'bank_account' ,
+#             'easypaisa' ,
+#         ]
 
 
 

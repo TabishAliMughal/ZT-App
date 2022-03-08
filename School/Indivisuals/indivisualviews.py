@@ -102,10 +102,22 @@ def ManageIndivisualProfileView(request , pk = None):
 @allowed_users(allowed_roles=['Individuals'])
 def ManageIndivisualRevisionSubjectView(View , individual , clas , subject):
     user = View.user.groups.values('name')
-    individual = get_object_or_404(Indivisuals , code = individual)
-    clas = get_object_or_404(Classes , code = clas)
-    subject = get_object_or_404(Subjects , code = subject)
-    content = get_list_or_404(Content , class_name = clas , subject = subject )
+    try:
+        individual = get_object_or_404(Indivisuals , code = individual)
+    except:
+        individual = ''
+    try:
+        clas = get_object_or_404(Classes , code = clas)
+    except:
+        clas = ''
+    try:
+        subject = get_object_or_404(Subjects , code = subject)
+    except:
+        subject = ''
+    try:
+        content = get_list_or_404(Content , class_name = clas , subject = subject )
+    except:
+        content = ''
     context = {
         'user':user,
         'content':content,

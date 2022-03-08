@@ -42,6 +42,8 @@ def ManagePostListView(request,blog=None,bunch=None,post=None):
     if not blog and not bunch:
         my_post = Post.objects.all().order_by('time')
     if my_blog:
+        my_blog.views = my_blog.views+1
+        my_blog.save(update_fields=['views'])
         tags = (BlogTags.objects.all().filter(blog = my_blog))
     time = []
     for l in my_post:
@@ -66,6 +68,8 @@ def ManagePostListView(request,blog=None,bunch=None,post=None):
 def ManagePostDetailView(request,pk):
     user = request.user.groups.values('name')
     post = get_object_or_404(Post , pk = pk)
+    post.views = post.views+1
+    post.save(update_fields=['views'])
     react = []
     for k in ReactTypes.objects.all():
         v = int('0')

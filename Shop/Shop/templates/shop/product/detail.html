@@ -89,7 +89,7 @@
                                                         {% for i in user %}
                                                             {% if i.name == "Creator" %}
                                                                 <h3>Cant Create Order</h3>
-                                                            {% elif i.name == 'Public' %}
+                                                            {% elif i.name == 'Shop_Public' %}
                                                                 <form action="{% url 'cart:cart_add' product.product.pk %}" method="post">
                                                                     <label for="id_quantity">Quantity : </label>
                                                                     <select name="quantity" id="id_quantity">

@@ -32,6 +32,7 @@ urlpatterns = [
     path('schoolsite/', schoolsite.urls),
     path('matrinomialsite/', matrinomialsite.urls),
     path('user/', include('App.User.urls', namespace='user')),
+    path('user/points', include('App.Points.urls', namespace='points')),
     path('user/log/', include('App.Authentication.urls', namespace='auth')),
     # Shop Urls
     path('shopping/', include('Shop.Shop.urls', namespace='shop')),

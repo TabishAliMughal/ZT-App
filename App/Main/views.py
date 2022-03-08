@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render , redirect
-from App.User.forms import ManageCreatorCreateForm
+# from App.User.forms import ManageCreatorCreateForm
 from django.contrib.auth.models import Group
 from App.User.models import Creator, UserData
 from School.Indivisuals.models import Indivisuals
@@ -8,8 +8,10 @@ from django.contrib.auth.models import User
 from App.User.forms import ManageUserDataForm
 
 def ManageAuth(request):
-    group = Group.objects.get(name='Public')
-    request.user.groups.add(group)
+    request.user.groups.add(Group.objects.get(name='Shop_Public'))
+    request.user.groups.add(Group.objects.get(name='School_Public'))
+    request.user.groups.add(Group.objects.get(name='Blog_Public'))
+    request.user.groups.add(Group.objects.get(name='Matrinomial_Public'))
     user = get_object_or_404(User , pk = request.user.pk)
     try:
         ManageUserDataForm({'user':user ,'first_name':user.first_name}or None , instance = get_object_or_404(UserData , user = request.user)).save()
@@ -18,7 +20,7 @@ def ManageAuth(request):
     return redirect('main')
 
 def Rejected(request):
-    user = request.user.groups.values('name')
+    user = request.user.groupsvalues('name')
     context = {
         'user' : user ,
     }
@@ -47,24 +49,24 @@ def NotAuthorized(request):
 
 def ManageMainPage(request):
     user = request.user.groups.values('name')
-    form = ManageCreatorCreateForm()
+    # form = ManageCreatorCreateForm()
     shop = 'NoShop'
-    student = 'no student'
+    student = 'NoStudent'
     if request.user.is_authenticated:
         for i in user:
-            if i.get('name') == 'Creator':
+            if i.get('name') == 'Shop_Creator':
                 try:
-                    shop = get_object_or_404(Shops , user = (get_object_or_404(Creator , user = request.user.pk)).pk)
+                    shop = get_object_or_404(Shops , user = (get_object_or_404(UserData , user = request.user.pk)).pk)
                 except:
                     pass
-            if i.get('name') == 'Public':
+            if i.get('name') == 'School_Public':
                 try:
                     student = get_object_or_404(Indivisuals , user = request.user.pk)
                 except:
                     pass
     context = {
         'user' : user ,
-        'form' : form ,
+        # 'form' : form ,
         'shop' : shop ,
         'student' : student ,
     }
@@ -72,10 +74,10 @@ def ManageMainPage(request):
 
 def ManageMainPageLogin(request):
     user = request.user.groups.values('name')
-    form = ManageCreatorCreateForm()
+    # form = ManageCreatorCreateForm()
     context = {
         'user' : user ,
-        'form' : form ,
+        # 'form' : form ,
         'login' : 'True' ,
     }
     return render(request,'Main.html',context)

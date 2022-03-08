@@ -12,7 +12,7 @@ from .forms import *
 
 
 @login_required(login_url='main_login')
-@allowed_users(allowed_roles=['Public'])
+@allowed_users(allowed_roles=['Shop_Public'])
 def ManagePreviousOrderView(request):
     user = request.user.groups.values('name')
     orders = []

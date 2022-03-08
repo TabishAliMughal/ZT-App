@@ -81,16 +81,24 @@
                                                 {% endfor %}
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <a class="btn btn-primary" href="{% url 'blog_bunch:bunch_edit' i.bunch.pk %}">Edit</a>
-                                            <a class="btn btn-primary" href="javascript:" onclick="var result = confirm('Want to delete?');if (result) {window.location = '{% url 'blog_bunch:bunch_delete' i.bunch.pk %}'}">Delete</a>
-                                            <form action="{% url 'blog_bunch:bunch_create' %}" method="POST">
-                                                <input type="text" value="{{ i.bunch.name }}" name="name" hidden>
-                                                <button class="btn btn-primary" type="submit" >Add Or Remove Posts</button>
-                                                {% csrf_token %}
-                                            </form>
-                                            <!-- <a class="btn btn-primary" href="{% url 'blog_bunch:bunch_post_add' %}">Add Or Remove Posts</a> -->
-                                        </div>
+                                        {% if request.user.is_authenticated %}
+                                            {% for k in user %}
+                                                {% if k.name == 'Blog_Creator' %}
+                                                    {% if i.bunch.blog.user == writer.pk %}
+                                                        <div class="row">
+                                                            <a class="btn btn-primary" href="{% url 'blog_bunch:bunch_edit' i.bunch.pk %}">Edit</a>
+                                                            <a class="btn btn-primary" href="javascript:" onclick="var result = confirm('Want to delete?');if (result) {window.location = '{% url 'blog_bunch:bunch_delete' i.bunch.pk %}'}">Delete</a>
+                                                            <form action="{% url 'blog_bunch:bunch_create' %}" method="POST">
+                                                                <input type="text" value="{{ i.bunch.name }}" name="name" hidden>
+                                                                <button class="btn btn-primary" type="submit" >Add Or Remove Posts</button>
+                                                                {% csrf_token %}
+                                                            </form>
+                                                            <!-- <a class="btn btn-primary" href="{% url 'blog_bunch:bunch_post_add' %}">Add Or Remove Posts</a> -->
+                                                        </div>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
                                         <!-- <div class="table-responsive">
                         <table  class="table table-hover">
                                             <thead class="text-center">

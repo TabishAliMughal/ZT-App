@@ -2,7 +2,7 @@ from webbrowser import get
 from django.shortcuts import redirect, render , HttpResponseRedirect , get_object_or_404
 from Blog.Blog.models import Blog
 from Blog.Post.models import Post
-from App.User.models import Creator
+from App.User.models import Creator, UserData
 from .models import Bunch, BunchPost
 from .forms import ManageBunchCreateForm , ManageBunchPostCreateForm
 from django.contrib.auth.decorators import login_required
@@ -29,9 +29,11 @@ def ManageBunchListView(request,blog=None):
                         posts.append(k.post)
                 bunch.append({'number' : l ,'bunch' : i , 'post' : posts})
                 l = l + 1
+    writer = get_object_or_404(UserData , user = request.user)
     context = {
         'user' : user ,
         'bunch' : bunch ,
+        'writer' : writer ,
     }
     return render(request,'bunch/list.html',context)
 
@@ -89,7 +91,7 @@ def ManageBunchCreateView(request):
         form = ManageBunchCreateForm()
         blog = []
         for i in Blog.objects.all().order_by('time'):
-            if int(i.user) == int(get_object_or_404(Creator,user = request.user.pk).pk):
+            if int(i.user) == int(get_object_or_404(UserData,user = request.user.pk).pk):
                 blog.append(i)
         context = {
             'user' : user ,

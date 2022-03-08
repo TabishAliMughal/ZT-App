@@ -11,7 +11,7 @@ from App.Authentication.user_handeling import allowed_users
 
 
 @login_required(login_url='main_login')
-@allowed_users(allowed_roles=['Public'])
+@allowed_users(allowed_roles=['Matrinomial_Public'])
 def ManageRelationshipCandidateInfoView(request):
     user = request.user.groups.values('name')
     data = []
@@ -26,7 +26,7 @@ def ManageRelationshipCandidateInfoView(request):
     return render(request,"Candidate/Info.html",context)
 
 @login_required(login_url='main_login')
-@allowed_users(allowed_roles=['Public'])
+@allowed_users(allowed_roles=['Matrinomial_Public'])
 def ManageRelationshipCandidateInfoAddView(request):
     user = request.user.groups.values('name')
     if request.method == 'POST':
@@ -69,7 +69,7 @@ def ManageRelationshipCandidateInfoAddView(request):
         return render(request,"Candidate/AddInfo.html",context)
 
 @login_required(login_url='main_login')
-@allowed_users(allowed_roles=['Public'])
+@allowed_users(allowed_roles=['Matrinomial_Public'])
 def ManageRelationshipCandidateMatchesListView(request):
     user = request.user.groups.values('name')
     candidate = Candidates.objects.all().filter(user = request.user.pk)

@@ -13,39 +13,55 @@
             <br>
             <br>
             <div class="row">
-                <div class="col-md">
+                <div class="col-md-12">
                     <div class="card block-card">
-                        <div class="card-body">
+                        <div class="card-header">
+                            <h5>Image</h5>
+                        </div>
+                        <div class="card-body text-center">
                             {% for i in cur_user %}
                                 {% for v in i.data %}
                                     {% if v.picture %}
-                                        <img style="border-radius: 50%;width: 100%;" src="{{ v.picture.url }}">
+                                        <img style="border-radius: 50%;max-width:140px;" src="{{ v.picture.url }}">
                                     {% endif %}
                                 {% endfor %}
                             {% endfor %}
                         </div>
                     </div>
                 </div>
-                <div class="col-md-8" style="height: 100%;">
-                    <div class="card block-card">
-                        <div class="card-body">
-                            {% for i in cur_user %}
-                                <a class="text-left" style="color: black;">Name</a><span style="float:right;color: grey;">{{ i.user.first_name }} {{ i.user.last_name }}</span><br>
-                                <a class="text-left" style="color: black;">Email Address</a><span style="float:right;color: grey;">{{ i.user.email }}</span><br>
-                                <a class="text-left" style="color: black;">Logged In As</a><span style="float:right;color: grey;">{% for i in user %}{{ i.name }}{% endfor %}</span><br>
-                                <a class="text-left" style="color: black;">User Since</a><span style="float:right;color: grey;">{{ i.user.date_joined }}</span><br>
-                                {% for v in i.data %}
-                                    <a class="text-left" style="color: black;">City</a><span style="float:right;color:grey;">{{ v.city }}</span><br>
-                                    <a class="text-left" style="color: black;">Mobile</a><span style="float:right;color:grey;">{{ v.mobile }}</span><br>
-                                    <a class="text-left" style="color: black;">NIC</a><span style="float:right;color:grey;">{{ v.nic }}</span><br>
-                                    <a class="text-left" style="color: black;">Bank Account</a><span style="float:right;color:grey;">{{ v.bank_account }}</span><br>
-                                    <a class="text-left" style="color: black;">Easypaisa</a><span style="float:right;color:grey;">{{ v.easypaisa }}</span><br>
-                                {% endfor %}
-                            {% endfor %}
-                            {{ request.user.facebookprofile }}
+                {% for i in cur_user %}
+                    <div class="col-md-12">
+                        <div class="card block-card">
+                            <div class="card-header">
+                                <h5>Detail</h5>
+                            </div>
+                            <div class="card-body">
+                                    Name : <div style="text-align:right;"> {{ i.user.first_name }} {{ i.user.last_name }}</div>
+                                    Email Address : <div style="text-align:right;"> {{ i.user.email }}</div>
+                                    Logged In As : <div style="text-align:right;"> {% for i in user %}{{ i.name }}<br>{% endfor %}</a>{% for i in user %}{% endfor %}</div>
+                                    User Since : <div style="text-align:right;"> {{ i.user.date_joined }}</div>
+                                    {% for v in i.data %}
+                                        City : <div style="text-align:right;"> {{ v.city }}</div>
+                                        Mobile : <div style="text-align:right;"> {{ v.mobile }}</div>
+                                        NIC : <div style="text-align:right;"> {{ v.nic }}</div>
+                                        Bank Account : <div style="text-align:right;"> {{ v.bank_account }}</div>
+                                        Easypaisa : <div style="text-align:right;"> {{ v.easypaisa }}</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    <div class="col-md-12">
+                        <div class="card block-card">
+                            <div class="card-header">
+                                <h5>Address</h5>
+                            </div>
+                            <div class="card-body">
+                                <iframe width="100%" height="500px" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBgzluEvlveyfNKaigwEClXvhSaUyTmLLI&q={{ i.address.lat }}%2c{{ i.address.lng }}" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
         </div>
     </div>

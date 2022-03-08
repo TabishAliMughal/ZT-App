@@ -36,7 +36,7 @@
                                             <li><a href="{% url 'shop:shop_products' %}" >My Shop</a></li>
                                             <li><a href="{% url 'shop:shop_orders' %}" >Orders</a></li>
                                         {% endif %}
-                                    {% elif i.name == "Public" %}
+                                    {% elif i.name == "Shop_Public" %}
                                         <li><a href="{% url 'shop_cart:cart_detail' %}">My Cart</a></li>
                                         <li><a href="{% url 'shop_costumer:previous_orders' %}">My Orders</a></li>
                                     {% elif i.name == "Delivery" %}
@@ -77,8 +77,8 @@
                                     <li><a href="{% url 'school_parents:parent_profile' %}">My Profile</a></li>
                                 {% elif i.name == 'Individuals' %}
                                     <li><a href="{% url 'school_individuals:indivisual_profile' %}">My Profile</a></li>
-                                {% elif i.name == 'Public' %}
-                                    {% if student == 'no student' %}
+                                {% elif i.name == 'School_Public' %}
+                                    {% if student == 'NoStudent' %}
                                         <li><a href="{% url 'school_individuals:indivisuals_create' %}">Enroll</a></li>
                                     {% endif %}
                                 {% endif %}
@@ -150,7 +150,7 @@
                                 {% for i in user %}
                                     {% if i.name == "Blog_Creator" %}
                                         <li><a href="{% url 'blog_blog:user_blog_list' %}" >My Blogs</a></li>
-                                    {% elif i.name == "Public" %}
+                                    {% elif i.name == "Blog_Public" %}
                                     {% elif i.name == "Admin" %}
                                     {% else %}
                                     {% endif %}
@@ -171,13 +171,12 @@
                             <li><a href="{% url 'relationships:home' %}" class="nav-link">Home</a></li>
                             {% if user %}
                                 {% for i in user %}
-                                    {% if i.name == "Public" %}
+                                    {% if i.name == "Matrinomial_Public" %}
                                         <li><a href="{% url 'candidate:info' %}" class="nav-link">My Info</a></li>
                                         <li><a href="{% url 'candidate:candidate_matches' %}" class="nav-link">My Matches</a></li>
                                     {% elif i.name == "RAdmin" %}
                                         <li><a href="{% url 'candidate:candidate_list' %}" class="nav-link">All Info</a></li>
                                         <li><a href="{% url 'relationships_matching:matched_list' %}" class="nav-link">Matched List</a></li>
-                                    {% else %}
                                     {% endif %}
                                 {% endfor %}
                             {% endif %}
@@ -198,10 +197,12 @@
                 </li>
                 <br>
                 {% if request.user.is_authenticated %}
-                    <li data-username="" class="nav-item ">
-                        <a href="{% url 'user:user_profle' %}" class="nav-link">
-                            <span class="pcoded-micon"><i class="feather icon-user"></i></span><span class="pcoded-mtext">My Profile</span>
-                        </a>
+                    <li class="nav-item pcoded-hasmenu">
+                        <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-mic"></i></span><span class="pcoded-mtext">My Profile</span></a>
+                        <ul class="pcoded-submenu">
+                            <li><a href="{% url 'user:user_profle' %}" class="nav-link">Profile</a></li>
+                            <li><a href="{% url 'points:user_points' %}" class="nav-link">My Points</a></li>
+                        </ul>
                     </li>
                     <br>
                 {% endif %}

@@ -42,7 +42,7 @@ def ManageIndivisualsListView(request):
     return render(request , 'Indivisuals/list.html' , context)
 
 @login_required(login_url='main_login')
-@allowed_users(allowed_roles=['Admin','School','Public'])
+@allowed_users(allowed_roles=['Admin','School','School_Public'])
 def ManageIndivisualsCreateView(request , pk=None):
     user = request.user.groups.values('name')
     if pk:
@@ -76,10 +76,10 @@ def ManageIndivisualsCreateView(request , pk=None):
                 seluser = User.objects.get(username = username)
                 redirect_page = 'admin'
                 break
-            if str(i.get('name')) == 'Public':
+            if str(i.get('name')) == 'School_Public':
                 # seluser = User.objects.get(pk = request.user.pk)
                 seluser = get_object_or_404(User,pk = request.user.pk)
-                redirect_page = 'public'
+                redirect_page = 'School_Public'
                 password = 'no password'
         # print(seluser)
         group = Group.objects.get(name='Individuals')
@@ -99,7 +99,7 @@ def ManageIndivisualsCreateView(request , pk=None):
         form.save()
         if redirect_page == 'admin':
             return redirect('school_individuals:indivisuals_list')
-        if redirect_page == 'public':
+        if redirect_page == 'School_Public':
             return redirect('school_individuals:indivisual_profile')
     else:
         form = IndivisualsForm()

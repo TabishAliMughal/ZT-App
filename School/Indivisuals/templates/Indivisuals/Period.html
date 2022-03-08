@@ -1,39 +1,84 @@
 {% extends "MainPage.html" %}
 {% load static %}
 {% block title %}
-    Hello {{ request.user.first_name }}
+    Hello {{ individual }}
+{% endblock %}
+{% block address %}
+  <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+  <li class="breadcrumb-item"><a href="{% url 'school:main' %}">School</a></li>
+  <li class="breadcrumb-item"><a href="javascript:">Student</a></li>
+  <li class="breadcrumb-item"><a href="javascript:">Period</a></li>
 {% endblock %}
 {% block content %}
-{% csrf_token %}
-    <div class="container">
-        <h2 class="text-center" style="font-family:sans-serif;">Content</h2><hr/>
-        {% for i in content %}
-            <div class="table-responsive">
-                        <table  class="table table-hover">
-                <tbody class="text-center">
-                    <tr>
-                        <td><a>Class : {{ i.content.class_name }}</a><br><br></td>
-                    </tr>
-                    <tr>
-                        <td><a>Subject : {{ i.content.subject }}</a><br><br></td>
-                    </tr>
-                    <tr>
-                        <td><a>Content Title : {{ i.content.title }}</a><br><br></td>
-                    </tr>
-                    <tr>
-                        <td><a>{{ i.content.text }}</a><br><br></td>
-                    </tr>
-                    <tr>
-                        <td><a href="{% url 'school_individuals:content-image' i.content.pk %}" class="btn btn-primary">Documents</a></td>
-                    </tr>
-                    {% for v in i.videos %}
-                        <tr>
-                            <td class="video"><iframe src="{{ v.url }}" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></td>
-                        </tr>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Content</h5>
+                </div>
+                <div class="card-body">
+                    {% for i in content %}
+                        <div class="table-responsive">
+                            <table  class="table table-hover">
+                                <tbody class="text-center">
+                                    <tr>
+                                        <td>Class : {{ i.content.class_name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Subject : {{ i.content.subject }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Content Title : {{ i.content.title }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ i.content.text }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="{% url 'school_individuals:content-image' i.content.pk %}" class="btn btn-primary">Documents</a></td>
+                                    </tr>
+                                    {% for v in i.videos %}
+                                        <tr>
+                                            <td>
+                                                <div class="text-center video-div">
+                                                    <iframe class="video-frame" id="video" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                                    <input type="text" id="url" value="{{ v.url }}" hidden />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     {% endfor %}
-                </tbody>
-            </table>
-</div>
-        {% endfor %}
+                </div>
+            </div>
+        </div>
     </div>
+{% endblock %}
+{% block scripts %}
+    <script>
+        function getId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+            const match = url.match(regExp);
+
+            return (match && match[2].length === 11)
+            ? match[2]
+            : null;
+        }
+        var frame = document.getElementById('video') ;
+        url = document.getElementById('url').value;
+        var stat1 = url.includes('youtu.be');
+        var stat2 = url.includes('https://www.youtube.com/watch?v=');
+        var stat3 = url.includes('https://www.youtube.com/embed/');
+        var videoId ;
+        if(stat1 == true){
+            videoId = url.replace('https://youtu.be/','');
+        }if(stat2 == true){
+            videoId = url.replace('https://www.youtube.com/watch?v=','');
+        }if(stat3 == true){
+            videoId = url.replace('https://www.youtube.com/embed/','');
+        }
+        new_url = "https://www.youtube.com/embed/" + videoId
+        frame.src = new_url ;
+    </script>
 {% endblock %}

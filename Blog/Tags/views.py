@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from App.Authentication.user_handeling import allowed_users
 from .models import Tags , BlogTags , PostTags
 from .forms import ManageTagsCreateForm , ManagePostTagsCreateForm , ManageBlogTagsCreateForm
-from App.User.models import Creator
+from App.User.models import Creator, UserData
 
 
 @login_required(login_url='main_login')
@@ -74,12 +74,10 @@ def ManageTagDetailView(request,pk):
     tag = get_object_or_404(Tags , pk = pk)
     blogs = BlogTags.objects.all().filter(tag = tag)
     for i in blogs:
-        creator = get_object_or_404(Creator , pk = i.blog.user)
-        i.creator = creator
+        blog_user = get_object_or_404(UserData , pk = i.blog.user)
+        print('blog_user')
+        i.blog_user = blog_user
     posts = PostTags.objects.all().filter(tag = tag)
-    # for i in posts:
-    #     creator = get_object_or_404(Creator , pk = i.post.blog.user)
-    #     i.creator = creator
     context = {
         'user' : user ,
         'tag' : tag ,

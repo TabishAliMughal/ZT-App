@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 class ReactTypes(models.Model):
     name = models.CharField(max_length=15)
     icon = models.CharField(max_length=25)
+    points_add = models.IntegerField()
+    points_subtract = models.IntegerField()
     def __str__(self):
         return self.name
     class Meta:
@@ -19,6 +21,7 @@ class Post(models.Model):
     sound = models.FileField(upload_to='blogs/post/',blank=True,null=True)
     blog = models.ForeignKey(Blog , on_delete=models.CASCADE)
     time = models.DateTimeField(auto_created=True,auto_now_add=True)
+    views = models.IntegerField()
     def __str__(self):
         return self.name
     class Meta:

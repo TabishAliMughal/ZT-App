@@ -23,7 +23,7 @@
                 {% if request.user.is_authenticated %}
                     {% if user %}            
                         {% for i in user %}
-                            {% if i.name == 'Public' %}
+                            {% if i.name == 'School_Public' %}
                                 {% if student %}
                                 {% else %}
                                     <a class="btn btn-primary form-control" href="{% url 'school_individuals:indivisuals_create' %}">Enroll Yourself</a>

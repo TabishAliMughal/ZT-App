@@ -1,35 +1,49 @@
 {% extends "MainPage.html" %}
 {% load static %}
 {% block title %}
-    Hello {{ request.user.first_name }}
+    Hello {{ individual }}
+{% endblock %}
+{% block address %}
+  <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+  <li class="breadcrumb-item"><a href="{% url 'school:main' %}">School</a></li>
+  <li class="breadcrumb-item"><a href="javascript:">Student</a></li>
+  <li class="breadcrumb-item"><a href="javascript:">Documents</a></li>
 {% endblock %}
 {% block content %}
-{% csrf_token %}
-    <div class="container">
-        <h2 class="text-center" style="font-family:sans-serif;">All Documents</h2><hr/>
-        <br>
-        <div class="table-responsive">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>All Documents</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
                         <table  class="table table-hover">
-            <tbody class="text-center">
-                {% for i in images %}
-                    <tr>
-                        <td>
-                            <div style="text-align: left;position:absolute;">
-                                <a style="width: 75px;" class="btn btn-primary" href="#" onClick="zoomOut('{{i}}')" >-</a>
-                            </div>
-                            <div style="text-align: right;">
-                                <a style="width: 75px;" class="btn btn-primary" href="#" onClick="zoomIn('{{i}}')" >+</a>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><img id='{{i}}' style="width: 50%;" class="text-center" class="img" src="{{ i.image.url }}"></td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-</div>
-    </div>
+                            <tbody class="text-center">
+                                {% for i in images %}
+                                    <tr>
+                                        <td>
+                                            <div style="text-align: left;position:absolute;">
+                                                <a style="width: 75px;" class="btn btn-primary" href="#" onClick="zoomOut('{{i}}')" >-</a>
+                                            </div>
+                                            <div style="text-align: right;">
+                                                <a style="width: 75px;" class="btn btn-primary" href="#" onClick="zoomIn('{{i}}')" >+</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><img id='{{i}}' style="width: 50%;" class="text-center" class="img" src="{{ i.image.url }}"></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div>
+{% endblock %}
+{% block scripts %}
     <script type="text/javascript">
         function zoomIn(x) {
             var img = document.getElementById(x);

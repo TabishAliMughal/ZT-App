@@ -11,7 +11,7 @@ from App.Authentication.user_handeling import allowed_users
 
 
 @login_required(login_url='main_login')
-@allowed_users(allowed_roles=['Public'])
+@allowed_users(allowed_roles=['Shop_Public'])
 def ManageCartDetailView(request):
     user = request.user.groups.values('name')
     unorder_cart = Cart(request)
@@ -51,7 +51,7 @@ def ManageCartDetailView(request):
     return render(request, 'cart/detail.html',context)
 
 @login_required(login_url='main_login')
-@allowed_users(allowed_roles=['Public'])
+@allowed_users(allowed_roles=['Shop_Public'])
 def ManageCartAddItemView(request, product_id):
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
@@ -62,7 +62,7 @@ def ManageCartAddItemView(request, product_id):
     return redirect('cart:cart_detail')
 
 @login_required(login_url='main_login')
-@allowed_users(allowed_roles=['Public'])
+@allowed_users(allowed_roles=['Shop_Public'])
 def ManageCartRemoveItemView(request, product_id):
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
