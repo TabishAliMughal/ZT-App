@@ -38,7 +38,7 @@
                             <div class="card-body">
                                     Name : <div style="text-align:right;"> {{ i.user.first_name }} {{ i.user.last_name }}</div>
                                     Email Address : <div style="text-align:right;"> {{ i.user.email }}</div>
-                                    Logged In As : <div style="text-align:right;"> {% for i in request.session.user %}{{ i.name }}<br>{% endfor %}</a>{% for i in request.session.user %}{% endfor %}</div>
+                                    Logged In As : <div style="text-align:right;"> {% for i in request.session.user %}{{ i }}<br>{% endfor %}</a>{% for i in request.session.user %}{% endfor %}</div>
                                     User Since : <div style="text-align:right;"> {{ i.user.date_joined }}</div>
                                     {% for v in i.data %}
                                         City : <div style="text-align:right;"> {{ v.city }}</div>
@@ -63,10 +63,6 @@
                     </div>
                 {% endfor %}
             </div>
-            {{ request.session.user }}
-            {% for i in request.session.user %}
-                {{ i }}
-            {% endfor %}
             <a class="btn btn-primary">Manage Access</a>
         </div>
     </div>
