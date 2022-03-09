@@ -23,7 +23,6 @@ class Order(models.Model):
     class Meta:
         verbose_name_plural = 'Orders'
 
-
 class OrderItem(models.Model):
     order = models.ForeignKey(Order,related_name='items',on_delete=models.CASCADE)
     product = models.ForeignKey(Product,related_name='order_items',on_delete=models.CASCADE)
@@ -35,3 +34,14 @@ class OrderItem(models.Model):
         return self.price * self.quantity
     class Meta:
         verbose_name_plural = 'Order Items'
+
+class OrderReview(models.Model):
+    order = models.ForeignKey(Order,on_delete=models.CASCADE)
+    text = models.CharField(max_length=500,blank=True,null=True)
+    image = models.FileField(blank=True,null=True)
+    stars = models.IntegerField(default=0)
+    def __str__(self):
+        return '{}'.format(self.order)
+    class Meta:
+        verbose_name_plural = 'Order Reviews'
+

@@ -13,7 +13,6 @@ from django.core.files.base import ContentFile
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Teacher','Individuals'])
 def ManageClassExamView(request,id):
-    user = request.user.groups.values('name')
     exam = get_object_or_404(ExamStatus,pk = id)
     questions = get_list_or_404(ExamQuestions , exam = id)
     answers = int('0')
@@ -27,7 +26,6 @@ def ManageClassExamView(request,id):
     context = {
         'questions' : questions ,
         'exam' : exam ,
-        'user': user ,
         'answers': answers ,
     }
     return render(request,'Exam/Exam.html',context)
@@ -35,13 +33,11 @@ def ManageClassExamView(request,id):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Teacher','Individuals'])
 def ManageClassExamQuestionPrintView(request,id):
-    user = request.user.groups.values('name')
     exam = get_object_or_404(ExamStatus,pk = id)
     questions = get_list_or_404(ExamQuestions , exam = id)
     context = {
         'questions' : questions ,
         'exam' : exam ,
-        'user': user ,
     }
     pdf = PdfMaker('Exam/ExamQuestionsPrint.html', context)
     return HttpResponse(pdf, content_type='application/pdf')
@@ -62,7 +58,6 @@ def ManageTeacherClassExamAnswersStudentSelectView(request,id,pk):
     classtud = []
     classes = []
     addedpics = []
-    user = request.user.groups.values('name')
     tea = request.user
     for i in TeacherClass.objects.all():
         if str(i.teacher) == str(tea):
@@ -90,7 +85,6 @@ def ManageTeacherClassExamAnswersStudentSelectView(request,id,pk):
         })
     context = {
         'teacher': teacher ,
-        'user': user ,
         'exam': exam ,
         'class' : students ,
     }
@@ -106,7 +100,6 @@ def ManageAddStudentExamPictureView(request,id,pk=None):
         student = get_object_or_404(Indivisuals , user = request.user)
         v = 1
     selectedexam = get_object_or_404(ExamStatus , pk = id)
-    user = request.user.groups.values('name')
     form = ManageExamAnswersForm()
     tea = request.user
     if request.method == 'POST':
@@ -149,7 +142,6 @@ def ManageAddStudentExamPictureView(request,id,pk=None):
             'exam': selectedexam ,
             'form' : form ,
             'student': student ,
-            'user': user ,
         }
         return render(request,'Exam/PapersUploaded.html',context)
     else:
@@ -157,6 +149,5 @@ def ManageAddStudentExamPictureView(request,id,pk=None):
             'exam': selectedexam ,
             'form': form ,
             'student': student ,
-            'user': user ,
         }
         return render(request,'Exam/PapersUpload.html',context)

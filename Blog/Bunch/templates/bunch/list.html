@@ -12,8 +12,8 @@
     <div class="row">
         <div class="col-sm-12">
             {% if request.user.is_authenticated %}
-                {% for i in user %}
-                    {% if i.name == 'Creator' %}
+                {% for i in request.session.user %}
+                    {% if i == 'Blog_Creator' %}
                         <div class="card">
                             <div class="card-body">
                                 <a class="btn btn-primary" href="{% url 'blog_bunch:bunch_create' %}">Create Bunch</a>

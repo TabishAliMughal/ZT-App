@@ -13,7 +13,6 @@ from .current import get_all_logged_in_users
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Admin'])
 def ManageProfilesView(request):
-    user = request.user.groups.values('name')
     checkers = Group.objects.get(name="Checker")
     checkers = checkers.user_set.all()
     teachers = Group.objects.get(name="Teacher")
@@ -66,14 +65,12 @@ def ManageProfilesView(request):
         'schoolstudents': schools,
         'checkers': checkers ,
         'teachers': teachers ,
-        'user': user ,
     }
     return render(request,'Admin/Profiles.html',context)
 
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Admin'])
 def ManageActiveAndDeactiveView(request):
-    user = request.user.groups.values('name')
     school = School.objects.all()
     individuals = Indivisuals.objects.all()
     if request.method == 'POST':
@@ -116,7 +113,6 @@ def ManageActiveAndDeactiveView(request):
             context = {
                 'school': school ,
                 'individuals': individuals ,
-                'user': user ,
             }
             return render(request,'Admin/Activation/ByList.html',context)
     else:
@@ -125,23 +121,19 @@ def ManageActiveAndDeactiveView(request):
         context = {
             'school': school ,
             'individuals': individuals ,
-            'user': user ,
         }
         return render(request,'Admin/Activation/ByList.html',context)
 
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Admin'])
 def ManageActiveAndDeactiveBySchoolView(request):
-    user = request.user.groups.values('name')
     context = {
-        'user': user ,
     }
     return render(request,'Admin/Activation/BySchool.html',context)
 
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Admin'])
 def ManageActivateSchoolView(request):
-    user = request.user.groups.values('name')
     if request.method == 'POST':
         data = request.POST
         school = data.get('school')
@@ -168,14 +160,12 @@ def ManageActivateSchoolView(request):
         school = School.objects.all()
         context = {
             'school': school ,
-            'user': user ,
         }
         return render(request,'Admin/Activation/ActivateSchool.html',context)
 
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Admin'])
 def ManageDeactivateSchoolView(request):
-    user = request.user.groups.values('name')
     if request.method == 'POST':
         data = request.POST
         school = data.get('school')
@@ -202,7 +192,6 @@ def ManageDeactivateSchoolView(request):
         school = School.objects.all()
         context = {
             'school': school ,
-            'user': user ,
         }
         return render(request,'Admin/Activation/DeactivateSchool.html',context)
     

@@ -7,7 +7,6 @@ from Blog.Post.models import Post , PostComment , PostReact, ReactTypes
 
 
 def ManageUserPointsView(request):
-    user = request.user.groups.values('name')
     cur_user = get_object_or_404(UserData , user = request.user )
     # For Shop
     # For Blog
@@ -43,7 +42,6 @@ def ManageUserPointsView(request):
         'total_points' : int(total_react_points + total_post_points + total_blog_points)
     }
     context = {
-        'user' : user ,
         'blog_status' : blog_status ,
     }
     return render(request,'Points/List.html',context)

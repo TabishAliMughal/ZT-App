@@ -9,8 +9,8 @@
             <a href="/"><img src="{% static './img/logo.jpg' %}" style="height:100%;float:left;margin-left:0px;margin-top:0px;" ></a>
             {% if request.user.is_authenticated %}
                 <button style="width:15%;float:right;margin-right:30px;margin-top:20px;"><a href="{% url 'logout' %}" >Logout</a></button>
-                {% for i in user %}
-                    {% if i.name == 'Creator' %}
+                {% for i in request.session.user %}
+                    {% if i == 'Blog_Creator' %}
                         <button style="width:15%;float:right;margin-right:30px;margin-top:20px;"><a href="{% url 'creator:creator_profile' %}" >Profile</a></button>
                     {% endif %}
                 {% endfor %}

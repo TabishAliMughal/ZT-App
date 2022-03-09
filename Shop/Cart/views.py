@@ -13,7 +13,6 @@ from App.Authentication.user_handeling import allowed_users
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Shop_Public'])
 def ManageCartDetailView(request):
-    user = request.user.groups.values('name')
     unorder_cart = Cart(request)
     for item in unorder_cart:
         item['update_quantity_form'] = CartAddProductForm(initial={'quantity': item['quantity'],'update': True})
@@ -45,7 +44,6 @@ def ManageCartDetailView(request):
     context = {
         'cart': cart,
         'u_cart' : unorder_cart ,
-        'user' : user,
         'delivery' : total_delivery,
     }
     return render(request, 'cart/detail.html',context)

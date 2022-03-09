@@ -18,8 +18,8 @@
         </div>
         <div class="card-body">
           {% if request.user.is_authenticated %}
-            {% for i in user %}
-              {% if i.name == 'Admin' %}
+            {% for i in request.session.user %}
+              {% if i == 'Admin' %}
                 <a class="btn btn-primary" style="float: left;" href="{% url 'school_individuals:indivisuals_create' %}">Add Another</a>
                 <div style="float:right;">
                   <a style="color: #000000;">Total {{ total }}</a>
@@ -52,8 +52,8 @@
                 <th>Class</th>
                 <th>Active</th>
                 {% if request.user.is_authenticated %}
-                  {% for i in user %}
-                    {% if i.name == 'Admin' %}
+                  {% for i in request.session.user %}
+                    {% if i == 'Admin' %}
                       <th>Action</th>
                     {% endif %}
                   {% endfor %}

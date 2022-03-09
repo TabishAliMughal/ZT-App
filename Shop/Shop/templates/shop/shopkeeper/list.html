@@ -32,8 +32,8 @@
                 <div class="card-body">
                     {% if request.user.is_authenticated %}
                         {% if user %}
-                            {% for i in user %}
-                                {% if i.name == "Shop_Creator" %}
+                            {% for i in request.session.user %}
+                                {% if i == "Shop_Creator" %}
                                     <a class="btn btn-primary" href="{% url 'shop:shop_product_create' shop.pk %}">Add</a>
                                 {% endif %}
                             {% endfor %}
@@ -49,8 +49,8 @@
                                     <th>Name</th>
                                     {% if request.user.is_authenticated %}
                                         {% if user %}
-                                            {% for i in user %}
-                                                {% if i.name == "Shop_Creator" %}
+                                            {% for i in request.session.user %}
+                                                {% if i == "Shop_Creator" %}
                                                     <th>Action</th>
                                                 {% endif %}
                                             {% endfor %}

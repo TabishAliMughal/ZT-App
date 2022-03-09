@@ -1,6 +1,6 @@
 from django.shortcuts import render , get_object_or_404 , redirect
-from .models import OrderItem , Order
-from .forms import OrderCreateForm , OrderItemsCreateForm
+from .models import OrderItem , Order, OrderReview
+from .forms import OrderCreateForm , OrderItemsCreateForm, OrderReviewForm
 from App.User.models import UserData
 from Shop.Cart.cart import Cart
 from Shop.Shop.models import Product , Shops
@@ -9,16 +9,15 @@ from django.contrib.auth.models import Group , User
 from App.Authentication.user_handeling import unauthenticated_user, allowed_users, admin_only
 from Shop.Cart.calculations import LatLonCalculator
 from Shop.Cart.models import DeliveryCharge
-import random
-import requests
-import json
+from io import BytesIO
+from PIL import Image
+from django.core.files.base import ContentFile
 
 
 
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Shop_Public'])
 def ManageOrderCreateView(request,user):
-    user = request.user.groups.values('name')
     unorder_cart = Cart(request)
     cart = []
     curr_user = ''
@@ -69,7 +68,7 @@ def ManageOrderCreateView(request,user):
                 'user' : user,
                 'order': order
                 }
-            return render(request,'orders/order/created.html',context)
+            return render(request,'Orders/Order/Created.html',context)
         else:
             return render(request,'error.html',{'return' : 'Plese Select Some Items'})
     else:
@@ -90,7 +89,7 @@ def ManageOrderCreateView(request,user):
             'cart': cart,
             'form': form
             }
-        return render(request,'orders/order/create.html',context)
+        return render(request,'Orders/Order/Create.html',context)
 
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Shop_Creator'])
@@ -100,3 +99,46 @@ def ManageDeliveryPersonCallView(request):
         order = get_object_or_404(Order , pk = data.get('order'))
         Order.objects.filter(pk = order.pk).update(status = 'DeliveryCalled')
         return redirect('shop:shop_orders')
+
+def ManageOrderReview(request,order):
+    order = get_object_or_404(Order , pk = order)
+    try:
+        review = get_object_or_404(OrderReview , order = order)
+    except:
+        review = None
+    if request.method == 'POST':
+        if request.FILES.get('image'):
+            image = Image.open(request.FILES.get('image'))
+            size = image.size
+            image = image.convert('RGB')
+            rsize = []
+            rsize.append(int(275*1))
+            rsize.append(int(275*(size[0]/size[1])))
+            rimg = image.resize(((rsize[1]),(rsize[0])),Image.ANTIALIAS)
+            img_io = BytesIO()
+            rimg.save(img_io, format='JPEG', quality=75)
+            img_content = ContentFile(img_io.getvalue(),"img.jpg" )
+        else:
+            img_content = request.FILES.get('image')
+        if review:
+            form = OrderReviewForm({
+                'order': request.POST.get('order') or review.order ,
+                'text': request.POST.get('text') or review.text or None ,
+                'stars': request.POST.get('stars') or review.stars ,
+            } or None , { 'image' : img_content} or None , instance=review)
+        else:
+            form = OrderReviewForm({
+                'order': request.POST.get('order') ,
+                'text': request.POST.get('text') or None ,
+                'stars': request.POST.get('stars') ,
+            } or None , { 'image' : img_content})
+        form.save()
+        return redirect('shop_costumer:previous_orders')
+    else:
+        form = OrderReviewForm(instance=review)
+        context = {
+            'review':review,
+            'order':order,
+            'form':form,
+        }
+        return render(request,'Orders/Order/Review.html',context)

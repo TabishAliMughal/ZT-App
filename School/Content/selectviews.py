@@ -12,12 +12,10 @@ import datetime
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Admin','Teacher'])
 def ManageDateSelectView(request):
-    user = request.user.groups.values('name')
     if request.method == 'POST':
         Date = request.POST.get('date')
         return redirect('school:class_select',Date)
     context = {
-        'user':user ,
     }
     return render(request , 'Select/date.html',context)
 
@@ -37,7 +35,6 @@ def ManageClassSelectView(request,date):
     FDate = date
     FClass = Classes.objects.all()
     context = {
-        'user':user ,
         'date' : FDate,
         'class' : FClass,
     }
@@ -63,7 +60,6 @@ def ManageSubjectSelectView(request,date,Ccode):
                                 list_.append(v)
                 context = {
                     'list':list_,
-                    'user':user ,
                 }
                 return render (request,'Lists/content.html',context)
     FDate = date
@@ -72,7 +68,6 @@ def ManageSubjectSelectView(request,date,Ccode):
         if str(i.class_name.pk) == str(Ccode):
             FClassSubjects.append(i)
     context = {
-        'user':user ,
         'date' : FDate,
         'class' : FClass,
         'class_subjects' : FClassSubjects,
@@ -80,10 +75,8 @@ def ManageSubjectSelectView(request,date,Ccode):
     return render(request , 'Select/subject.html' , context)
     
 def ManageSessionSelectView(request,date,Ccode,subject):
-    user = request.user.groups.values('name')
     session = Session.objects.all()
     context = {
-        'user':user ,
         'date' : date,
         'class' : Ccode,
         'class_subjects' : subject,
@@ -94,7 +87,6 @@ def ManageSessionSelectView(request,date,Ccode,subject):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Admin','Teacher'])
 def ManageContentSelectView(request,date,Ccode,subject,session):
-    user = request.user.groups.values('name')
     class_ = get_object_or_404(Classes , pk = Ccode)
     subject = get_object_or_404(Subjects , subject_name = subject)
     session = get_object_or_404(Session , pk = session)
@@ -104,12 +96,13 @@ def ManageContentSelectView(request,date,Ccode,subject,session):
             if str(i.class_name.pk) == str(class_.pk):
                 if str(str(session.session_start_date + timedelta(days=i.day-1))) == str(date):
                     cont.append(i)
-    context = {'user':user ,'content' : cont,}
+    context = {
+        'content' : cont,
+    }
     return render(request , 'Select/content_select.html' , context)
 
 def ManageContentView(request, code):
     Contents = get_object_or_404(Content,code = code)
-    user = request.user.groups.values('name')
     videos = []
     for i in Videos.objects.all():
         if str(i.content.pk) == str(Contents.pk):
@@ -119,7 +112,6 @@ def ManageContentView(request, code):
         if str(i.content.pk) == str(Contents.pk):
             images.append(i)
     context = {
-        'user': user ,
         'content' : Contents ,
         'videos' : videos ,
         'images' : images ,

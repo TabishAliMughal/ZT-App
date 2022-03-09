@@ -17,7 +17,6 @@ def ManageTeacherProfileView(request):
     equal = ''
     exam = []
     classes = []
-    user = request.user.groups.values('name')
     teacher = request.user
     # Classes
     for i in TeacherClass.objects.all():
@@ -38,7 +37,6 @@ def ManageTeacherProfileView(request):
         classes = 'No Class'
     context = {
         'exam': exam ,
-        'user': user ,
         'class' : classes ,
         'teacher': teacher ,
         'equal' : equal ,
@@ -48,7 +46,6 @@ def ManageTeacherProfileView(request):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Teacher'])
 def ManageTeacherClassView(request,id):
-    user = request.user.groups.values('name')
     exam = ''
     classtud = []
     classes = []
@@ -72,7 +69,6 @@ def ManageTeacherClassView(request,id):
     context = {
         'exam': exam ,
         'teacherclass': teacherclass ,
-        'user': user ,
         'class' : classtud ,
     }
     return render(request,'Teacher/Display/Class.html',context)
@@ -80,7 +76,6 @@ def ManageTeacherClassView(request,id):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Teacher'])
 def TeacherClassCreateView(request,id):
-    user = request.user.groups.values('name')
     teacher = request.user
     if request.method == 'POST':
         rawdata = request.POST
@@ -101,7 +96,6 @@ def TeacherClassCreateView(request,id):
     else:
         form = TeacherClassCreateForm()
         context = {
-            'user': user ,
             'form': form ,
             'teacher': teacher ,
         }
@@ -110,7 +104,6 @@ def TeacherClassCreateView(request,id):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Teacher'])
 def ManageAddStudentView(request,id):
-    user = request.user.groups.values('name')
     if request.method == 'POST':
         clas = id
         name = request.POST.get('name')
@@ -156,7 +149,6 @@ def ManageAddStudentView(request,id):
             'limit': limit ,
             'class': clas ,
             'form': form ,
-            'user': user ,
         }
         return render(request,'Teacher/Create/Student.html',context)
 
@@ -196,12 +188,10 @@ def ManageEditStudentView(request,id,pk):
         return redirect('school_teacher:teacher_class',id)
     else:
         clas = get_object_or_404(TeacherClass,pk = id)
-        user = request.user.groups.values('name')
         form = TeacherClassStudentCreateForm(instance=student)
         context = {
             'class': clas ,
             'form': form ,
-            'user': user ,
         }
         return render(request,'Teacher/Edit/Student.html',context)
 

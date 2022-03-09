@@ -15,7 +15,6 @@ from .urls import *
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Checker'])
 def ManageCheckerProfileView(request):
-    user = request.user.groups.values('name')
     checker = request.user
     classes = []
     for i in CheckerClass.objects.all():
@@ -23,7 +22,6 @@ def ManageCheckerProfileView(request):
             classes.append(i)
     context = {
         'checker': checker ,
-        'user': user ,
         'class' : classes ,
     }
     return render(request,'Checker/Profile.html',context)
@@ -31,7 +29,6 @@ def ManageCheckerProfileView(request):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Checker'])
 def ManageCheckerClassView(request,pk,id):
-    user = request.user.groups.values('name')
     checker = request.user
     for i in ExamStatus.objects.all():
         for k in ExamAnswers.objects.all().filter(exam = i.pk):
@@ -39,7 +36,6 @@ def ManageCheckerClassView(request,pk,id):
     context = {
         # 'class' : classes ,
         'checker' : checker ,
-        'user': user ,
         # 'students':students,
     }
     return render(request,'Checker/Class.html',context)
@@ -47,7 +43,6 @@ def ManageCheckerClassView(request,pk,id):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Checker'])
 def ManageCheckerClassCreateView(request,pk):
-    user = request.user.groups.values('name')
     checker = request.user
     if request.method == 'POST':
         subject = request.POST.get('subject')
@@ -63,14 +58,12 @@ def ManageCheckerClassCreateView(request,pk):
         form = ManageCheckerClassCreateForm()
         context = {
             'form': form ,
-            'user': user ,
         }
         return render(request,'Checker/ClassCreate.html',context)
 
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Checker'])
 def ManageCheckerCheckView(request,student,checker,clas):
-    user = request.user.groups.values('name')
     checker = request.user.pk
     try:
         student = get_object_or_404(Indivisuals , pk = student)
@@ -98,13 +91,11 @@ def ManageCheckerCheckView(request,student,checker,clas):
             v = v + 1
         total_answers = len(answers)
         context = {
-            'user':user ,
             'student' : student ,
             'answers' : answers ,
             'total_answers' : total_answers ,
         }
         return render(request,'Checker/CopyCheck.html',context)
-    # user = request.user.groups.values('name')
     # checker = request.user.pk
     # try:
     #     student = get_object_or_404(Indivisuals , pk = student)
@@ -408,14 +399,12 @@ def ManageCheckerCheckView(request,student,checker,clas):
     #         'answers' :answers,
     #         'marks' : marks ,
     #         'questions' : questions ,
-    #         'user': user ,
     #     }
         # return render(request,'Checker/CopyCheck.html',context)
 
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Teacher'])
 def ManageCheckerStudentCopyCheckClaimView(request,exam,student):
-    user = request.user.groups.values('name')
     exam = get_object_or_404(ExamStatus , pk = exam)
     student = get_object_or_404(TeacherClassStudents , pk = student)
     for i in ExamAnswers.objects.all():

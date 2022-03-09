@@ -12,6 +12,9 @@ def ManageAuth(request):
     request.user.groups.add(Group.objects.get(name='School_Public'))
     request.user.groups.add(Group.objects.get(name='Blog_Public'))
     request.user.groups.add(Group.objects.get(name='Matrinomial_Public'))
+    user = request.user.groups.values('name')
+    request.session['user'] = [i.get('name') for i in user]
+    request.session.save()
     user = get_object_or_404(User , pk = request.user.pk)
     try:
         ManageUserDataForm({'user':user ,'first_name':user.first_name}or None , instance = get_object_or_404(UserData , user = request.user)).save()
@@ -20,36 +23,27 @@ def ManageAuth(request):
     return redirect('main')
 
 def Rejected(request):
-    user = request.user.groupsvalues('name')
     context = {
-        'user' : user ,
     }
     return render(request,'Includes/Rejected.html',context)
 
 def PrivicyPolicy(request):
-    user = request.user.groups.values('name')
     context = {
-        'user' : user ,
     }
     return render(request,'PrivacyPolicy.html',context)
 
 def TermsAndConditions(request):
-    user = request.user.groups.values('name')
     context = {
-        'user' : user ,
     }
     return render(request,'TermsAndConditions.html',context)
 
 def NotAuthorized(request):
-    user = request.user.groups.values('name')
     context = {
-        'user' : user ,
     }
     return render(request,'Includes/NotAuthorized.html',context)
 
 def ManageMainPage(request):
     user = request.user.groups.values('name')
-    # form = ManageCreatorCreateForm()
     shop = 'NoShop'
     student = 'NoStudent'
     if request.user.is_authenticated:
@@ -65,33 +59,25 @@ def ManageMainPage(request):
                 except:
                     pass
     context = {
-        'user' : user ,
-        # 'form' : form ,
         'shop' : shop ,
         'student' : student ,
     }
     return render(request,'Main.html',context)
 
 def ManageMainPageLogin(request):
-    user = request.user.groups.values('name')
     # form = ManageCreatorCreateForm()
     context = {
-        'user' : user ,
         # 'form' : form ,
         'login' : 'True' ,
     }
     return render(request,'Main.html',context)
 
 def PageNotFoundView(request,exception=None):
-    user = request.user.groups.values('name')
     context = {
-        'user' : user ,
     }
     return render(request,'Includes/404.html',context)
 
 def ManageAboutUsView(request):
-    user = request.user.groups.values('name')
     context = {
-        'user' : user ,
     }
     return render(request,'AboutUs.html',context)

@@ -1,0 +1,103 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block address %}
+    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{% url 'shop:product_list' %}">Shop</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">Order Review</a></li>
+{% endblock %}
+{% block style %}
+<style>
+    .rate {
+        float: left;
+        height: 46px;
+        padding: 0 10px;
+    }
+    .rate:not(:checked) > input {
+        position:absolute;
+        top:-9999px;
+    }
+    .rate:not(:checked) > label {
+        float:right;
+        width:1em;
+        overflow:hidden;
+        white-space:nowrap;
+        cursor:pointer;
+        font-size:30px;
+    }
+    .rate:not(:checked) > label:before {
+        content: '★ ';
+    }
+    .rate > input:checked ~ label {
+        color: #ffc700;    
+    }
+    .rate:not(:checked) > label:hover,
+    .rate:not(:checked) > label:hover ~ label {
+        color: #deb217;  
+    }
+    .rate > input:checked + label:hover,
+    .rate > input:checked + label:hover ~ label,
+    .rate > input:checked ~ label:hover,
+    .rate > input:checked ~ label:hover ~ label,
+    .rate > label:hover ~ input:checked ~ label {
+        color: #c59b08;
+    }
+</style>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Review Order</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        <div class="form-group" hidden>
+                            <label>Order :</label>
+                            <input class="form-control" type="number" name="order" required="" id="id_order" value="{{ order.pk }}">
+                        </div>
+                        <div class="form-group">
+                            <label>Text :</label>
+                            <input class="form-control" type="text" name="text" maxlength="500" id="id_text" value="{% if form.text.value != None %}{{ form.text.value }}{% endif %}">
+                        </div>
+                        <div class="form-group">
+                            <label>Image :</label>
+                            <div class="form-control">
+                                {% if form.image.value %}
+                                    Currently : <img style="width:20%" src="{{ form.image.value.url }}"><br><br>
+                                    Change :
+                                    <input type="file" name="image" id="id_image">
+                                {% else %}
+                                    <input type="file" name="image" id="id_image">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Stars :</label>
+                            <div class="rate" style="width: 100%;text-align: center;">
+                                <input style="width:20%" type="radio" id="star5" name="stars" value="5" />
+                                <label style="width: 20%;" for="star5" title="text"></label>
+                                <input style="width:20%" type="radio" id="star4" name="stars" value="4" />
+                                <label style="width: 20%;" for="star4" title="text"></label>
+                                <input style="width:20%" type="radio" id="star3" name="stars" value="3" />
+                                <label style="width: 20%;" for="star3" title="text"></label>
+                                <input style="width:20%" type="radio" id="star2" name="stars" value="2" />
+                                <label style="width: 20%;" for="star2" title="text"></label>
+                                <input style="width:20%" type="radio" id="star1" name="stars" value="1" />
+                                <label style="width: 20%;" for="star1" title="text"></label>
+                            </div>
+                        </div>
+                        <br>
+                        <br>
+                        <br>
+                        <button class="btn btn-primary">Submit</button>
+                        {% csrf_token %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

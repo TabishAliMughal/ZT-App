@@ -71,7 +71,7 @@
                         </div>
                     </div>
                     <form method="post" class="order-form">
-                        {% for i in user %}
+                        {% for i in request.session.user %}
                             <div class="form-group">
                                 <label>First Name</label>
                                 <input class="form-control" type="text" name='first_name' value="{{ i.first_name }}" readonly required>

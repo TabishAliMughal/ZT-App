@@ -12,7 +12,6 @@ from django.core.files.base import ContentFile
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Admin'])
 def ManageClassEditView(request,pk):
-    user = request.user.groups.values('name')
     data = get_object_or_404(Classes, pk = pk)
     if request.method == 'POST':
         form = ClassesForm(request.POST or None, instance=data)
@@ -23,14 +22,12 @@ def ManageClassEditView(request,pk):
         form = ClassesForm(instance=data)
         context = {
             'form' : form,
-            'user':user ,
         }
         return render(request, 'Forms/Edit/classes.html' , context)
 
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Admin'])
 def ManageSubjectEditView(request,pk):
-    user = request.user.groups.values('name')
     data = get_object_or_404(Subjects, pk = pk)
     if request.method == 'POST':
         form = SubjectsForm(request.POST or None, instance=data)
@@ -40,7 +37,6 @@ def ManageSubjectEditView(request,pk):
     else:
         form = SubjectsForm(instance=data)
         context = {
-            'user':user ,
             'form' : form,
         }
         return render(request,'Forms/Edit/subjects.html' , context)
@@ -48,7 +44,6 @@ def ManageSubjectEditView(request,pk):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Admin'])
 def ManageClassSubjectsEditView(request,pk):
-    user = request.user.groups.values('name')
     data = get_object_or_404(ClassSubjects, pk = pk)
     if request.method == 'POST':
         form = ClassSubjectsForm(request.POST or None, instance=data)
@@ -58,7 +53,6 @@ def ManageClassSubjectsEditView(request,pk):
     else:
         form = ClassSubjectsForm(instance=data)
         context = {
-            'user':user ,
             'form' : form,
         }
         return render(request,'Forms/Edit/classsubjects.html' , context)
@@ -66,7 +60,6 @@ def ManageClassSubjectsEditView(request,pk):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Admin'])
 def ManageModuleEditView(request,pk):
-    user = request.user.groups.values('name')
     data = get_object_or_404(Module, pk = pk)
     if request.method == 'POST':
         form = ModuleForm(request.POST or None, instance=data)
@@ -76,7 +69,6 @@ def ManageModuleEditView(request,pk):
     else:
         form = ModuleForm(instance=data)
         context = {
-            'user':user ,
             'form' : form,
         }
         return render(request,'Forms/Edit/module.html' , context)
@@ -84,7 +76,6 @@ def ManageModuleEditView(request,pk):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Admin','DataHandler'])
 def ManageContentEditView(request,pk):
-    user = request.user.groups.values('name')
     data = get_object_or_404(Content, pk = pk)
     videos = []
     for i in Videos.objects.all():
@@ -138,7 +129,6 @@ def ManageContentEditView(request,pk):
     else:
         form = ContentForm(instance=data)
         context = {
-            'user':user ,
             'form' : form ,
             'videos' : videos ,
             'images' : images ,
@@ -148,7 +138,6 @@ def ManageContentEditView(request,pk):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Admin'])
 def ManageExamEditView(request,pk):
-    user = request.user.groups.values('name')
     data = get_object_or_404(ExamStatus, pk = pk)
     if request.method == 'POST':
         form = ExamForm(request.POST or None, instance=data)
@@ -158,7 +147,6 @@ def ManageExamEditView(request,pk):
     else:
         form = ExamForm(instance=data)
         context = {
-            'user':user ,
             'form' : form,
         }
         return render(request,'Forms/Edit/exam.html' , context)

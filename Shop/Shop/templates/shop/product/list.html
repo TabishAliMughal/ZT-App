@@ -10,7 +10,7 @@
         {% if all == 'Selected' %}
             <div class="card">
                 <div class="card-header">
-                    <h5>{% if category %}{{ category.name }}{% else %}All Products{% endif %}</h5>
+                    <h5>{% if category %}{{ category.name }}{% elif shop %}{{ shop }}{% else %}All Products{% endif %}</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -22,8 +22,8 @@
                                     </div>
                                         <a style="text-align:center" href="{% url 'shop:product_detail' v.product.pk v.product.slug %}">
                                             {% if v.image %}
-                                                {% for k in v.image %}
-                                                    <div class="align-items-center" ><img class="col-9" style="height:auto;width:100%;" style="height:auto;width:100%;" src="{{ k.image.url }}"></div>
+                                            {% for k in v.image %}
+                                                    <div class="align-items-center" ><img class="col-9" style="height:auto;width:100%;" style="height:auto;width:100%;" src="{{ k }}"></div>
                                                 {% endfor %}
                                             {% else %}
                                                     <div class="align-items-center" ><img class="col-9" style="height:auto;width:100%;" style="height:auto;width:100%;" src="{% static 'assets/images/noimg.png' %}"></div>
@@ -40,33 +40,46 @@
         {% else %}
             <div class="card">
                 <div class="row">
-                    <div class="col-md-12 col-xl-6">
-                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="align-self: center;">
-                            <li class="nav-item">
-                                <a class="nav-link active show" id="pills-home-tab" data-toggle="pill" href="#pill-New" role="tab" aria-controls="pills-display" aria-selected="true">New</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pill-Used" role="tab" aria-controls="pills-detail" aria-selected="false">Used</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-md-12 col-xl-6">
-                        <div>
+                    <div class="col-md-12 col-xl-12" style="text-align: center;">
+                        <div style="width:max-content;margin:auto;">
                             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="align-self: center;">
                                 <li class="nav-item">
-                                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Category</button>
-                                    <div class="dropdown-menu" x-placement="top-start" style="position: absolute; transform: translate3d(0px, -200px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                        <a class="dropdown-item" href="{% url "shop:product_list" %}">All</a>
-                                        <div role="separator" class="dropdown-divider"></div>
-                                        {% for c in categories %}
-                                            <a class="dropdown-item" href="{% url 'shop:product_list_by_category' c.slug %}">{{ c }}</a>
-                                        {% endfor %}
-                                    </div>
+                                    <a class="nav-link active show" id="pills-home-tab" data-toggle="pill" href="#pill-New" role="tab" aria-controls="pills-display" aria-selected="true">New</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pill-Used" role="tab" aria-controls="pills-detail" aria-selected="false">Used</a>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
+                <br>
+                <div class="row">
+                    {% for c in categories %}
+                        <div class="col-md-12 col-xl-2 text-center">
+                            <a href="{% url 'shop:product_list_by_category' c.slug %}">
+                                {% if c.image %}<img style="width:100%;height: auto;" src="{{ c.image.url }}">{% endif %}
+                                {{ c }}<br><br>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                <!-- <div class="col-md-12 col-xl-6">
+                    <div>
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="align-self: center;">
+                            <li class="nav-item">
+                                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Category</button>
+                                <div class="dropdown-menu" x-placement="top-start" style="position: absolute; transform: translate3d(0px, -200px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                    <a class="dropdown-item" href="{% url "shop:product_list" %}">All</a>
+                                    <div role="separator" class="dropdown-divider"></div>
+                                    {% for c in categories %}
+                                        <a class="dropdown-item" href="{% url 'shop:product_list_by_category' c.slug %}">{{ c }}</a>
+                                    {% endfor %}
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div> -->
             </div>
             <div class="card">
                 <div class="tab-content" style="padding: 0;" id="pills-tabContent">
@@ -86,6 +99,14 @@
                                                     <div class="card block-card">
                                                         <div class="card-header">
                                                             <h5><a style="overflow-wrap: break-word;" href="{% url 'shop:product_detail' v.product.pk v.product.slug %}">{{ v.product.name }}</a></h5>
+
+                                                            <div style="float:right">
+                                                                {% for p in v.review %}
+                                                                    {% for k in p.average %}
+                                                                        <div style="float: right;color: yellow;font-size: 25px;">&#9733</div>
+                                                                    {% endfor %}
+                                                                {% endfor %}
+                                                            </div>
                                                         </div>
                                                         <a  class="text-center" href="{% url 'shop:product_detail' v.product.pk v.product.slug %}">
                                                             {% if v.image %}

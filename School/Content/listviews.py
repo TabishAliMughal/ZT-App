@@ -13,17 +13,14 @@ from datetime import timedelta
 @allowed_users(allowed_roles=['Admin'])
 def ManageClassListView(request):
     list_ = Classes.objects.all()
-    user = request.user.groups.values('name')
     context = {
         'list':list_,
-        'user':user ,
     }
     return render (request,'Lists/classes.html',context)
 
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Admin','DataHandler'])
 def ManageContentListView(request):
-    user = request.user.groups.values('name')
     session = get_object_or_404(Session , session_number = '1')
     if request.method == 'POST':
         list_ = []
@@ -46,7 +43,6 @@ def ManageContentListView(request):
         subjects = Subjects.objects.all()
         context = {
             'list':list_,
-            'user':user ,
             'classes':classes ,
             'subjects':subjects ,
         }
@@ -63,7 +59,6 @@ def ManageContentListView(request):
         subjects = Subjects.objects.all()
         context = {
             'list':list_,
-            'user':user ,
             'classes':classes ,
             'subjects':subjects ,
         }
@@ -73,10 +68,8 @@ def ManageContentListView(request):
 @allowed_users(allowed_roles=['Admin'])
 def ManageSubjectListView(request):
     list_ = Subjects.objects.all()
-    user = request.user.groups.values('name')
     context = {
         'list':list_,
-        'user':user ,
     }
     return render (request,'Lists/subjects.html',context)
 
@@ -84,10 +77,8 @@ def ManageSubjectListView(request):
 @allowed_users(allowed_roles=['Admin'])
 def ManageModuleListView(request):
     list_ = Module.objects.all()
-    user = request.user.groups.values('name')
     context = {
         'list':list_,
-        'user':user ,
     }
     return render (request,'Lists/module.html',context)
 
@@ -95,10 +86,8 @@ def ManageModuleListView(request):
 @allowed_users(allowed_roles=['Admin'])
 def ManageClassSubjectsListView(request):
     list_ = ClassSubjects.objects.all()
-    user = request.user.groups.values('name')
     context = {
         'list':list_,
-        'user':user ,
     }
     return render (request,'Lists/classsubjects.html',context)
 
@@ -106,9 +95,7 @@ def ManageClassSubjectsListView(request):
 @allowed_users(allowed_roles=['Admin'])
 def ManageExamListView(request):
     list_ = ExamStatus.objects.all()
-    user = request.user.groups.values('name')
     context = {
         'list':list_,
-        'user':user ,
     }
     return render (request,'Lists/exam.html',context)

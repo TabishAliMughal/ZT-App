@@ -10,7 +10,6 @@ from django.contrib.auth.models import User
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['RAdmin'])
 def ManageRelationshipMatchingListView(request):
-    user = request.user.groups.values('name')
     male = []
     female = []
     for i in Candidates.objects.all():
@@ -23,9 +22,7 @@ def ManageRelationshipMatchingListView(request):
                 match = Match.objects.all().filter().filter(female = i)
                 i.matched = len(match)
                 female.append(i)
-    # print("male = {} and female = {}".format(len(male),len(female)))
     context = {
-        'user' : user ,
         'male' : male ,
         'female' : female ,
     }
@@ -34,7 +31,6 @@ def ManageRelationshipMatchingListView(request):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['RAdmin'])
 def ManageRelationshipMatchingSaveView(request):
-    user = request.user.groups.values('name')
     if request.method == 'POST':
         try:
             get_object_or_404(Match,male = request.POST.get('male'),female = request.POST.get('female'))
@@ -56,13 +52,11 @@ def ManageRelationshipMatchingSaveView(request):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['RAdmin'])
 def ManageRelationshipMatchedListView(request):
-    user = request.user.groups.values('name')
     matching = []
     for i in Match.objects.all():
         i.user = get_object_or_404(User,pk = i.user)
         matching.append(i)
     context = {
         'matching' : matching ,
-        'user' : user ,
     }
     return render(request,'Matching/Matched.html',context)

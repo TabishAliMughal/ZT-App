@@ -16,7 +16,6 @@ def ManageSchoolProfileView(request):
     for i in groups:
         if str(i) == 'Teacher':
             group = i
-    user = request.user.groups.values('name')
     log_school = request.user
     s = School.objects.all()
     school = []
@@ -37,18 +36,15 @@ def ManageSchoolProfileView(request):
             if str(i.school.user.pk) == str(log_school.pk):
                 students.append(i)
     context = {
-        'user' : user ,
         'school': school ,
         'teachers': teachers ,
         'students': students ,
-        'user': user ,
     }
     return render(request,'School/Profile.html',context)
 
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Admin','School'])
 def ManageTeacherProfileDetailView(request , id):
-    user = request.user.groups.values('name')
     asked = get_object_or_404(User,pk = id)
     students = '0'
     clas = []
@@ -68,7 +64,6 @@ def ManageTeacherProfileDetailView(request , id):
             context = {
                 'classes' : classes ,
                 'students' : students ,
-                'user': user ,
                 'teacher' : asked
             }
             return render(request,'Teacher/ProfileDetail.html',context)
@@ -76,7 +71,6 @@ def ManageTeacherProfileDetailView(request , id):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['School'])
 def ManageSchoolCreateView(request):
-    user = request.user.groups.values('name')
     if request.method == "POST":
         rawdata = request.POST
         school = rawdata.get('school')
@@ -92,6 +86,5 @@ def ManageSchoolCreateView(request):
         form = ManageSchoolCreateForm()
         context = {
             'form' : form ,
-            'user': user ,
         }
         return render(request,'School/Create/School.html',context)

@@ -10,7 +10,6 @@ from App.Authentication.user_handeling import unauthenticated_user, allowed_user
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Teacher','Student','Parent'])
 def ManageTeacherClassStudentResultView(request,id,pk):
-    user = request.user.groups.values('name')
     clas = get_object_or_404(TeacherClass , pk = id)
     student = get_object_or_404(TeacherClassStudents,pk = pk)
     tpercentage = '0'
@@ -70,14 +69,12 @@ def ManageTeacherClassStudentResultView(request,id,pk):
         'final_marks': fmarks ,
         'numbers': numbers ,
         'student': student ,
-        'user': user ,
     }
     return render(request , 'Result/Student.html' , context)
 
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Teacher'])
 def ManageTeacherClassResultView(request,id):
-    user = request.user.groups.values('name')
     clas = get_object_or_404(TeacherClass, pk = id)
     students = get_list_or_404(TeacherClassStudents,clas = clas.pk)
     all = []
@@ -145,7 +142,6 @@ def ManageTeacherClassResultView(request,id):
     context = {
         'subjects': subjects ,
         'result': all ,
-        'user': user ,
         'teacher_class': clas ,
     }
     return render(request,'Result/Class.html',context)
@@ -153,7 +149,6 @@ def ManageTeacherClassResultView(request,id):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Teacher','Student','Parent'])
 def ManageTeacherClassStudentResultAnswersView(request,exam,student):
-    user = request.user.groups.values('name')
     data = []
     ans = []
     exam = get_object_or_404(ExamStatus , pk = exam)
@@ -168,14 +163,12 @@ def ManageTeacherClassStudentResultAnswersView(request,exam,student):
     context = {
         'data': data ,
         'ans': ans ,
-        'user': user ,
     }
     return render(request,'Result/StudentAnswers.html',context)
 
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Teacher','Student','Parent'])
 def ManageTeacherClassResultPrintView(request,id):
-    user = request.user.groups.values('name')
     clas = get_object_or_404(TeacherClass, pk = id)
     students = get_list_or_404(TeacherClassStudents,clas = clas.pk)
     all = []
@@ -242,7 +235,6 @@ def ManageTeacherClassResultPrintView(request,id):
         rank.remove(v)
     context = {
         'result': all ,
-        'user': user ,
         'teacher_class': clas ,
     }
     pdf = PdfMaker('Result/TeacherClassResultPrint.html', context)

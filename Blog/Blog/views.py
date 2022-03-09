@@ -13,7 +13,6 @@ from django.contrib.auth.models import User
 
 
 def ManageBlogListView(request):
-    user = request.user.groups.values('name')
     blogs = []
     for k in Type.objects.all():
         blog_list = []
@@ -28,13 +27,11 @@ def ManageBlogListView(request):
             blog_list.append({'blog' : i , 'posts' : posts , 'react' : reacts , 'comment' : comment})
         blogs.append({"type" : k , "blogs" : blog_list})
     context = {
-        'user' : user ,
         'blogs' : blogs ,
     }
     return render(request,'Blog/List.html',context)
 
 def ManageUserBlogListView(request,pk=None):
-    user = request.user.groups.values('name')
     blogs = []
     if pk:
         blog_user = int(get_object_or_404(UserData,pk = pk).pk)
@@ -71,7 +68,6 @@ def ManageUserBlogListView(request,pk=None):
             icons = flow[::-1]
             blogs.append({'blog' : i , 'posts' : posts , 'react' : total_reacts , 'comment' : comment,'icons':icons[:2]})
     context = {
-        'user' : user ,
         'blogs' : blogs ,
     }
     return render(request,'Blog/User/List.html',context)
@@ -79,7 +75,6 @@ def ManageUserBlogListView(request,pk=None):
 @login_required(login_url='not_authorized')
 @allowed_users(allowed_roles=['Blog_Creator'])
 def ManageBlogCreateView(request):
-    user = request.user.groups.values('name')
     if request.method == 'POST':
         user = ''
         for i in UserData.objects.all():
@@ -105,13 +100,11 @@ def ManageBlogCreateView(request):
         })
         form.save()
         context = {
-            'user' : user ,
         }
         return render(request,'Blog/User/Created.html',context)
     else:
         form = ManageBlogCreateForm()
         context = {
-            'user' : user ,
             'form' : form ,
         }
         return render(request,'Blog/User/Create.html',context)
@@ -119,7 +112,6 @@ def ManageBlogCreateView(request):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Blog_Creator'])
 def ManageBlogEditView(request,pk):
-    user = request.user.groups.values('name')
     blog = get_object_or_404(Blog , pk = pk)
     if request.method == 'POST':
         if request.FILES.get('image'):
@@ -145,13 +137,11 @@ def ManageBlogEditView(request,pk):
         } or None,instance=blog)
         form.save()
         context = {
-            'user' : user ,
         }
         return render(request,'Blog/User/Created.html',context)
     else:
         form = ManageBlogCreateForm(instance = blog)
         context = {
-            'user' : user ,
             'form' : form ,
         }
         return render(request,'Blog/User/Edit.html',context)
@@ -159,10 +149,8 @@ def ManageBlogEditView(request,pk):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Blog_Creator'])
 def ManageBlogDeleteView(request,pk):
-    user = request.user.groups.values('name')
     blog = get_object_or_404(Blog,pk = pk)
     blog.delete()
     context = {
-        'user' : user ,
     }
     return render(request,'Blog/User/Deleted.html',context)

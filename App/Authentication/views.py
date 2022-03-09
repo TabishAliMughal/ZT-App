@@ -17,9 +17,11 @@ def loginPage(request):
 		username = request.POST.get('username')
 		password =request.POST.get('password')
 		user = authenticate(request, username=username, password=password)
-		print('abc')
 		if user is not None:
 			login(request, user)
+			user = request.user.groups.values('name')
+			request.session['user'] = [i.get('name') for i in user]
+			request.session.save()
 			return HttpResponseRedirect(path)
 		else:
 			return HttpResponseRedirect(path)

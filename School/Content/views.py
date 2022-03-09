@@ -23,7 +23,6 @@ def ManageMainView(request):
         v = int(v) + 1
     context = {
         'locator':tea ,
-        'user':user ,
     }
     for i in user:
         if str(i.get('name')) == 'Teacher':
@@ -48,21 +47,16 @@ def ManageMainView(request):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Admin'])
 def ManageSelectToAddView(request):
-    user = request.user.groups.values('name')
     context = {
-        'user':user ,
     }
     return render(request , 'Forms/All.html' , context)
 
 def ManageAllView(request):
-    user = request.user.groups.values('name')
     context = {
-        'user':user ,
     }
     return render(request , 'All.html' , context)
 
 def ManageDemoView(request):
-    user = request.user.groups.values('name')
     f = []
     for i in range(1,8):
         f.append(i)
@@ -72,27 +66,22 @@ def ManageDemoView(request):
     context = {
         'date1': f ,
         'date2': k ,
-        'user': user ,
     }
     return render(request , 'Demo.html' , context)
 
 def ManageDemoListView(request , demodate = None , filday = None):
-    user = request.user.groups.values('name')
     if filday:
         day = filday
     else:
         day = int(demodate)
     classes = Classes.objects.all()
     context = {
-        'user' : user ,
         'day' : day ,
         'classes' : classes ,
     }
     return render(request , 'Select/DemoClasses.html' , context)
 
-
 def ManageDemoContentView(request , day , clas):
-    user = request.user.groups.values('name')
     content = []
     k = int('0')
     for i in Content.objects.all():
@@ -129,7 +118,6 @@ def ManageDemoContentView(request , day , clas):
     context = {
         'date' : day ,
         'content' : content,
-        'user': user ,
         'clas' : get_object_or_404(Classes , pk = clas) ,
     }
     return render(request , 'Lists/DemoContent.html' , context)

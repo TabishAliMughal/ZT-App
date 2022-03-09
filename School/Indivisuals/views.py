@@ -13,7 +13,6 @@ from App.Authentication.user_handeling import unauthenticated_user, allowed_user
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Admin','School'])
 def ManageIndivisualsListView(request):
-    user = request.user.groups.values('name')
     indivisual = Indivisuals.objects.all()
     if request.method == 'POST':
         if str(request.POST.get('school')) != str('None'):
@@ -35,7 +34,6 @@ def ManageIndivisualsListView(request):
     school = School.objects.all()
     context = {
         'school' : school ,
-        'user' : user ,
         'indivisual' : indivisual ,
         'total' : v ,
     }
@@ -75,6 +73,8 @@ def ManageIndivisualsCreateView(request , pk=None):
                 user_form.save()
                 seluser = User.objects.get(username = username)
                 redirect_page = 'admin'
+                group = Group.objects.get(name='Individuals')
+                seluser.groups.add(group)
                 break
             if str(i.get('name')) == 'School_Public':
                 # seluser = User.objects.get(pk = request.user.pk)
@@ -82,8 +82,11 @@ def ManageIndivisualsCreateView(request , pk=None):
                 redirect_page = 'School_Public'
                 password = 'no password'
         # print(seluser)
-        group = Group.objects.get(name='Individuals')
-        seluser.groups.add(group)
+                group = Group.objects.get(name='School_Public')
+                seluser.groups.remove(group)
+                group = Group.objects.get(name='Individuals')
+                seluser.groups.add(group)
+                break
         form = IndivisualsForm({
             'start_date' : data.get('start_date') ,
             'user' : seluser.pk ,
@@ -106,7 +109,6 @@ def ManageIndivisualsCreateView(request , pk=None):
         date = datetime.today().strftime('%Y-%m-%d')
         context = {
             'school' : school ,
-            'user' : user ,
             'form' : form ,
             'date' : date ,
         }
@@ -115,10 +117,8 @@ def ManageIndivisualsCreateView(request , pk=None):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Admin','School'])
 def ManageIndivisualsDetailView(request , pk):
-    user = request.user.groups.values('name')
     indivisual = get_object_or_404(Indivisuals , pk = pk)
     context = {
-        'user' : user ,
         'indivisual' : indivisual ,
     }
     return render(request , 'Indivisuals/detail.html' , context)
@@ -126,7 +126,6 @@ def ManageIndivisualsDetailView(request , pk):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Admin','School'])
 def ManageIndivisualsEditView(request , pk):
-    user = request.user.groups.values('name')
     indivisual = get_object_or_404(Indivisuals , pk = pk)
     if request.method == 'POST':
         data = request.POST
@@ -148,7 +147,6 @@ def ManageIndivisualsEditView(request , pk):
         form = IndivisualsForm(instance = indivisual)
         date = datetime.today().strftime('%Y-%m-%d')
         context = {
-            'user' : user ,
             'form' : form ,
             'date' : date ,
         }

@@ -36,8 +36,8 @@
                             </tbody>
                         </table>
                     </div>
-                    {% for i in user %}
-                        {% if i.name == 'Individuals' %}
+                    {% for i in request.session.user %}
+                        {% if i == 'Individuals' %}
                             <a href="{% url 'school_exam:exam_upload_pictures_1' exam.pk %}" class="btn btn-primary">Submit Answers</a>
                             ( {{ answers }} ) Uploaded<br><br>
                         {% endif %}

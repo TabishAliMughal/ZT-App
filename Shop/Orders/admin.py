@@ -1,7 +1,7 @@
 from import_export.admin import ImportExportModelAdmin
 from django.contrib import admin
 from django.contrib.gis.db import models
-from .models import Order, OrderItem
+from .models import Order, OrderItem, OrderReview
 from mapwidgets.widgets import GooglePointFieldWidget
 from static.mapsettings import CUSTOM_MAP_SETTINGS
 from MyApp.admin import shopsite
@@ -21,3 +21,4 @@ class OrderAdmin(ImportExportModelAdmin):
 
 
 shopsite.register(Order,OrderAdmin)
+shopsite.register(OrderReview,ImportExportModelAdmin)

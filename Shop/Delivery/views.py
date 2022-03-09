@@ -15,12 +15,10 @@ from math import sin, cos, sqrt, atan2, radians
 
 
 def ManageDeliveryPersonListView(request):
-    user = request.user.groups.values('name')
     persons = []
     for i in DeliveryPerson.objects.all():
         persons.append(i)
     context = {
-        'user' : user,
         'persons' : persons ,
     }
     return render(request , 'Delivery/Person/list.html',context)
@@ -28,7 +26,6 @@ def ManageDeliveryPersonListView(request):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Delivery'])
 def ManageDeliveryPersonDataView(request):
-    user = request.user.groups.values('name')
     form = ManageDeliveryPersonDataForm()
     person = ''
     stime = ''
@@ -81,7 +78,6 @@ def ManageDeliveryPersonDataView(request):
             'lat': lat ,
             'lon': lon ,
             'person': person,
-            'user' : user,
             'form': form ,
         }
         return render(request,'Delivery/Person/Data.html',context)
@@ -89,14 +85,12 @@ def ManageDeliveryPersonDataView(request):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Delivery'])
 def ManageDeliveryPersonTasksListView(request):
-    user = request.user.groups.values('name')
     tasks = []
     rider = get_object_or_404(DeliveryPerson,user = request.user.pk)
     for i in DeliveryTasks.objects.all():
         if str(i.person.user) == str(request.user.pk):
             tasks.append(i)
     context = {
-        'user' : user,
         'tasks' : tasks ,
         'rider' : rider ,
     }
@@ -105,7 +99,6 @@ def ManageDeliveryPersonTasksListView(request):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Delivery'])
 def ManageDeliveryPersonTaskDetailView(request,task):
-    user = request.user.groups.values('name')
     task = get_object_or_404(DeliveryTasks, pk = int(task))
     task_from = {'lat': task.task_from.address[1] , 'lon': task.task_from.address[0]}
     print()
@@ -122,7 +115,6 @@ def ManageDeliveryPersonTaskDetailView(request,task):
                         proof.append(t.image.url)
     total = int(price) + int(delivery)
     context = {
-        'user' : user ,
         'task' : task ,
         'task_from' : task_from ,
         'task_to' : task_to ,
@@ -134,7 +126,6 @@ def ManageDeliveryPersonTaskDetailView(request,task):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Delivery'])
 def ManageDeliveryPersonTasksCreateView(request):
-    user = request.user.groups.values('name')
     if request.method == 'POST':
         data = request.POST
         rider = get_object_or_404(DeliveryPerson, user = data.get('rider'))
@@ -172,7 +163,6 @@ def ManageDeliveryPersonTasksCreateView(request):
             distance = R * c
             orders.append({'order': i , 'pick' : pick , 'drop' : drop , 'distance' : str(distance)[:5]})
         context = {
-            'user' : user ,
             'orders' : orders ,
         }
         return render(request,'Delivery/Person/PickOrder.html',context)
@@ -180,7 +170,6 @@ def ManageDeliveryPersonTasksCreateView(request):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Delivery'])
 def ManageDeliveryPersonTaskCompleteView(request,task=None):
-    user = request.user.groups.values('name')
     order = get_object_or_404(DeliveryTasks, pk = int(task)).order
     if request.method == 'POST':
         import base64
@@ -236,7 +225,6 @@ def ManageDeliveryPersonTaskCompleteView(request,task=None):
         return redirect('shop_delivery:delivery_person_tasks')
     else:
         context = {
-            'user' : user ,
         }
         return render(request,'Delivery/Person/Tasks/Deliver/Proof.html',context)
 

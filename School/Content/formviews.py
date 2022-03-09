@@ -15,25 +15,20 @@ from django.core.files.base import ContentFile
 def ManageClassesCreateView(request):
     if request.method == 'POST':
         form = ClassesForm(request.POST)
-        user = request.user.groups.values('name')
         if form.is_valid:
             form.save()
             context = { 
-                'user':user ,
                 'return': 'Has Been Added SuccessFully'
             }
             return render(request,'Forms/Created/classes.html',context)
         else:
             context = { 
-                'user':user ,
                 'return': 'Is Not Valid'
             }
             return render(request,'Forms/Created/classes.html',context)
     else:
         form = ClassesForm()
-        user = request.user.groups.values('name')
         context = { 
-            'user':user ,
             'form': form
         }
         return render(request , 'Forms/Create/classes.html' , context)
@@ -41,27 +36,22 @@ def ManageClassesCreateView(request):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Admin'])
 def ManageSubjectsCreateView(request):
-    user = request.user.groups.values('name')
     if request.method == 'POST':
         form = SubjectsForm(request.POST)
         if form.is_valid:
             form.save()
             context = { 
-                'user':user ,
-                'user':user ,
                 'return': 'Has Been Added SuccessFully'
             }
             return render(request,'Forms/Created/subjects.html',context)
         else:
             context = { 
-                'user':user ,
                 'return': 'Is Not Valid'
             }
             return render(request,'Forms/Created/subjects.html',context)
     else:
         form = SubjectsForm()
         context = { 
-            'user':user ,
             'form': form
         }
         return render(request ,'Forms/Create/subjects.html', context)
@@ -69,7 +59,6 @@ def ManageSubjectsCreateView(request):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Admin'])
 def ManageClassSubjectsCreateView(request):
-    user = request.user.groups.values('name')
     if request.method == 'POST':
         clas = request.POST.get('class_name')
         subj = request.POST.getlist('sub' , default='1')
@@ -81,7 +70,6 @@ def ManageClassSubjectsCreateView(request):
             if form.is_valid:
                 form.save()
         context = { 
-            'user':user ,
             'return': 'Has Been Added SuccessFully'
         }
         return render(request,'Forms/Created/classsubjects.html',context)
@@ -89,7 +77,6 @@ def ManageClassSubjectsCreateView(request):
         form = ClassSubjectsForm()
         subject = Subjects.objects.all()
         context = { 
-            'user':user ,
             'form': form ,
             'sub' : subject ,
         }
@@ -98,26 +85,22 @@ def ManageClassSubjectsCreateView(request):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Admin'])
 def ManageModuleCreateView(request):
-    user = request.user.groups.values('name')
     if request.method == 'POST':
         form = ModuleForm(request.POST)
         if form.is_valid:
             form.save()
             context = { 
-                'user':user ,
                 'return': 'Has Been Added SuccessFully'
             }
             return render(request,'Forms/Created/module.html',context)
         else:
             context = { 
-                'user':user ,
                 'return': 'Is Not Valid'
             }
             return render(request,'Forms/Created/module.html',context)
     else:
         form = ModuleForm()
         context = { 
-            'user':user ,
             'form': form
         }
         return render(request ,'Forms/Create/module.html', context)
@@ -125,7 +108,6 @@ def ManageModuleCreateView(request):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Admin','DataHandler'])
 def ManageContentCreateView(request):
-    user = request.user.groups.values('name')
     if request.method == 'POST':
         data = request.POST
         form1 = ContentForm(request.POST)
@@ -161,13 +143,11 @@ def ManageContentCreateView(request):
                 l = l + 1
                 form3.save()
             context = { 
-                'user':user ,
                 'return': 'Has Been Added SuccessFully'
             }
             return render(request,'Forms/Created/content.html',context)
         else:
             context = { 
-                'user':user ,
                 'return': 'Is Not Valid'
             }
             return render(request,'Forms/Created/content.html',context)
@@ -176,7 +156,6 @@ def ManageContentCreateView(request):
         form2 = VideoForm()
         form3 = ImageForm()
         context = { 
-            'user':user ,
             'form1': form1,
             'form2': form2,
             'form3': form3,
@@ -186,7 +165,6 @@ def ManageContentCreateView(request):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Admin'])
 def ManageExamCreateView(request):
-    user = request.user.groups.values('name')
     if request.method == 'POST':
         form = ExamForm({
             'exam_number' : request.POST.get('exam_number') ,
@@ -198,20 +176,17 @@ def ManageExamCreateView(request):
         if form.is_valid:
             form.save()
             context = { 
-                'user':user ,
                 'return': 'Has Been Added SuccessFully'
             }
             return render(request,'Forms/Created/exam.html',context)
         else:
             context = { 
-                'user':user ,
                 'return': 'Is Not Valid'
             }
             return render(request,'Forms/Created/exam.html',context)
     else:
         form = ExamForm()
         context = { 
-            'user':user ,
             'form': form
         }
         return render(request ,'Forms/Create/exam.html', context)

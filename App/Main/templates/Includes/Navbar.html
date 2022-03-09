@@ -28,21 +28,21 @@
                         <ul class="pcoded-submenu">
                             <li><a href="{% url 'shop:product_list' %}" >Home</a></li>
                             {% if user %}
-                                {% for i in user %}
-                                    {% if i.name == "Shop_Creator" %}
+                                {% for i in request.session.user %}
+                                    {% if i == "Shop_Creator" %}
                                         {% if shop == 'NoShop' %}
                                             <li><a href="{% url 'shop:shop_products' %}" >Register Shop</a></li>
                                         {% else %}
                                             <li><a href="{% url 'shop:shop_products' %}" >My Shop</a></li>
                                             <li><a href="{% url 'shop:shop_orders' %}" >Orders</a></li>
                                         {% endif %}
-                                    {% elif i.name == "Shop_Public" %}
+                                    {% elif i == "Shop_Public" %}
                                         <li><a href="{% url 'shop_cart:cart_detail' %}">My Cart</a></li>
                                         <li><a href="{% url 'shop_costumer:previous_orders' %}">My Orders</a></li>
-                                    {% elif i.name == "Delivery" %}
+                                    {% elif i == "Delivery" %}
                                         <li><a href="{% url 'shop_delivery:delivery_person_tasks' %}">My Tasks</a></li>
                                         <li><a href="{% url 'shop_delivery:delivery_person_data' %}">My Data</a></li>
-                                    {% elif i.name == "Admin" %}
+                                    {% elif i == "Admin" %}
                                         <li><a href="{% url 'shop:shop_list' %}">Shops</a></li>
                                         <li><a href="{% url 'shop_account:accounts_list' %}">Accounts</a></li>
                                     {% else %}
@@ -64,25 +64,25 @@
                     <ul class="pcoded-submenu">
                         <li><a href="{% url 'school:main' %}" class="nav-link">Home</a></li>
                         {% if user %}            
-                            {% for i in user %}
-                                {% if i.name == 'Teacher' %}
+                            {% for i in request.session.user %}
+                                {% if i == 'Teacher' %}
                                     <li><a href="{% url 'school_teacher:teacher_profile' %}">My Profile</a></li>
-                                {% elif i.name == 'Admin' %}
+                                {% elif i == 'Admin' %}
                                     <li><a href="{% url 'school_admin:profiles' %}">All Profiles</a></li>
-                                {% elif i.name == 'Checker' %}
+                                {% elif i == 'Checker' %}
                                     <li><a href="{% url 'school_checker:checker_profile' %}">My Profile</a></li>
-                                {% elif i.name == 'School' %}
+                                {% elif i == 'School' %}
                                     <li><a href="{% url 'school_reg_school:school_profile' %}">My Profile</a></li>
-                                {% elif i.name == 'Parent' %}
+                                {% elif i == 'Parent' %}
                                     <li><a href="{% url 'school_parents:parent_profile' %}">My Profile</a></li>
-                                {% elif i.name == 'Individuals' %}
+                                {% elif i == 'Individuals' %}
                                     <li><a href="{% url 'school_individuals:indivisual_profile' %}">My Profile</a></li>
-                                {% elif i.name == 'School_Public' %}
+                                {% elif i == 'School_Public' %}
                                     {% if student == 'NoStudent' %}
                                         <li><a href="{% url 'school_individuals:indivisuals_create' %}">Enroll</a></li>
                                     {% endif %}
                                 {% endif %}
-                                {% if i.name == 'Teacher' or i.name == 'Admin' %}
+                                {% if i == 'Teacher' or i == 'Admin' %}
                                     <li class="nav-item pcoded-hasmenu" style="list-style: none;">
                                         <a href="javascript:" class="nav-link"><span class="pcoded-mtext">Teach</span></a>
                                         <ul class="pcoded-submenu">
@@ -90,7 +90,7 @@
                                         </ul>
                                     </li>
                                 {% endif %}
-                                {% if i.name == 'Admin' %}
+                                {% if i == 'Admin' %}
                                     <li class="nav-item pcoded-hasmenu" style="list-style: none;">
                                         <a href="javascript:" class="nav-link"><span class="pcoded-mtext">Add</span></a>
                                         <ul class="pcoded-submenu">
@@ -123,7 +123,7 @@
                                         </ul>
                                     </li>
                                 {% endif %}
-                                {% if i.name == 'DataHandler' %}
+                                {% if i == 'DataHandler' %}
                                     <li class="nav-item pcoded-hasmenu" style="list-style: none;">
                                         <a href="javascript:" class="nav-link"><span class="pcoded-mtext">Content</span></a>
                                         <ul class="pcoded-submenu">
@@ -147,11 +147,11 @@
                         <ul class="pcoded-submenu">
                             <li><a href="{% url 'blog_blog:blog_list' %}" class="nav-link">Home</a></li>
                             {% if user %}            
-                                {% for i in user %}
-                                    {% if i.name == "Blog_Creator" %}
+                                {% for i in request.session.user %}
+                                    {% if i == "Blog_Creator" %}
                                         <li><a href="{% url 'blog_blog:user_blog_list' %}" >My Blogs</a></li>
-                                    {% elif i.name == "Blog_Public" %}
-                                    {% elif i.name == "Admin" %}
+                                    {% elif i == "Blog_Public" %}
+                                    {% elif i == "Admin" %}
                                     {% else %}
                                     {% endif %}
                                 {% endfor %}
@@ -170,11 +170,11 @@
                         <ul class="pcoded-submenu">
                             <li><a href="{% url 'relationships:home' %}" class="nav-link">Home</a></li>
                             {% if user %}
-                                {% for i in user %}
-                                    {% if i.name == "Matrinomial_Public" %}
+                                {% for i in request.session.user %}
+                                    {% if i == "Matrinomial_Public" %}
                                         <li><a href="{% url 'candidate:info' %}" class="nav-link">My Info</a></li>
                                         <li><a href="{% url 'candidate:candidate_matches' %}" class="nav-link">My Matches</a></li>
-                                    {% elif i.name == "RAdmin" %}
+                                    {% elif i == "RAdmin" %}
                                         <li><a href="{% url 'candidate:candidate_list' %}" class="nav-link">All Info</a></li>
                                         <li><a href="{% url 'relationships_matching:matched_list' %}" class="nav-link">Matched List</a></li>
                                     {% endif %}

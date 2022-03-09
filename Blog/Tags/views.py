@@ -11,7 +11,6 @@ from App.User.models import Creator, UserData
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Blog_Creator'])
 def ManageBlogAddTagsView(request,pk):
-    user = request.user.groups.values('name')
     blog = get_object_or_404(Blog , pk = pk)
     if request.method == 'POST':
         for i in BlogTags.objects.all().filter(blog = blog):
@@ -29,7 +28,6 @@ def ManageBlogAddTagsView(request,pk):
         selected_tags = BlogTags.objects.all().filter(blog = blog.pk)
         tags = Tags.objects.all()
         context = {
-            'user' : user ,
             'selected_tags' : selected_tags ,
             'tags' : tags ,
         }
@@ -38,7 +36,6 @@ def ManageBlogAddTagsView(request,pk):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Blog_Creator'])
 def ManagePostAddTagsView(request,pk):
-    user = request.user.groups.values('name')
     post = get_object_or_404(Post , pk = pk)
     if request.method == 'POST':
         for i in PostTags.objects.all().filter(post = post):
@@ -54,32 +51,26 @@ def ManagePostAddTagsView(request,pk):
         selected_tags = PostTags.objects.all().filter(post = post.pk)
         tags = Tags.objects.all()
         context = {
-            'user' : user ,
             'selected_tags' : selected_tags ,
             'tags' : tags ,
         }
         return render(request,'Tags/Post/Tags.html',context)
 
 def ManageTagsListView(request):
-    user = request.user.groups.values('name')
     tags = Tags.objects.all()
     context = {
-        'user' : user ,
         'tags' : tags ,
     }
     return render(request,'Tags/List.html',context)
 
 def ManageTagDetailView(request,pk):
-    user = request.user.groups.values('name')
     tag = get_object_or_404(Tags , pk = pk)
     blogs = BlogTags.objects.all().filter(tag = tag)
     for i in blogs:
         blog_user = get_object_or_404(UserData , pk = i.blog.user)
-        print('blog_user')
         i.blog_user = blog_user
     posts = PostTags.objects.all().filter(tag = tag)
     context = {
-        'user' : user ,
         'tag' : tag ,
         'blogs' : blogs ,
         'posts' : posts ,

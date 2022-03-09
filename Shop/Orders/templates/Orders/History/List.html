@@ -1,0 +1,124 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block style %}
+<style>
+    /* .card::before{
+  position: absolute;
+  content: '';
+  background: #283593;
+  height: 28px;
+  width: 28px;
+  top:2rem;
+  right:-0.5rem;
+  transform : rotate(45deg);
+}
+.card::after{
+  position: absolute;
+  content: 'In progress';
+  top: 11px;
+  right: -14px;
+  padding: 0.5rem;
+  width: 10rem;
+  background: #3949ab;
+  color: white;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  box-shadow: 4px 4px 15px rgba(26, 35, 126, 0.2);
+} */
+</style>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>All Previous Orders</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for i in orders %}
+                        <div class="col-xl-4">
+                                <div class="card block-card">
+                                    <div class="card-header">
+                                        <h5>Order # {{ i.pk }}</h5>
+                                        {% if i.review %}
+                                            {% for p in i.review %}
+                                                <div style="float: right;color: yellow;font-size: 25px;">&#9733</div>
+                                            {% endfor %}
+                                        {% else %}
+                                        {% endif %}
+                                        </div>
+                                        <div class="card-body">
+                                            <div style="background-color: white;">
+                                                {% for v in i.items %}
+                                                    Product = {{ v.product }}<br>
+                                                    Qty = {{ v.quantity }}<br>
+                                                    Price = {{ v.price }}<br>
+                                                {% endfor %}
+                                            </div>
+                                            <br>
+                                            Delivery {{ i.order.delivery }}<br>
+                                            <a style="color: red;">{{ i.order.status }}</a>
+                                            <br>
+                                            {% if i.order.status == 'Delivered' %}
+                                                {% if not i.review %}
+                                                    <a class="btn btn-primary" href="{% url 'shop_orders:order_review' i.order.pk %}">Review</a>
+                                                {% else %}
+                                                    <a class="btn btn-primary" href="{% url 'shop_orders:order_review' i.order.pk %}">Edit Review</a>
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+
+                    </div>
+                    <!-- <div class="table-responsive">
+                        <table  class="table table-hover">
+                            <thead class="text-center">
+                                <tr>
+                                    <th>Order Number</th>
+                                    <th>Order Items</th>
+                                    <th>Price</th>
+                                    <th>Qty</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            {% for i in orders %}
+                                <tbody class="text-center">
+                                    <tr>
+                                        <td>{{ i.pk }}</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    {% for v in i.items %}
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            {{ v.product }}
+                                        </td>
+                                        <td>
+                                            {{ v.price }} + {{ i.order.delivery }}
+                                        </td>
+                                        <td>
+                                            {{ v.quantity }}
+                                        </td>
+                                        <td>
+                                            {{ i.order.status }}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+{% endblock %}

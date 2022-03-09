@@ -51,7 +51,6 @@ def ManageIndivisualProfileView(request , pk = None):
         for i in Content.objects.all():
             if str(i.pk) == str(pk):
                 videos = []
-                images = []
                 for vid in Videos.objects.all():
                     if str(i.pk) == str(vid.content.pk):
                         videos.append(vid)
@@ -80,7 +79,6 @@ def ManageIndivisualProfileView(request , pk = None):
         'request': request ,
         'slide' : slide ,
         'class_subjects':class_subjects,  
-        'user':user,
         'content':content,
         'prev_content':prev_content,
         'clas':c,
@@ -101,7 +99,6 @@ def ManageIndivisualProfileView(request , pk = None):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Individuals'])
 def ManageIndivisualRevisionSubjectView(View , individual , clas , subject):
-    user = View.user.groups.values('name')
     try:
         individual = get_object_or_404(Indivisuals , code = individual)
     except:
@@ -119,7 +116,6 @@ def ManageIndivisualRevisionSubjectView(View , individual , clas , subject):
     except:
         content = ''
     context = {
-        'user':user,
         'content':content,
         'individual':individual,
     }
@@ -128,14 +124,12 @@ def ManageIndivisualRevisionSubjectView(View , individual , clas , subject):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Individuals'])
 def ManageIndivisualDocumentsView(DocumentView , pk):
-    user = DocumentView.user.groups.values('name')
     content = get_object_or_404(Content , pk = int(pk))
     images = []
     for img in Images.objects.all():
         if str(img.content.pk) == str(content.pk):
             images.append(img)
     context = {
-        'user':user,
         'content':content,
         'images':images,
     }

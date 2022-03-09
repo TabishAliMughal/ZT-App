@@ -56,8 +56,11 @@
                             </div>
                         </div>
                         <div class="col-xl-4 col-md-6">
-                            <div class="card user-list" style="box-shadow:none">
-                                <div class="card-block" style="padding:0px 25px;">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Product Detail</h5>
+                                </div>
+                                <div class="card-body" style="padding:0px 25px;">
                                     <div class="row align-items-center m-b-20">
                                         <div class="col-xl-12">
                                             <h4 class="f-w-300 d-flex align-items-center float-left m-0">{{ product.product.name }}</h4>
@@ -65,7 +68,7 @@
                                     </div>
                                     <div class="row m-b-20">
                                         <div class="col-xl-12">
-                                            <h4 class="align-items-center float-left"><a style="font-weight:bold;">RS {{ product.product.price }} / {{ product.product.unit }}</a></h4>
+                                            <h4 class="align-items-center float-left"><a style="font-weight:bold;color: black;">RS {{ product.product.price }} / {{ product.product.unit }}</a></h4>
                                         </div>
                                         <br>
                                         <div class="col-xl-12">
@@ -74,22 +77,22 @@
                                         <br>
                                         <div class="col-xl-12">
                                             <h6 class="align-items-center float-left">
-                                                From = <a href="{% url 'shop:shop_product_list' product.product.shop.pk %}">{{ product.product.shop }}</a>
+                                                From : <a href="{% url 'shop:shop_product_list' product.product.shop.pk %}">{{ product.product.shop }}</a>
                                             </h6>
                                         </div>
                                         <div class="col-xl-12">
                                             <h6 class="align-items-center float-left">
-                                                Category = <a href="{{ product.product.category.get_absolute_url }}">{{ product.product.category }}</a>
+                                                Category : <a href="{{ product.product.category.get_absolute_url }}">{{ product.product.category }}</a>
                                             </h6>
                                         </div>
                                         <div class="col-xl-12">
                                             <h6 class="align-items-center float-left">
                                                 {% if request.user.is_authenticated %}
                                                     {% if user %}
-                                                        {% for i in user %}
-                                                            {% if i.name == "Creator" %}
+                                                        {% for i in request.session.user %}
+                                                            {% if i == "Shop_Creator" %}
                                                                 <h3>Cant Create Order</h3>
-                                                            {% elif i.name == 'Shop_Public' %}
+                                                            {% elif i == 'Shop_Public' %}
                                                                 <form action="{% url 'cart:cart_add' product.product.pk %}" method="post">
                                                                     <label for="id_quantity">Quantity : </label>
                                                                     <select name="quantity" id="id_quantity">
@@ -119,9 +122,8 @@
                                                                     <br>
                                                                     <button class="btn btn-primary form-control">Add To Cart</button>
                                                                 </form>
-                                                            {% elif i.name == 'Individuals' %}
                                                             {% else %}
-                                                                <h3>Cant Create Order</h3>
+                                                                <!-- <h3>Cant Create Order</h3> -->
                                                             {% endif %}
                                                         {% endfor %}
                                                     {% else %}
@@ -136,6 +138,35 @@
                                 </div>
                             </div>
                         </div>
+                        {% if product.reviews %}
+                            <div class="col-xl-4 col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Product Reviews</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        {% for i in product.reviews %}
+                                            <div class="row block-card align-items-center m-b-20">
+                                                <div class="col-xl-12">
+                                                    {{ i.user }}
+                                                    <div style="float: right;color: yellow;font-size: 25px;">{% for p in i.stars %}&#9733{% endfor %}</div>
+                                                </div>
+                                            </div>
+                                            <div class="row m-b-20">
+                                                <div class="col-xl-12">
+                                                    {% if i.image %}<a href="{{ i.image.url }}"><img style="width:20%" src="{{ i.image.url }}"></a>{% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="row m-b-20">
+                                                <div class="col-xl-12">
+                                                    {% if i.text %}{{ i.text }}{% endif %}
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

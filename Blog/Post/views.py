@@ -16,7 +16,6 @@ from django.db.models import DateTimeField
 from django.db.models.functions import Trunc
 
 def ManagePostListView(request,blog=None,bunch=None,post=None):
-    user = request.user.groups.values('name')
     posts = []
     my_post = []
     my_blog = 'None'
@@ -56,7 +55,6 @@ def ManagePostListView(request,blog=None,bunch=None,post=None):
             length = int('0')
         posts.append({'post' : l , 'reacts' : reacts , 'width' : length })
     context = {
-        'user' : user ,
         'my_blog' : my_blog ,
         'my_bunch' : my_bunch ,
         'posts' : posts,
@@ -66,7 +64,6 @@ def ManagePostListView(request,blog=None,bunch=None,post=None):
     return render(request,'post/list.html',context)
 
 def ManagePostDetailView(request,pk):
-    user = request.user.groups.values('name')
     post = get_object_or_404(Post , pk = pk)
     post.views = post.views+1
     post.save(update_fields=['views'])
@@ -97,7 +94,6 @@ def ManagePostDetailView(request,pk):
     tags = PostTags.objects.all().filter(post = post)
     context = {
         'react' : react ,
-        'user' : user ,
         'post' : post ,
         'tags' : tags ,
         'bunches' : bunches ,
@@ -134,7 +130,6 @@ def ManagePostCommentView(request,pk):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Blog_Creator'])
 def ManagePostCreateView(request,pk):
-    user = request.user.groups.values('name')
     if request.method == 'POST':
         user = ''
         blog = get_object_or_404(Blog , pk = pk)
@@ -161,13 +156,11 @@ def ManagePostCreateView(request,pk):
         form.save()
         context = {
             'blog' : blog ,
-            'user' : user ,
         }
         return render(request,'post/created.html',context)
     else:
         form = ManagePostCreateForm()
         context = {
-            'user' : user ,
             'form' : form ,
         }
         return render(request,'post/create.html',context)
@@ -175,7 +168,6 @@ def ManagePostCreateView(request,pk):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Blog_Creator'])
 def ManagePostEditView(request,pk):
-    user = request.user.groups.values('name')
     post = get_object_or_404(Post , pk = pk)
     if request.method == 'POST':
         if request.FILES.get('image'):
@@ -204,13 +196,11 @@ def ManagePostEditView(request,pk):
         form.save()
         context = {
             'blog' : post.blog ,
-            'user' : user ,
         }
         return render(request,'post/created.html',context)
     else:
         form = ManagePostCreateForm(instance = post)
         context = {
-            'user' : user ,
             'form' : form ,
         }
         return render(request,'post/edit.html',context)
@@ -218,12 +208,10 @@ def ManagePostEditView(request,pk):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Blog_Creator'])
 def ManagePostDeleteView(request,pk):
-    user = request.user.groups.values('name')
     post = get_object_or_404(Post,pk = pk)
     blog = post.blog
     post.delete()
     context = {
-        'user' : user ,
         'blog' : blog ,
     }
     return render(request,'post/deleted.html',context)
@@ -232,14 +220,12 @@ from MyApp import automatic_tasks
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Admin'])
 def ManageBulkPostCreateView(request,pk):
-    user = request.user.groups.values('name')
     blog = get_object_or_404(Blog,pk = pk)
     if request.method == 'POST':
         automatic_tasks.savePosts(request.POST,blog.pk)
         return redirect('blog_post:post_list_by_blog',blog.pk)
     else:
         context = {
-            'user' : user ,
             'blog' : blog ,
         }
         return render(request,'post/BulkCreate.html',context)

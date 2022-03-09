@@ -16,7 +16,6 @@ from django.core.files.base import ContentFile
 @login_required(login_url='auth:login_url')
 @allowed_users(allowed_roles=['Shop_Creator'])
 def ManageShopAccountView(request):
-    user = request.user.groups.values('name')
     unpaid_orders = []
     paid_orders = []
     cur_shop = ''
@@ -37,14 +36,12 @@ def ManageShopAccountView(request):
     context = {
         'unpaid_orders' : unpaid_orders ,
         'paid_orders' : paid_orders ,
-        'user' : user ,
     }
     return render(request,'accounts/shop.html',context)
 
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Admin'])
 def ManageShopAccountPaymentListView(request):
-    user = request.user.groups.values('name')
     payments = ShopkeperPayment.objects.all()
     orders = []
     for i in Order.objects.all():
@@ -59,14 +56,12 @@ def ManageShopAccountPaymentListView(request):
         if str(i.status) == 'Delivered':
             orders.append({'order' : i , 'shop' : shop_paid , 'delivery' : delivery_paid})
     context = {
-        'user' : user ,
         'payments' : payments ,
         'orders' : orders ,
     }
     return render(request,'accounts/payment/list.html',context)
 
 def ManageShopAccountPaymentPayView(request):
-    user = request.user.groups.values('name')
     form = ManageShopkeperPaymentForm()
     shop_product = []
     for i in ShopAdminShare.objects.all():
@@ -115,12 +110,10 @@ def ManageShopAccountPaymentPayView(request):
         'shop_product' : shop_product ,
         'delivery' : delivery ,
         'form' : form ,
-        'user' : user ,
     }
     return render(request,'accounts/payment/pay.html',context)
 
 def ManageDeliveryAccountView(request):
-    user = request.user.groups.values('name')
     unpaid_tasks = []
     paid_tasks = []
     for k in DeliveryTasks.objects.all():
@@ -140,22 +133,18 @@ def ManageDeliveryAccountView(request):
     context = {
         'unpaid_tasks' : unpaid_tasks ,
         'paid_tasks' : paid_tasks ,
-        'user' : user ,
     }
     return render(request,'accounts/delivery.html',context)
 
 def ManageAccountPaymentDetailView(request,order):
-    user = request.user.groups.values('name')
     order = get_object_or_404(Order,pk = int(order))
     payment = get_object_or_404(DeliveryPersonPayment,order=order)
     context = {
         'payment' : payment ,
-        'user' : user ,
     }
     return render(request,'accounts/payment.html',context)
 
 def ManageAccountShopPaymentView(request,shop):
-    user = request.user.groups.values('name')
     shop = get_object_or_404(Shops , pk = shop)
     if request.method == 'POST':
         for i in Order.objects.all():
@@ -187,7 +176,6 @@ def ManageAccountShopPaymentView(request,shop):
                     if form.is_valid():
                         form.save()
         context = {
-            'user' : user ,
         }
         return render(request,'accounts/payment/shop/paid.html',context)
     else:
@@ -208,12 +196,10 @@ def ManageAccountShopPaymentView(request,shop):
             'shop' : shop ,
             'price' : price ,
             'form' : form ,
-            'user' : user ,
         }
         return render(request,'accounts/payment/shop/form.html',context)
 
 def ManageAccountDeliveryPaymentView(request,person):
-    user = request.user.groups.values('name')
     person = get_object_or_404(DeliveryPerson , pk = person)
     if request.method == 'POST':
         for i in Order.objects.all():
@@ -235,7 +221,6 @@ def ManageAccountDeliveryPaymentView(request,person):
                     if form.is_valid():
                         form.save()
         context = {
-            'user' : user ,
         }
         return render(request,'accounts/payment/shop/paid.html',context)
     else:
@@ -256,7 +241,6 @@ def ManageAccountDeliveryPaymentView(request,person):
             'person' : person ,
             'price' : price ,
             'form' : form ,
-            'user' : user ,
         }
         return render(request,'accounts/payment/delivery/form.html',context)
 

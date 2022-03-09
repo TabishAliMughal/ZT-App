@@ -13,7 +13,6 @@ from App.Authentication.user_handeling import allowed_users
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Matrinomial_Public'])
 def ManageRelationshipCandidateInfoView(request):
-    user = request.user.groups.values('name')
     data = []
     for i in Candidates.objects.all():
         if request.user.is_authenticated:
@@ -21,14 +20,12 @@ def ManageRelationshipCandidateInfoView(request):
                 data = i
     context = {
         'data' : data ,
-        'user' : user ,
     }
     return render(request,"Candidate/Info.html",context)
 
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Matrinomial_Public'])
 def ManageRelationshipCandidateInfoAddView(request):
-    user = request.user.groups.values('name')
     if request.method == 'POST':
         img_content = request.FILES.get('image')
         if request.FILES.get('image'):
@@ -62,7 +59,6 @@ def ManageRelationshipCandidateInfoAddView(request):
                     img_url = str(i.image.url)
         context = {
             'form' : form ,
-            'user' : user ,
             'dob' : dob ,
             'img_url' : img_url ,
         }
@@ -71,7 +67,6 @@ def ManageRelationshipCandidateInfoAddView(request):
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['Matrinomial_Public'])
 def ManageRelationshipCandidateMatchesListView(request):
-    user = request.user.groups.values('name')
     candidate = Candidates.objects.all().filter(user = request.user.pk)
     if candidate:
         candidate = get_object_or_404(Candidates,user = request.user.pk)
@@ -88,27 +83,23 @@ def ManageRelationshipCandidateMatchesListView(request):
         except:
             my_matches = None
         context = {
-            'user' : user ,
             'my_matches' : my_matches ,
             'candidate' : candidate ,
             'gender' : gender ,
         }
     else:
         context = {
-            'user' : user ,
         }
     return render(request,"Candidate/Matches.html",context)
 
 @login_required(login_url='main_login')
 @allowed_users(allowed_roles=['RAdmin'])
 def ManageRelationshipCandidateListView(request):
-    user = request.user.groups.values('name')
     candidates = []
     for i in Candidates.objects.all():
         if str(i.matched) == 'False':
             candidates.append(i)
     context = {
-        'user' : user ,
         'candidates' : candidates ,
     }
     return render(request,"Candidate/List.html",context)

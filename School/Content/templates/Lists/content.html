@@ -18,8 +18,8 @@
         </div>
         <div class="card-body">
           {% if request.user.is_authenticated %}
-            {% for i in user %}
-              {% if i.name == 'Admin' %}
+            {% for i in request.session.user %}
+              {% if i == 'Admin' %}
                 <a class="btn btn-primary" href="{% url 'school:content_form' %}">Add Another</a>
                 <a class="btn btn-primary" href="{% url 'school:content' %}">All</a>
                 <div class="row">
@@ -61,7 +61,7 @@
                   </div>
                 </div>
               {% endif %}
-              {% if i.name == 'DataHandler' %}
+              {% if i == 'DataHandler' %}
                 <a class="btn btn-primary" href="{% url 'school:content_form' %}">Add Another</a>
                 <a class="btn btn-primary" href="{% url 'school:content' %}">All</a>
                 <form method="POST">
@@ -98,8 +98,8 @@
                 <th>Class<br>Module</th>
                 <th>Subject<br>Day</th>
                 {% if request.user.is_authenticated %}
-                  {% for i in user %}
-                    {% if i.name == 'Admin' %}
+                  {% for i in request.session.user %}
+                    {% if i == 'Admin' %}
                       <th rowspan="2">Action</th>
                     {% elif i.name == 'DataHandler' %}
                       <th>Action</th>
