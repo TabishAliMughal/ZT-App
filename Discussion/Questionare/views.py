@@ -79,7 +79,6 @@ def ManageUserQuestionAskView(request):
 @allowed_users(allowed_roles=['Questionare_Public'])
 def ManageQuestionAnswerView(request):
     if request.method == 'POST':
-        print(request.POST)
         if request.FILES.get('image'):
             image = Image.open(request.FILES.get('image'))
             size = image.size
