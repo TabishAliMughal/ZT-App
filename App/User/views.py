@@ -12,8 +12,10 @@ from django.core.mail import send_mail
 from io import BytesIO
 from PIL import Image
 from django.core.files.base import ContentFile
+from django.contrib.auth.decorators import login_required
+from App.Authentication.user_handeling import allowed_users
 
-
+@login_required(login_url='main_login')
 def ManageUserProfileView(request):
     cur_user = []
     if request.user.is_authenticated:
@@ -25,7 +27,6 @@ def ManageUserProfileView(request):
             lng = (i.address[0])
             address = {'lat':lat , 'lng':lng}
         cur_user.append({'user' : c_user , 'data' : u_data , 'address' : address })
-        from django.forms.models import model_to_dict
     context = {
         'cur_user' : cur_user ,
     }

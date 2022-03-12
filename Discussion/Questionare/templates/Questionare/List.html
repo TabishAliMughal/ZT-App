@@ -6,7 +6,7 @@
 {% block content %}
     <div class="card">
         <div class="card-header">
-            <h5>{% if user != None %}{{ user }}{% else %}Questions List{% endif %}</h5>
+            <h5>{% if user != None %}{{ user }}'s Questions{% else %}All Questions List{% endif %}</h5>
             {% if user != None %}
                 <div style="float: right;">
                     <a class="btn btn-primary" href="{% url 'discussion_questionare:ask_question' %}" >Ask Question</a>
@@ -14,95 +14,117 @@
             {% endif %}
         </div>
         <div class="card-body">
-            {% for i in questions %}
-                <div class="card block-card">
-                    <div class="card-header">
-                        <h5>{{ i.question.question }}</h5>
-                    </div>
-                    <div class="card-body">
-                        {% if i.question.text %}
-                            {{ i.question.text }}
-                            <br>
-                            <br>
-                        {% endif %}
-                        {% if i.question.image %}
-                            <a class="btn btn-primary" href="{{ i.question.image.url }}"><i class="feather icon-external-link"> View Image</i></a>
-                        {% endif %}
-                        {% if i.question.video %}
-                            <a class="btn btn-primary" href="{{ i.question.video.url }}"><i class="feather icon-external-link"> View Video</i></a>
-                        {% endif %}
-                        {% if i.answers %}
-                            <button class="btn btn-primary" onclick="showAnswers({{ i.question.pk }})">Show Answers</button>
-                        {% endif %}
-                        <div id="id_answers{{ i.question.pk }}" style="display: none;">
-                            <br>
-                            {% for k in i.answers %}
-                                <div class="accordion" id="answers_div">
-                                    <div class="card">
-                                        <div class="card-header" id="headingOne">
-                                            <h5 class="mb-0"><a href="#!" data-toggle="collapse" data-target="#{{ k.pk }}" aria-expanded="true" aria-controls="collapseOne" class="">{{ k.user }}</a></h5>
-                                        </div>
-                                        <div id="{{ k.pk }}" class="card-body collapse" aria-labelledby="headingOne" data-parent="#answers_div" style="">
-                                            {{ k.answer }}
-                                            <br>
-                                            <br>
-                                            {% if k.image %}
-                                                <a class="btn btn-primary" href="{{ k.image.url }}"><i class="feather icon-external-link"> View Image</i></a>
-                                            {% endif %}
-                                            {% if k.video %}
-                                                <a class="btn btn-primary" href="{{ k.video.url }}"><i class="feather icon-external-link"> View Video</i></a>
-                                            {% endif %}
-                                            {% if i.question.user.pk == request.session.cur_user %}
-                                                <div style="float: right;"><a class="btn btn-primary">It Helped</a></div>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endfor %}
+            {% for v in all_questions %}
+                {% if user %}
+                    <h3>{% if v.type == 'questions' %}{% if v.questions %}Asked Questions{% endif %}{% endif %}</h3>
+                    <h3>{% if v.type == 'pinned' %}{% if v.questions %}Pinned Questions{% endif %}{% endif %}</h3>
+                {% endif %}
+                {% for i in v.questions %}
+                    <div class="card block-card">
+                        <div class="card-header">
+                            <h5>{{ i.question.question }}</h5>
                         </div>
-                        {% if i.question.user.pk != request.session.cur_user %}
-                            <div style="float: right;">
-                                <a class="btn btn-primary" href="">I Have The Same Question</a>
-                                <a class="btn btn-primary" href="javascript:" onclick="answerForm({{ i.question.pk }})">Add Your Answer</a>
-                            </div>
-                            <br>
-                            <br>
-                            <div id="id_question_form{{ i.question.pk }}" style="width: 80%;margin: auto;display: none;">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h5>Answering {{ i.question.user.first_name }}</h5>
+                        <div class="card-body">
+                            {% if i.question.text %}
+                                {{ i.question.text }}
+                                <br>
+                                <br>
+                            {% endif %}
+                            {% if i.question.image %}
+                                <a class="btn btn-primary" href="{{ i.question.image.url }}"><i class="feather icon-external-link"> View Image</i></a>
+                            {% endif %}
+                            {% if i.question.video %}
+                                <a class="btn btn-primary" href="{{ i.question.video.url }}"><i class="feather icon-external-link"> View Video</i></a>
+                            {% endif %}
+                            {% if i.answers %}
+                                <button class="btn btn-primary" onclick="showAnswers({{ i.question.pk }})">Show Answers</button>
+                                {% endif %}
+                            {% if i.audiance %}
+                                <button class="btn btn-primary" onclick="showAudiance({{ i.question.pk }})">Show Audiance</button>
+                            {% endif %}
+                            <div id="id_answers{{ i.question.pk }}" style="display: none;">
+                                <br>
+                                {% for k in i.answers %}
+                                    <div class="accordion" id="answers_div">
+                                        <div class="card">
+                                            <div class="card-header" id="headingOne">
+                                                <h5 class="mb-0"><a href="#!" data-toggle="collapse" data-target="#{{ k.pk }}" aria-expanded="true" aria-controls="collapseOne" class="">{{ k.user }}</a></h5>
+                                            </div>
+                                            <div id="{{ k.pk }}" class="card-body collapse" aria-labelledby="headingOne" data-parent="#answers_div" style="">
+                                                {{ k.answer }}
+                                                <br>
+                                                <br>
+                                                {% if k.image %}
+                                                    <a class="btn btn-primary" href="{{ k.image.url }}"><i class="feather icon-external-link"> View Image</i></a>
+                                                {% endif %}
+                                                {% if k.video %}
+                                                    <a class="btn btn-primary" href="{{ k.video.url }}"><i class="feather icon-external-link"> View Video</i></a>
+                                                {% endif %}
+                                                {% if i.question.user.pk == request.session.cur_user %}
+                                                    <div style="float: right;"><a class="btn btn-primary">It Helped</a></div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="card-body">
-                                        <form method="POST" enctype="multipart/form-data" action="{% url 'discussion_questionare:answer_question' %}">
-                                            <div class="form-group" hidden>
-                                                <label>User</label>
-                                                <input class="form-control" type="number" name="user" required="" id="id_user" value="{{ request.session.cur_user }}">
-                                            </div>
-                                            <div class="form-group" hidden>
-                                                <label>Question</label>
-                                                <input class="form-control" type="number" name="question" id="id_question" value="{{ i.question.pk }}">
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Answer</label>
-                                                <textarea class="form-control" name="answer" maxlength="500" required="" id="id_answer" style="height: 100px;"></textarea>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Related Picture (If Available)</label>
-                                                <input class="form-control" type="file" name="image" accept="image/*" capture="camera" id="id_image">
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Related Video (If Available)</label>
-                                                <input class="form-control" type="file" name="video" accept="video/*" capture="camera" id="id_video">
-                                            </div>
-                                            <button class="btn btn-primary">Add Answer</button>
-                                            {% csrf_token %}
-                                        </form>
+                                {% endfor %}
+                            </div>
+                            <div id="id_audiance{{ i.question.pk }}" style="display: none;">
+                                <br>
+                                {% for k in i.audiance %}
+                                    <div class="card">
+                                        <div class="card-header">
+                                            {{ k.user }}
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            {% if i.question.user.pk != request.session.cur_user %}
+                                <div style="float: right;">
+                                    {% if i.question.is_audiance == True %}
+                                    {% else %}
+                                            <a class="btn btn-primary" href="{% url 'discussion_questionare:question_audiance' i.question.pk %}">I Have The Same Question</a>
+                                    {% endif %}
+                                    <a class="btn btn-primary" href="javascript:" onclick="answerForm({{ i.question.pk }})">Add Your Answer</a>
+                                </div>
+                                <br>
+                                <br>
+                                <div id="id_question_form{{ i.question.pk }}" style="width: 80%;margin: auto;display: none;">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>Answering {{ i.question.user.first_name }}</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <form method="POST" enctype="multipart/form-data" action="{% url 'discussion_questionare:answer_question' %}">
+                                                <div class="form-group" hidden>
+                                                    <label>User</label>
+                                                    <input class="form-control" type="number" name="user" required="" id="id_user" value="{{ request.session.cur_user }}">
+                                                </div>
+                                                <div class="form-group" hidden>
+                                                    <label>Question</label>
+                                                    <input class="form-control" type="number" name="question" id="id_question" value="{{ i.question.pk }}">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Answer</label>
+                                                    <textarea class="form-control" name="answer" maxlength="500" required="" id="id_answer" style="height: 100px;"></textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Related Picture (If Available)</label>
+                                                    <input class="form-control" type="file" name="image" accept="image/*" capture="camera" id="id_image">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Related Video (If Available)</label>
+                                                    <input class="form-control" type="file" name="video" accept="video/*" capture="camera" id="id_video">
+                                                </div>
+                                                <button class="btn btn-primary">Add Answer</button>
+                                                {% csrf_token %}
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        {% endif %}
+                            {% endif %}
+                        </div>
                     </div>
-                </div>
+                {% endfor %}
             {% endfor %}
         </div>
     </div>
@@ -130,6 +152,14 @@
                 var status = document.getElementById('id_answers'+question).style.display = "block";
             }else{
                 var status = document.getElementById('id_answers'+question).style.display = "none";
+            }
+        }
+        function showAudiance(question){
+            var status = document.getElementById('id_audiance'+question).style.display;
+            if(status.toString() == 'none'){
+                var status = document.getElementById('id_audiance'+question).style.display = "block";
+            }else{
+                var status = document.getElementById('id_audiance'+question).style.display = "none";
             }
         }
     </script>

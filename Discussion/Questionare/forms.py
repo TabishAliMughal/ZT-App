@@ -1,5 +1,5 @@
 from django import forms
-from .models import Answer, Question
+from .models import Answer, Question, QuestionAudiance
 
 
 class AskQuestionForm(forms.ModelForm):
@@ -24,4 +24,12 @@ class AnswerQuestionForm(forms.ModelForm):
             'image',
             'video',
             'accepted',
+        ]
+
+class QuestionAudianceForm(forms.ModelForm):
+    class Meta:
+        model = QuestionAudiance
+        fields = [
+            'user',
+            'question',
         ]

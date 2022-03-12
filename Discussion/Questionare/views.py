@@ -1,37 +1,55 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from App.User.models import UserData
-from Discussion.Questionare.forms import AnswerQuestionForm, AskQuestionForm
+from Discussion.Questionare.forms import AnswerQuestionForm, AskQuestionForm, QuestionAudianceForm
 from io import BytesIO
 from PIL import Image
 from django.core.files.base import ContentFile
-
-from Discussion.Questionare.models import Answer, Question
+from Discussion.Questionare.models import Answer, Question, QuestionAudiance
+from django.contrib.auth.decorators import login_required
+from App.Authentication.user_handeling import allowed_users
 
 
 def ManageQuestionsListView(request,user=None):
     if user:
         user = get_object_or_404(UserData , user = request.user)
         ques =  Question.objects.all().filter(user = user.pk)
+        pinned = QuestionAudiance.objects.all().filter(user = get_object_or_404(UserData , user = request.user).pk)
     else:
         user = None
         ques = Question.objects.all()
-    questions = []
-    for i in ques :
+        pinned = None
+    def GetQuestionData(question):
+        i = question
         answers = []
         for k in Answer.objects.all().filter(question = i):
             k.user = get_object_or_404(UserData , pk = k.user)
             answers.append(k)
-        
+        audiance = []
+        for l in QuestionAudiance.objects.all().filter(question = i):
+            l.user = get_object_or_404(UserData , pk = l.user)
+            audiance.append(l)
+            if str(l.user.pk) == str(get_object_or_404(UserData , user = request.user ).pk):
+                i.is_audiance = True
         i.user = get_object_or_404(UserData , pk = i.user)
-        questions.append({'question':i , 'answers':answers})
+        return {'question':i , 'answers':answers , 'audiance' : audiance}
+    questions = []
+    for i in ques :
+        questions.append(GetQuestionData(i))
+    pinned_ques = []
+    if pinned:
+        for i in pinned:
+            pinned_ques.append(GetQuestionData(i.question))
+    all_questions = [{'type' : "questions" , 'questions' : questions},{'type' : "pinned" , 'questions' : pinned_ques}]
     answer_form = AnswerQuestionForm()
     context = {
-        'questions' : questions ,
+        'all_questions' : all_questions ,
         'answer_form' : answer_form ,
         'user' : user ,
     }
     return render(request,'Questionare/List.html',context)
 
+@login_required(login_url='main_login')
+@allowed_users(allowed_roles=['Questionare_Public'])
 def ManageUserQuestionAskView(request):
     if request.method == 'POST':
         if request.FILES.get('image'):
@@ -57,6 +75,8 @@ def ManageUserQuestionAskView(request):
         }
         return render(request,'Questionare/AskQuestion.html',context)
 
+@login_required(login_url='main_login')
+@allowed_users(allowed_roles=['Questionare_Public'])
 def ManageQuestionAnswerView(request):
     if request.method == 'POST':
         print(request.POST)
@@ -76,3 +96,14 @@ def ManageQuestionAnswerView(request):
         form = AnswerQuestionForm(request.POST,{'image':img_content , 'video' : request.FILES.get('video')})
         form.save()
         return redirect('discussion_questionare:questions')
+
+@login_required(login_url='main_login')
+@allowed_users(allowed_roles=['Questionare_Public'])
+def ManageQuestionAudianceView(request,question):
+    user = get_object_or_404(UserData , user = request.user)
+    form = QuestionAudianceForm({
+        'user' : user.pk ,
+        'question' : question ,
+    })
+    form.save()
+    return redirect('discussion_questionare:my_question',user.pk)

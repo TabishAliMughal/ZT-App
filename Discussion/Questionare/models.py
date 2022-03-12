@@ -35,7 +35,7 @@ class QuestionAudiance(models.Model):
     user = models.IntegerField()
     question = models.ForeignKey(Question , on_delete=models.CASCADE)
     def __str__(self):
-        return self.question
+        return self.question.question
     class Meta:
         verbose_name_plural = 'Question Audiance'
 
