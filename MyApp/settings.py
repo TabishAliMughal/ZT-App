@@ -16,20 +16,24 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
+    # App
     'App.Authentication',
     'App.Main',
     'App.User',
     'App.Points',
+    # Shop
     'Shop.Shop',
     'Shop.Cart',
     'Shop.Orders',
     'Shop.Customer',
     'Shop.Delivery',
     'Shop.Accounts',
+    # Blog
     'Blog.Blog',
     'Blog.Bunch',
     'Blog.Post',
     'Blog.Tags',
+    # School
     'School.Admin',
     'School.Checker',
     'School.Content',
@@ -40,9 +44,12 @@ INSTALLED_APPS = [
     'School.Result',
     'School.Teacher',
     'School.Visitors',
+    # Matrinomial
     'Relationships.Info',
     'Relationships.Matching',
     'Relationships.Candidate',
+    # Discussion
+    'Discussion.Questionare',
     'social_django',
     'mapwidgets',
     'geocoder',
@@ -120,6 +127,14 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 WSGI_APPLICATION = 'MyApp.wsgi.application'
 
 DATABASES = {
+    'discussion': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'zt_discussion_data',
+        'USER': 'comsoft',
+        'PASSWORD': 'Comsoft',
+        'HOST': '127.0.0.1' ,
+        'PORT': '5432' ,
+    },
     'school': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'zt_school_data',
@@ -176,6 +191,7 @@ DATABASE_ROUTERS = [
     'MyApp.routers.ShopRouter',
     'MyApp.routers.AppRouter',
     'MyApp.routers.SchoolRouter',
+    'MyApp.routers.DiscussionRouter',
     ]
 
 AUTH_PASSWORD_VALIDATORS = [
