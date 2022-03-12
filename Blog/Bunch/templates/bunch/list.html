@@ -82,8 +82,8 @@
                                             </div>
                                         </div>
                                         {% if request.user.is_authenticated %}
-                                            {% for k in user %}
-                                                {% if k.name == 'Blog_Creator' %}
+                                            {% for k in request.session.user %}
+                                                {% if k == 'Blog_Creator' %}
                                                     {% if i.bunch.blog.user == writer.pk %}
                                                         <div class="row">
                                                             <a class="btn btn-primary" href="{% url 'blog_bunch:bunch_edit' i.bunch.pk %}">Edit</a>

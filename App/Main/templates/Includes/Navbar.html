@@ -188,6 +188,27 @@
                     {% endif %}
                 </li>
                 <br>
+                <li class="nav-item pcoded-hasmenu">
+                    {% if request.user.is_authenticated %}
+                        <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-help-circle"></i></span><span class="pcoded-mtext">Ask Anything</span></a>
+                        <ul class="pcoded-submenu">
+                            <li><a href="{% url 'discussion_questionare:questions' %}" class="nav-link">Home</a></li>
+                            {% if user %}
+                                {% for i in request.session.user %}
+                                    {% if i == "Questionare_Public" %}
+                                        <li><a href="{% url 'discussion_questionare:my_question' request.session.cur_user %}" class="nav-link">My Questions</a></li>
+                                        <li><a href="{% url 'discussion_questionare:ask_question' %}" class="nav-link">Ask Question</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </ul>
+                    {% else %}
+                        <li data-username="" class="nav-item  active ">
+                            <a href="{% url 'discussion_questionare:questions' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-mic"></i></span><span class="pcoded-mtext">RelationShips</span></a>
+                        </li>
+                    {% endif %}
+                </li>
+                <br>
                 <li data-username="" class="nav-item ">
                     <a href="https://www.youtube.com" class="nav-link "><span class="pcoded-micon"><i class="feather icon-play-circle"></i></span><span class="pcoded-mtext">Youtube</span></a>
                 </li>
@@ -198,7 +219,7 @@
                 <br>
                 {% if request.user.is_authenticated %}
                     <li class="nav-item pcoded-hasmenu">
-                        <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-mic"></i></span><span class="pcoded-mtext">My Profile</span></a>
+                        <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-user"></i></span><span class="pcoded-mtext">My Profile</span></a>
                         <ul class="pcoded-submenu">
                             <li><a href="{% url 'user:user_profle' %}" class="nav-link">Profile</a></li>
                             <li><a href="{% url 'points:user_points' %}" class="nav-link">My Points</a></li>
@@ -208,7 +229,7 @@
                 {% endif %}
                 <li data-username="" class="nav-item ">
                     <a href="{% url 'about_us' %}" class="nav-link">
-                        <span class="pcoded-micon"><i class="feather icon-user"></i></span><span class="pcoded-mtext">About Us</span>
+                        <span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">About Us</span>
                     </a>
                 </li>
                 <li class="nav-item pcoded-menu-caption">

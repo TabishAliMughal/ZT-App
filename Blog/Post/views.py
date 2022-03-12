@@ -61,6 +61,7 @@ def ManagePostListView(request,blog=None,bunch=None,post=None):
         'bunches' : bunches,
         'tags' : tags ,
     }
+    print('abc')
     return render(request,'post/list.html',context)
 
 def ManagePostDetailView(request,pk):

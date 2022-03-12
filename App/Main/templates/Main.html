@@ -1,6 +1,8 @@
 {% extends "MainPage.html" %}
 {% load static %}
-{% load static %}
+{% block title %}
+    <div style="text-align:center"><h3>Choose Category</h3></div>
+{% endblock %}
 {% block content %}
     <br>
     <div class="row">
@@ -12,11 +14,18 @@
                             <h3 class="f-w-300 d-flex align-items-center m-b-0">
                                 <a style="color:#038fcf" href="{% url 'shop:product_list' %}">
                                     <div class="row">
-                                        <div>
-                                            <i class="feather icon-shopping-cart" style="font-size: 100px;" ></i>
-                                        </div>
-                                        <div style="margin: auto;padding-left: 30px;">
-                                            Shop
+                                        <div style="width:100%">
+                                            <div style="text-align:center;width: 50%;float: left;">
+                                                <i class="feather icon-shopping-cart" style="font-size: 150px;" ></i>
+                                            </div>
+                                            <div style="width:50%;float: left;">
+                                                <br>
+                                                <br>
+                                                <span>Want Some</span><br><span style="color: red;">Shopping ???</span>
+                                                <br>
+                                                <br>
+                                            </div>
+                                            <a class="btn btn-primary form-control" href="{% url 'shop:product_list' %}">Click Here</a>
                                         </div>
                                     </div>
                                 </a>
@@ -34,11 +43,18 @@
                             <h3 class="f-w-300 d-flex align-items-center m-b-0">
                                 <a style="color:#038fcf" href="{% url 'school:main' %}">
                                     <div class="row">
-                                        <div>
-                                            <i class="feather icon-home" style="font-size: 100px;" ></i>
-                                        </div>
-                                        <div style="margin: auto;padding-left: 30px;">
-                                            School
+                                        <div style="width:100%">
+                                            <div style="text-align:center;width: 50%;float: left;">
+                                                <i class="feather icon-home" style="font-size: 150px;" ></i>
+                                            </div>
+                                            <div style="width:50%;float: left;">
+                                                <br>
+                                                <br>
+                                                <span>If You Want</span><br><span style="color: red;">Education...</span>
+                                                <br>
+                                                <br>
+                                            </div>
+                                            <a class="btn btn-primary form-control" href="{% url 'school:main' %}">Click Here</a>
                                         </div>
                                     </div>
                                 </a>
@@ -56,11 +72,18 @@
                             <h3 class="f-w-300 d-flex align-items-center m-b-0">
                                 <a style="color:#038fcf" href="{% url 'blog_blog:blog_list' %}">
                                     <div class="row">
-                                        <div>
-                                            <i class="feather icon-mic" style="font-size: 100px;" ></i>
-                                        </div>
-                                        <div style="margin: auto;padding-left: 30px;">
-                                            Blog
+                                        <div style="width:100%">
+                                            <div style="text-align:center;width: 50%;float: left;">
+                                                <i class="feather icon-mic" style="font-size: 150px;" ></i>
+                                            </div>
+                                            <div style="width:50%;float: left;">
+                                                <br>
+                                                <br>
+                                                <span>If You Want To</span><br><span style="color: red;">Read Blogs...</span>
+                                                <br>
+                                                <br>
+                                            </div>
+                                            <a class="btn btn-primary form-control" href="{% url 'blog_blog:blog_list' %}">Click Here</a>
                                         </div>
                                     </div>
                                 </a>
@@ -78,11 +101,17 @@
                             <h3 class="f-w-300 d-flex align-items-center m-b-0">
                                 <a style="color:#038fcf" href="{% url 'relationships:home' %}">
                                     <div class="row">
-                                        <div>
-                                            <i class="feather icon-link" style="font-size: 100px;" ></i>
-                                        </div>
-                                        <div style="margin: auto;padding-left: 30px;">
-                                            RelationShips
+                                        <div style="width:100%">
+                                            <div style="text-align:center;width: 50%;float: left;">
+                                                <i class="feather icon-link" style="font-size: 150px;" ></i>
+                                            </div>
+                                            <div style="width:50%;float: left;">
+                                                <br>
+                                                <span>You Can Get</span><br><span style="color: red;">Relationship Advice.</span>
+                                                <br>
+                                                <br>
+                                            </div>
+                                            <a class="btn btn-primary form-control" href="{% url 'relationships:home' %}">Click Here</a>
                                         </div>
                                     </div>
                                 </a>
@@ -93,6 +122,34 @@
             </div>
         </div>
         <div class="col-md-6 col-xl-4">
+            <div class="card daily-sales">
+                <div class="card-block">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-12">
+                            <h3 class="f-w-300 d-flex align-items-center m-b-0">
+                                <a style="color:#038fcf" href="{% url 'discussion_questionare:questions' %}">
+                                    <div class="row">
+                                        <div style="width:100%">
+                                            <div style="text-align:center;width: 50%;float: left;">
+                                                <i class="feather icon-help-circle" style="font-size: 150px;" ></i>
+                                            </div>
+                                            <div style="width:50%;float: left;">
+                                                <br>
+                                                <span>Ask Any</span><br><span style="color: red;">Question.</span>
+                                                <br>
+                                                <br>
+                                            </div>
+                                            <a class="btn btn-primary form-control" href="{% url 'discussion_questionare:questions' %}">Click Here</a>
+                                        </div>
+                                    </div>
+                                </a>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="col-md-6 col-xl-4">
             <div class="card daily-sales">
                 <div class="card-block">
                     <div class="row d-flex align-items-center">
@@ -135,6 +192,6 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 {% endblock %}

@@ -5,8 +5,10 @@
 {% endblock %}
 {% block address %}
     <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
-    <li class="breadcrumb-item"><a href="{% url 'shop:product_list' %}">Shop</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'shop:product_list' %}">Shopping</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'shop:product_list' %}">{{ product.product.category }}</a></li>
     <li class="breadcrumb-item"><a href="javascript:">Product</a></li>
+    
 {% endblock %}
 {% block content %}
     <div class="row">

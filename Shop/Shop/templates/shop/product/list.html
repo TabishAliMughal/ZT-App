@@ -2,7 +2,8 @@
 {% load static %}
 {% block address %}
     <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
-    <li class="breadcrumb-item"><a href="javascript:">Shop</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'shop:product_list' %}">Shopping</a></li>
+    <li class="breadcrumb-item"><a href="javascript:">{% if category %}{{ category.name }}{% elif shop %}{{ shop }}{% endif %}</a></li>
 {% endblock %}
 {% block content %}
 <div class="row">
@@ -54,6 +55,7 @@
                     </div>
                 </div>
                 <br>
+                <h5 style="padding-left: 30px;">Categories</h5>
                 <div class="row">
                     {% for c in categories %}
                         <div class="col-md-12 col-xl-2 text-center">

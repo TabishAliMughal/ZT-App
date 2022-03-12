@@ -69,8 +69,8 @@
                   <td>{{ i.clas }}</td>
                   <td>{{ i.active }}</td>
                   {% if request.user.is_authenticated %}
-                    {% for v in user %}
-                      {% if v.name == 'Admin' %}
+                    {% for v in request.session.user %}
+                      {% if v == 'Admin' %}
                         <td><a class="btn btn-primary" href="{% url 'school_individuals:indivisuals_edit' i.pk %}">Edit</a><a href="{% url 'school_individuals:indivisuals_delete' i.pk %}" class="btn btn-primary">Delete</a></td>
                       {% endif %}
                     {% endfor %}

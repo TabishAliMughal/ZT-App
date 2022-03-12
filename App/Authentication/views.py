@@ -1,10 +1,31 @@
 from django.http.response import HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect , get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import Group
 from .user_handeling import unauthenticated_user
 from .forms import CreateUserForm
 from django.contrib import messages
+from App.User.models import UserData
+
+def HandleUser(request):
+	user = request.user.groups.values('name')
+	roles = []
+	for i in user:
+		roles.append(i.get('name'))
+	if "Shop_Creator" not in roles and "Delivery" not in roles:
+		print(roles)
+		request.user.groups.add(Group.objects.get(name='Shop_Public'))
+	if "Individuals" not in roles and "Admin" not in roles and "DataHandler" not in roles and "Checker" not in roles and "School" not in roles and "Parent" not in roles and "Teacher" not in roles:
+		request.user.groups.add(Group.objects.get(name='School_Public'))
+	if "Blog_Creator" not in roles:
+		request.user.groups.add(Group.objects.get(name='Blog_Public'))
+	if "RAdmin" not in roles:
+		request.user.groups.add(Group.objects.get(name='Matrinomial_Public'))
+	request.user.groups.add(Group.objects.get(name='Questionare_Public'))
+	request.session['user'] = [i.get('name') for i in user]
+	request.session['cur_user'] = get_object_or_404(UserData , user = request.user.pk).pk
+	request.session.save()
+
 
 def loginPage(request):
 	if request.user.is_authenticated:
@@ -19,9 +40,7 @@ def loginPage(request):
 		user = authenticate(request, username=username, password=password)
 		if user is not None:
 			login(request, user)
-			user = request.user.groups.values('name')
-			request.session['user'] = [i.get('name') for i in user]
-			request.session.save()
+			HandleUser(request)
 			return HttpResponseRedirect(path)
 		else:
 			return HttpResponseRedirect(path)

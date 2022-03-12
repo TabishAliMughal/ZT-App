@@ -1,0 +1,57 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h5>Ask Question</h5>
+        </div>
+        <div class="card-body">
+            <form method="POST" enctype="multipart/form-data">
+                <div class="form-group" hidden>
+                    <label>User :</label>
+                    <input class="form-control" type="text" name="user" required="" id="id_user" value="{{ request.session.cur_user }}">
+                </div>
+                <div class="form-group">
+                    <label>Question Category :</label>
+                    <select class="form-control" name="category" required="" id="id_category">
+                        {% for i in form.category %}
+                            {{ i }}
+                        {% endfor %}
+                    </select>                
+                </div>
+                <div class="form-group">
+                    <label>Question :</label>
+                    <input class="form-control" type="text" name="question" maxlength="500" required="" id="id_question">
+                </div>
+                <div class="form-group">
+                    <label>Question Detail :</label>
+                    <textarea class="form-control" name="text" id="id_text" style="height: 100px;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Related Image :</label>
+                    <input class="form-control" type="file" name="image" accept="image/*" capture="camera" id="id_image">
+                </div>
+                <div class="form-group">
+                    <label>Related Video :</label>
+                    <input class="form-control" type="file" name="video" accept="video/*" capture="camera" id="id_video">
+                </div>
+                <button class="btn btn-primary">Add Question</button>
+                {% csrf_token %}
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script>
+        var uploadField = document.getElementById("id_video");
+        uploadField.onchange = function() {
+            if(this.files[0].size > 5242880){
+            alert("File is too big!");
+            this.value = "";
+            };
+        };
+    </script>
+{% endblock %}

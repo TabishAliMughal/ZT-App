@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path , include
 from App.Main import views
-from MyApp.admin import blogsite , shopsite , matrinomialsite , schoolsite
+from MyApp.admin import blogsite , shopsite , matrinomialsite , schoolsite , discussionsite
 
 urlpatterns = [
     # Login Redirect
@@ -30,6 +30,7 @@ urlpatterns = [
     path('shopsite/', shopsite.urls),
     path('adminsite/', admin.site.urls),
     path('schoolsite/', schoolsite.urls),
+    path('discussionsite/', discussionsite.urls),
     path('matrinomialsite/', matrinomialsite.urls),
     path('user/', include('App.User.urls', namespace='user')),
     path('user/points', include('App.Points.urls', namespace='points')),
@@ -60,6 +61,8 @@ urlpatterns = [
     path('candidate/', include('Relationships.Candidate.urls', namespace='candidate')),
     path('relationships/', include('Relationships.Info.urls', namespace='relationships')),
     path('relationships/match/', include('Relationships.Matching.urls', namespace='relationships_matching')),
+    # Discussion
+    path('discussion/', include('Discussion.Questionare.urls', namespace='discussion_questionare')),
 ]
 handler404 = "App.Main.views.PageNotFoundView"
 handler500 = "App.Main.views.PageNotFoundView"

@@ -17,7 +17,7 @@
                         {% for i in request.session.user %}
                             {% if i == 'Blog_Creator' %}
                                 <a class="btn btn-primary" href="{% url 'blog_blog:blog_create' %}">Create Blog</a>
-                            {% elif i.name == 'Blog_Public' %}
+                            {% elif i == 'Blog_Public' %}
                                 <a class="btn btn-primary" href="{% url 'blog_bunch:bunch_list' %}">Bunch List</a>
                             {% endif %}
                         {% endfor %}

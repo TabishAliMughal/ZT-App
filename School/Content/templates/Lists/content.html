@@ -101,7 +101,7 @@
                   {% for i in request.session.user %}
                     {% if i == 'Admin' %}
                       <th rowspan="2">Action</th>
-                    {% elif i.name == 'DataHandler' %}
+                    {% elif i == 'DataHandler' %}
                       <th>Action</th>
                     {% endif %}
                   {% endfor %}
@@ -115,10 +115,10 @@
                   <td hidden>{{ i.day }}</td>
                   <td>{{ i.subject }}</td>
                   {% if request.user.is_authenticated %}
-                    {% for v in user %}
-                      {% if v.name == 'Admin' %}
+                    {% for v in request.session.user %}
+                      {% if v == 'Admin' %}
                         <td><a class="btn btn-primary" href="{% url 'school:content_edit' i.pk %}">Edit</a></td>
-                      {% elif v.name == 'DataHandler' %}
+                      {% elif v == 'DataHandler' %}
                         <td><a class="btn btn-primary" href="{% url 'school:content_edit' i.pk %}">Edit</a></td>
                       {% endif %}
                     {% endfor %}
@@ -128,10 +128,10 @@
                   <td>{{ i.module }}</td>
                   <td id="day">{{ i.day }}</td>
                   {% if request.user.is_authenticated %}
-                    {% for v in user %}
-                      {% if v.name == 'Admin' %}
+                    {% for v in request.session.user %}
+                      {% if v == 'Admin' %}
                         <td><a href="{% url 'school:content_delete' i.pk %}" class="btn btn-primary">Delete</a></td>
-                      {% elif v.name == 'DataHandler' %}
+                      {% elif v == 'DataHandler' %}
                         <td></td>
                       {% endif %}
                     {% endfor %}
