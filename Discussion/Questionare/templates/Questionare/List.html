@@ -6,7 +6,12 @@
 {% block content %}
     <div class="card">
         <div class="card-header">
-            <h5>Questions List</h5>
+            <h5>{% if user != None %}{{ user }}{% else %}Questions List{% endif %}</h5>
+            {% if user != None %}
+                <div style="float: right;">
+                    <a class="btn btn-primary" href="{% url 'discussion_questionare:ask_question' %}" >Ask Question</a>
+                </div>
+            {% endif %}
         </div>
         <div class="card-body">
             {% for i in questions %}

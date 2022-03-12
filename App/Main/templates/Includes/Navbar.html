@@ -27,7 +27,7 @@
                         <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-shopping-cart"></i></span><span class="pcoded-mtext">Shop</span></a>
                         <ul class="pcoded-submenu">
                             <li><a href="{% url 'shop:product_list' %}" >Home</a></li>
-                            {% if user %}
+                            {% if request.session.user %}
                                 {% for i in request.session.user %}
                                     {% if i == "Shop_Creator" %}
                                         {% if shop == 'NoShop' %}
@@ -63,7 +63,7 @@
                     <a href="javascript:" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">School</span></a>
                     <ul class="pcoded-submenu">
                         <li><a href="{% url 'school:main' %}" class="nav-link">Home</a></li>
-                        {% if user %}            
+                        {% if request.session.user %}            
                             {% for i in request.session.user %}
                                 {% if i == 'Teacher' %}
                                     <li><a href="{% url 'school_teacher:teacher_profile' %}">My Profile</a></li>
@@ -146,7 +146,7 @@
                         <a href="javascript:" class="nav-link"><span class="pcoded-micon"><i class="feather icon-mic"></i></span><span class="pcoded-mtext">Blog</span></a>
                         <ul class="pcoded-submenu">
                             <li><a href="{% url 'blog_blog:blog_list' %}" class="nav-link">Home</a></li>
-                            {% if user %}            
+                            {% if request.session.user %}            
                                 {% for i in request.session.user %}
                                     {% if i == "Blog_Creator" %}
                                         <li><a href="{% url 'blog_blog:user_blog_list' %}" >My Blogs</a></li>
@@ -169,7 +169,7 @@
                         <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-mic"></i></span><span class="pcoded-mtext">RelationShips</span></a>
                         <ul class="pcoded-submenu">
                             <li><a href="{% url 'relationships:home' %}" class="nav-link">Home</a></li>
-                            {% if user %}
+                            {% if request.session.user %}
                                 {% for i in request.session.user %}
                                     {% if i == "Matrinomial_Public" %}
                                         <li><a href="{% url 'candidate:info' %}" class="nav-link">My Info</a></li>
@@ -193,7 +193,7 @@
                         <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-help-circle"></i></span><span class="pcoded-mtext">Ask Anything</span></a>
                         <ul class="pcoded-submenu">
                             <li><a href="{% url 'discussion_questionare:questions' %}" class="nav-link">Home</a></li>
-                            {% if user %}
+                            {% if request.session.user %}
                                 {% for i in request.session.user %}
                                     {% if i == "Questionare_Public" %}
                                         <li><a href="{% url 'discussion_questionare:my_question' request.session.cur_user %}" class="nav-link">My Questions</a></li>

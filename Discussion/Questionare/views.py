@@ -10,8 +10,10 @@ from Discussion.Questionare.models import Answer, Question
 
 def ManageQuestionsListView(request,user=None):
     if user:
-        ques =  Question.objects.all().filter(user = get_object_or_404(UserData , user = request.user).pk)
+        user = get_object_or_404(UserData , user = request.user)
+        ques =  Question.objects.all().filter(user = user.pk)
     else:
+        user = None
         ques = Question.objects.all()
     questions = []
     for i in ques :
@@ -26,6 +28,7 @@ def ManageQuestionsListView(request,user=None):
     context = {
         'questions' : questions ,
         'answer_form' : answer_form ,
+        'user' : user ,
     }
     return render(request,'Questionare/List.html',context)
 

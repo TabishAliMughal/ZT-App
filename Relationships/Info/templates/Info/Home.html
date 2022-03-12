@@ -14,7 +14,7 @@
                 <div class="card-body">
                     <div style="float:right;">
                         {% if request.user.is_authenticated %}
-                            {% if user %}
+                            {% if request.session.user %}
                                 {% for i in request.session.user %}
                                     {% if i == 'Matrinomial_Public' %}
                                         <h6>If You Want To Add Your Data <a href="{% url 'candidate:add_data' %}" class="btn btn-primary">Click Here</a></h6>

@@ -31,7 +31,7 @@
                 </div>
                 <div class="card-body">
                     {% if request.user.is_authenticated %}
-                        {% if user %}
+                        {% if request.session.user %}
                             {% for i in request.session.user %}
                                 {% if i == "Shop_Creator" %}
                                     <a class="btn btn-primary" href="{% url 'shop:shop_product_create' shop.pk %}">Add</a>
@@ -48,7 +48,7 @@
                                     <th>Image</th>
                                     <th>Name</th>
                                     {% if request.user.is_authenticated %}
-                                        {% if user %}
+                                        {% if request.session.user %}
                                             {% for i in request.session.user %}
                                                 {% if i == "Shop_Creator" %}
                                                     <th>Action</th>
@@ -68,7 +68,7 @@
                                         <textarea style="width: 100%;font-size: 14px;border: none;height: 100px;" readonly>{{ i.product.name }}</textarea>                        
                                     </td>
                                     {% if request.user.is_authenticated %}
-                                        {% if user %}
+                                        {% if request.session.user %}
                                             {% for v in request.session.user %}
                                                 {% if v == "Shop_Creator" %}
                                                     <td style="padding: 1.05rem 0rem;">

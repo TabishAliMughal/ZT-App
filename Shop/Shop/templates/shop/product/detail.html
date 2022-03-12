@@ -90,7 +90,7 @@
                                         <div class="col-xl-12">
                                             <h6 class="align-items-center float-left">
                                                 {% if request.user.is_authenticated %}
-                                                    {% if user %}
+                                                    {% if request.session.user %}
                                                         {% for i in request.session.user %}
                                                             {% if i == "Shop_Creator" %}
                                                                 <h3>Cant Create Order</h3>

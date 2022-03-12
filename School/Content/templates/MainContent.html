@@ -21,7 +21,7 @@
 
                 <a class="btn btn-primary form-control" href="{% url 'school:demo' %}">Start Demo</a>
                 {% if request.user.is_authenticated %}
-                    {% if user %}            
+                    {% if request.session.user %}            
                         {% for i in request.session.user %}
                             {% if i == 'School_Public' %}
                                 {% if student %}
