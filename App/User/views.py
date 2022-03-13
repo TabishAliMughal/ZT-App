@@ -23,9 +23,10 @@ def ManageUserProfileView(request):
         u_data = UserData.objects.all().filter(user = c_user)
         address = []
         for i in u_data:
-            lat = (i.address[1])
-            lng = (i.address[0])
-            address = {'lat':lat , 'lng':lng}
+            if i.address:
+                lat = (i.address[1])
+                lng = (i.address[0])
+                address = {'lat':lat , 'lng':lng}
         cur_user.append({'user' : c_user , 'data' : u_data , 'address' : address })
     context = {
         'cur_user' : cur_user ,
