@@ -133,6 +133,7 @@ def ManageBlogEditView(request,pk):
             'description' : request.POST.get('description') ,
             'type' : request.POST.get('type') ,
             'user' : blog.user ,
+            'views' : blog.views ,
         } or None,{
             'image' : img_content ,
         } or None,instance=blog)
