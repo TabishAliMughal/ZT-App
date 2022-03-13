@@ -31,28 +31,35 @@ def ManageShopsListView(request):
 def ManageShopCreateView(request):
     if request.method == 'POST':
         data = request.POST
-        user1 = get_object_or_404(Creator , user = request.user.pk)
+        user1 = get_object_or_404(UserData , user = request.user.pk)
         shop = True
         for i in Shops.objects.all():
             if i.name == data.get('shop_name'):
                 shop = False
         if shop == True:
-            form = ManageShopCreateForm({
-                'name' : data.get('shop_name') ,
-                'user' : user1 ,
-                'active' : 'False' ,
-            })
-            form.save()
-            # send_mail(
-            #     'New Request',
-            #     'Here is a new shop owner who wants to join your orgnization.\nHis Shop name is {}\nHis User Name Is {} \nHis Profile Is Not Active Yet \nYou Can Activate His Profile Here : http://zt-app.herokuapp.com/shop/shop/list/for_admin'.format(data.get('shop_name'),user),
-            #     'ztapp000@gmail.com' ,
-            #     ['tabishalimughal@gmail.com','zahid.a.mughal@gmail.com']
-            # )
-            context = {
-                'return' : 'Your Request Has Been Submited',
-            }
-            return render(request , 'shop/created.html' , context)
+            if user1.address :
+                form = ManageShopCreateForm({
+                    'name' : data.get('shop_name') ,
+                    'user' : user1.pk ,
+                    'address' : user1.address ,
+                    'active' : 'False' ,
+                })
+                form.save()
+                # send_mail(
+                #     'New Request',
+                #     'Here is a new shop owner who wants to join your orgnization.\nHis Shop name is {}\nHis User Name Is {} \nHis Profile Is Not Active Yet \nYou Can Activate His Profile Here : http://zt-app.herokuapp.com/shop/shop/list/for_admin'.format(data.get('shop_name'),user),
+                #     'ztapp000@gmail.com' ,
+                #     ['tabishalimughal@gmail.com','zahid.a.mughal@gmail.com']
+                # )
+                context = {
+                    'return' : 'Your Request Has Been Submited',
+                }
+                return render(request , 'shop/created.html' , context)
+            else:
+                context = {
+                    'return' : 'Please Complete Data In Your Profile',
+                }
+                return render(request , 'shop/created.html' , context)
         else:
             context = {
                 'return' : 'Another Shop Exist Of This Name Please Try Again',

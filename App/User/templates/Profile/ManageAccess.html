@@ -1,0 +1,158 @@
+{% extends "MainPage.html" %}
+{% load static %}
+{% block title %}
+    Hello {{ request.user.first_name }}
+{% endblock %}
+{% block link %}
+{% endblock %}
+{% block style %}
+<style>
+    body {font-family: Arial, Helvetica, sans-serif;}
+    
+    /* The Modal (background) */
+    .modal {
+      display: none; /* Hidden by default */
+      position: absolute; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      padding-top: 50px; /* Location of the box */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+    
+    /* Modal Content */
+    .modal-content {
+      background-color: #fefefe;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+    }
+    
+    /* The Close Button */
+    .close {
+      color: #aaaaaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+    
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h5>User Access Change</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <tbody>
+                    <tr>
+                        <td>If You Want To Create Your Own Shop</td>
+                        <td><a class="btn btn-primary" href="javascript:" onclick="changeAccess('id_form_shop')">Click Here</a></td>
+                    </tr>
+                    <tr>
+                        <td>If You Want To Create Your Blogs For Public</td>
+                        <td><a class="btn btn-primary" href="javascript:" onclick="changeAccess('id_form_blog')">Click Here</a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div id="myModal" class="modal">
+                
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    {% if message == "Password Incorrect" %}
+                        <br>
+                        <h3 class="text-center" style="color: red;">Please Enter Correct Password</h3>
+                    {% elif message == "Orders Pending" %}
+                        <br>
+                        <h3 class="text-center" style="color: red;">Cannot Change Role</h3>
+                        <h5 class="text-center" style="color: red;">You Have Pending Orders</h5>
+                        <br>
+                    {% endif %}
+                    <form id="id_form_shop" style="display: none;" action="{% url 'user:change_access_to_shop' %}" method="POST">
+                        <div class="form-group">
+                            <label>Enter Your Password</label>
+                            <input class="form-control" type="password" name="password">
+                        </div>
+                        {% csrf_token %}
+                        <button class="btn btn-primary form-control" >Change Role</button>
+                    </form>
+                    <form id="id_form_blog" style="display: none;" action="{% url 'user:change_access_to_blog' %}" method="POST">
+                        <div class="form-group">
+                            <label>Enter Your Password</label>
+                            <input class="form-control" type="password" name="password">
+                        </div>
+                        {% csrf_token %}
+                        <button class="btn btn-primary form-control" >Change Role</button>
+                    </form>
+                </div>
+              
+            </div>
+            {% if message == "Password Incorrect" %}
+                <br>
+                <br>
+                <br>
+                <script>
+                    window.onload = function () {
+                        changeAccess("{{ form }}");
+                    }
+                </script>
+            {% elif message == "Orders Pending" %}
+                <script>
+                    window.onload = function () {
+                        displayModal()
+                    }
+                </script>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script>
+        // Get the modal
+        var modal = document.getElementById("myModal");
+        
+        
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        function displayModal(){
+            modal.style.display = "block";
+        }
+        
+
+        function changeAccess(form){
+            displayModal();
+            document.getElementById(form).style.display = 'block' ;
+        }
+        // When the user clicks on <span> (x), close the modal
+        function close(){
+            document.getElementById('id_form_shop').style.display = 'none' ;
+            document.getElementById('id_form_blog').style.display = 'none' ;
+        }
+        span.onclick = function() {
+            modal.style.display = "none";
+            close();
+        }
+        
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+                close();
+            }
+        }
+        </script>
+{% endblock %}

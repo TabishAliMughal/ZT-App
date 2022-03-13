@@ -95,6 +95,7 @@ def ManageBlogCreateView(request):
             'description' : request.POST.get('description') ,
             'type' : request.POST.get('type') ,
             'user' : cur_user.pk ,
+            'views' : '0' ,
         },{
             'image' : img_content
         })

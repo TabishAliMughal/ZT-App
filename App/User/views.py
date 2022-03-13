@@ -1,9 +1,11 @@
 from django.shortcuts import get_object_or_404, render , redirect
 from django.contrib.auth.models import Group
+from App.Authentication.views import HandleUser
 from App.User.models import Creator
 from App.User.forms import ManageUserDataForm
 from App.User.models import UserData
 from School.Indivisuals.models import Indivisuals
+from Shop.Orders.models import Order
 from Shop.Shop.models import Shops
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserChangeForm , PasswordChangeForm
@@ -46,7 +48,6 @@ def ManageUserProfileEditView(request):
             img_io = BytesIO()
             rimg.save(img_io, format='JPEG', quality=75)
             img_content = ContentFile(img_io.getvalue(),"img.jpg" )
-            # print(get_object_or_404(UserData , user = request.user))
             try:
                 user_data_form = ManageUserDataForm(request.POST or None , {'picture':img_content} , instance = get_object_or_404(UserData , user = request.user))
                 user_data_form.save()
@@ -81,4 +82,45 @@ def ManageUserProfileEditView(request):
 def ManageUserAccessView(request):
     context = {
     }
-    return render(request,'Profile/Profile.html',context)
+    return render(request,'Profile/ManageAccess.html',context)
+
+def ManageUserChangeAccessToShopView(request):
+    groups = request.user.groups.values('name')
+    from django.contrib.auth.hashers import check_password
+    if check_password(request.POST.get('password'),request.user.password) == True :
+        for i in Order.objects.all().filter(user = get_object_or_404(UserData , user = request.user).pk):
+            if str(i.status) != "Delivered":
+                context = {
+                    'message' : "Orders Pending",
+                }
+                return render(request,'Profile/ManageAccess.html',context)
+        for i in groups:
+            if str(i.get('name')) == "Shop_Public":
+                request.user.groups.remove(Group.objects.get(name='Shop_Public'))
+                request.user.groups.add(Group.objects.get(name='Shop_Creator'))
+                HandleUser(request)
+        return redirect('user:user_profle')
+    else:
+        context = {
+            'message' : "Password Incorrect",
+            'form' : "id_form_shop"
+        }
+        return render(request,'Profile/ManageAccess.html',context)
+    
+
+def ManageUserChangeAccessToBlogView(request):
+    groups = request.user.groups.values('name')
+    from django.contrib.auth.hashers import check_password
+    if check_password(request.POST.get('password'),request.user.password) == True :
+        for i in groups:
+            if str(i.get('name')) == "Blog_Public":
+                request.user.groups.remove(Group.objects.get(name='Blog_Public'))
+                request.user.groups.add(Group.objects.get(name='Blog_Creator'))
+                HandleUser(request)
+        return redirect('user:user_profle')
+    else:
+        context = {
+            'message' : "Password Incorrect",
+            'form' : "id_form_blog"
+        }
+        return render(request,'Profile/ManageAccess.html',context)

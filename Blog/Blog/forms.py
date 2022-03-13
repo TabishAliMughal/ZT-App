@@ -11,4 +11,5 @@ class ManageBlogCreateForm(forms.ModelForm):
             'image' ,
             'type' ,
             'user' ,
+            'views' ,
         ]

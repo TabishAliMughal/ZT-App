@@ -38,7 +38,16 @@
                             <div class="card-body">
                                     Name : <div style="text-align:right;"> {{ i.user.first_name }} {{ i.user.last_name }}</div>
                                     Email Address : <div style="text-align:right;"> {{ i.user.email }}</div>
-                                    Logged In As : <div style="text-align:right;"> {% for i in request.session.user %}{{ i }}<br>{% endfor %}</a>{% for i in request.session.user %}{% endfor %}</div>
+                                    Logged In As : <div style="text-align:right;">
+                                        {% for i in request.session.user %}
+                                            {% if i == "admin" or i == "Blog_Creator" or i == "Checker" or i == "DataHandler" or i == "Delivery" or i == "Individuals" or i == "Parent" or i == "RAdmin" or i == "School" or i == "Shop_Creator" or i == "Teacher" %}
+                                                <a style="color: green;">{{ i }}</a>
+                                                {% else %}
+                                                <a style="color: red;">{{ i }}</a>
+                                            {% endif %}
+                                            <br>
+                                        {% endfor %}
+                                    </div>
                                     User Since : <div style="text-align:right;"> {{ i.user.date_joined }}</div>
                                     {% for v in i.data %}
                                         City : <div style="text-align:right;"> {{ v.city }}</div>
@@ -65,7 +74,7 @@
                     {% endif %}
                 {% endfor %}
             </div>
-            <a class="btn btn-primary">Manage Access</a>
+            <a class="btn btn-primary form-control" href="{% url 'user:manage_access' %}">Manage Access</a>
         </div>
     </div>
 {% endblock %}
