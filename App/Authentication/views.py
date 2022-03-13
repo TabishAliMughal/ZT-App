@@ -13,7 +13,6 @@ def HandleUser(request):
 	for i in user:
 		roles.append(i.get('name'))
 	if "Shop_Creator" not in roles and "Delivery" not in roles:
-		print(roles)
 		request.user.groups.add(Group.objects.get(name='Shop_Public'))
 	if "Individuals" not in roles and "Admin" not in roles and "DataHandler" not in roles and "Checker" not in roles and "School" not in roles and "Parent" not in roles and "Teacher" not in roles:
 		request.user.groups.add(Group.objects.get(name='School_Public'))
