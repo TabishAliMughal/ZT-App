@@ -44,7 +44,7 @@ def savePosts(s,t):
                     'text' : description ,
                     'video' : url ,
                     'blog' : t ,
-                    'views' : 
+                    'views' : '0',
                 },{
                     'image' : img_content ,
                 })
