@@ -31,13 +31,12 @@
             <li class="wc-calendar__days-names__item">Sun</li>
           </ul> -->
           <br>
-          <h6 class="text-center">Week 1</h6><br>
+          <h6 class="text-center">Days</h6><br>
           <ul class="wc-calendar__days-list">
             {% for i in date1 %}
             <a role="button" href="{% url 'school:demo_list' i %}" class="wc-calendar__days-list__item">{{ i }}</a>
             {% endfor %}
           </ul>
-          <h6 class="text-center">Week 2</h6><br>
           <ul class="wc-calendar__days-list">
             {% for i in date2 %}
                 <a role="button" href="{% url 'school:demo_list' i %}" class="wc-calendar__days-list__item">{{ i }}</a>

@@ -26,6 +26,7 @@
                     <div class="card block-card">
                         <div class="card-header">
                             <h5 style="font-family: 'Noto Naskh Arabic', serif;">{{ i.question.question }}</h5>
+                            <div style="float: right;"><p>Asked By {{ i.question.user }}</p></div>
                         </div>
                         <div class="card-body">
                             {% if i.question.text %}
@@ -49,9 +50,12 @@
                                 <br>
                                 {% for k in i.answers %}
                                     <div class="accordion" id="answers_div">
-                                        <div class="card">
+                                        <div class="card" {% if k.accepted == True %}style="background-color: #7ac1ff;color: black;"{% endif %}>
                                             <div class="card-header" id="headingOne">
                                                 <h5 class="mb-0"><a href="#!" data-toggle="collapse" data-target="#{{ k.pk }}" aria-expanded="true" aria-controls="collapseOne" class="">{{ k.user }}</a></h5>
+                                                {% if k.accepted == True %}
+                                                    <div style="float: right;font-size: 15px;">Answer Accepted</div>
+                                                {% endif %}
                                             </div>
                                             <div id="{{ k.pk }}" class="card-body collapse" aria-labelledby="headingOne" data-parent="#answers_div" style="">
                                                 {{ k.answer }}
@@ -64,8 +68,67 @@
                                                     <a class="btn btn-primary" href="{{ k.video.url }}"><i class="feather icon-external-link"> View Video</i></a>
                                                 {% endif %}
                                                 {% if i.question.user.pk == request.session.cur_user %}
-                                                    <div style="float: right;"><a class="btn btn-primary">It Helped</a></div>
+                                                    <div style="float: right;"><a class="btn btn-primary" href="{% url 'discussion_questionare:question_answer_approve' k.pk %}">It Helped</a></div>
                                                 {% endif %}
+                                                {% if k.user.pk == request.session.cur_user %}
+                                                    <div style="float: right;"><a class="btn btn-primary" onclick="answerEdit({{ k.pk }})">Edit</a></div>
+                                                {% endif %}                                                
+                                                <div id="id_answer_edit_form{{ k.pk }}" style="width: 80%;margin: auto;display: none;">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <h5>Editing Answer</h5>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <form method="POST" enctype="multipart/form-data" action="{% url 'discussion_questionare:answer_question' %}">
+                                                                <div class="form-group" hidden>
+                                                                    <label>Answer</label>
+                                                                    <input class="form-control" type="number" name="pk" required="" id="id_pk" value="{{ k.pk }}">
+                                                                </div>
+                                                                <div class="form-group" hidden>
+                                                                    <label>User</label>
+                                                                    <input class="form-control" type="number" name="user" required="" id="id_user" value="{{ request.session.cur_user }}">
+                                                                </div>
+                                                                <div class="form-group" hidden>
+                                                                    <label>Question</label>
+                                                                    <input class="form-control" type="number" name="question" id="id_question" value="{{ i.question.pk }}">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Answer</label>
+                                                                    <textarea class="form-control" name="answer" maxlength="500" required="" id="id_answer" style="height: 100px;">{{ k.answer }}</textarea>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Related Picture (If Available)</label>
+                                                                    <div class="form-control">
+                                                                        {% if k.image %}
+                                                                            Currenty:
+                                                                            <img style="border: 5px solid gray;align-items: center;height:100px;" src="{{ k.image.url }}">
+                                                                            Change:
+                                                                            <input type="file" name="image" accept="image/*" capture="camera" id="id_image">
+                                                                        {% else %}
+                                                                            <input type="file" name="image" accept="image/*" capture="camera" id="id_image">
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Related Video (If Available)</label>
+                                                                    <div class="form-control">
+                                                                        {% if k.video %}
+                                                                            Currenty:
+                                                                                <a class="btn btn-primary" href="{{ k.video.url }}"><i class="feather icon-external-link"> View Video</i></a>
+                                                                            Change:
+                                                                                <input type="file" name="video" accept="video/*" capture="camera" id="id_video">
+                                                                        {% else %}
+                                                                            <input type="file" name="video" accept="video/*" capture="camera" id="id_video">
+                                                                        {% endif %}
+                                                                    </div>
+                                                                    <small>Video Should be Less Than 10 MB</small>
+                                                                </div>
+                                                                <button class="btn btn-primary">Add Answer</button>
+                                                                {% csrf_token %}
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -91,7 +154,7 @@
                                 </div>
                                 <br>
                                 <br>
-                                <div id="id_question_form{{ i.question.pk }}" style="width: 80%;margin: auto;display: none;">
+                                <div id="id_answer_form{{ i.question.pk }}" style="width: 80%;margin: auto;display: none;">
                                     <div class="card">
                                         <div class="card-header">
                                             <h5>Answering {{ i.question.user.first_name }}</h5>
@@ -117,6 +180,7 @@
                                                 <div class="form-group">
                                                     <label>Related Video (If Available)</label>
                                                     <input class="form-control" type="file" name="video" accept="video/*" capture="camera" id="id_video">
+                                                    <small>Video Should be Less Than 10 MB</small>
                                                 </div>
                                                 <button class="btn btn-primary">Add Answer</button>
                                                 {% csrf_token %}
@@ -136,7 +200,7 @@
     <script>
         function answerForm(question){
             // alert(question);
-            document.getElementById('id_question_form'+question).style.display = 'block';
+            document.getElementById('id_answer_form'+question).style.display = 'block';
         }
     </script>
     <script>
@@ -164,6 +228,9 @@
             }else{
                 var status = document.getElementById('id_audiance'+question).style.display = "none";
             }
+        }
+        function answerEdit(answer){
+            var status = document.getElementById('id_answer_edit_form'+answer).style.display = "block";
         }
     </script>
 {% endblock %}

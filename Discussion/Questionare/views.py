@@ -79,6 +79,10 @@ def ManageUserQuestionAskView(request):
 @allowed_users(allowed_roles=['Questionare_Public'])
 def ManageQuestionAnswerView(request):
     if request.method == 'POST':
+        if request.POST.get('pk'):
+            instance = get_object_or_404(Answer , pk = request.POST.get("pk"))
+        else:
+            instance = None
         if request.FILES.get('image'):
             image = Image.open(request.FILES.get('image'))
             size = image.size
@@ -92,7 +96,8 @@ def ManageQuestionAnswerView(request):
             img_content = ContentFile(img_io.getvalue(),"img.jpg" )
         else:
             img_content = request.POST.get('image')
-        form = AnswerQuestionForm(request.POST,{'image':img_content , 'video' : request.FILES.get('video')})
+        form = AnswerQuestionForm(request.POST,{'image':img_content or None , 'video' : request.FILES.get('video')} or None , instance = instance)
+        print(form)
         form.save()
         return redirect('discussion_questionare:questions')
 
@@ -106,3 +111,11 @@ def ManageQuestionAudianceView(request,question):
     })
     form.save()
     return redirect('discussion_questionare:my_question',user.pk)
+
+@login_required(login_url='main_login')
+@allowed_users(allowed_roles=['Questionare_Public'])
+def ManageApproveAnswer(request,answer):
+    answer_ = Answer.objects.filter(pk = answer)
+    answer_.update(accepted = 'True')
+    answer = get_object_or_404(Answer , pk = answer)
+    return redirect('discussion_questionare:my_question',answer.question.user)

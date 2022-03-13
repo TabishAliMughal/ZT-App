@@ -54,7 +54,7 @@
             <div class="card">
                 <div class="card-header">
                     <h5>{{ my_blog }}{% if my_bunch != 'None' %} > {{ my_bunch }}{% endif %} </h5>
-                    <div class="float-right"><a class="btn btn-primary" href="{% url 'blog_blog:user_blog_list' my_blog.user %}">More</a></div>
+                    <div class="float-right"><a class="btn btn-primary" href="{% url 'blog_blog:user_blog_list' my_blog.user %}">More From {{ bloger }}</a></div>
                     <br>
                     <br>
                     {% if tags %}

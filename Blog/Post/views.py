@@ -14,6 +14,7 @@ from django.contrib.auth.models import User
 from Blog.Tags.models import BlogTags, PostTags
 from django.db.models import DateTimeField
 from django.db.models.functions import Trunc
+from App.User.models import UserData
 
 def ManagePostListView(request,blog=None,bunch=None,post=None):
     posts = []
@@ -23,6 +24,7 @@ def ManagePostListView(request,blog=None,bunch=None,post=None):
     my_bunch = 'None'
     tags = []
     my_tags = 'None'
+    bloger = 'None'
     if blog:
         my_blog = get_object_or_404(Blog , pk = blog)
         my_post = Post.objects.all().order_by('time').order_by('time').filter(blog = my_blog)
@@ -44,7 +46,7 @@ def ManagePostListView(request,blog=None,bunch=None,post=None):
         my_blog.views = my_blog.views+1
         my_blog.save(update_fields=['views'])
         tags = (BlogTags.objects.all().filter(blog = my_blog))
-    time = []
+        bloger = get_object_or_404(UserData , pk = my_blog.user)
     for l in my_post:
         reacts = []
         for k in ReactTypes.objects.all():
@@ -60,8 +62,8 @@ def ManagePostListView(request,blog=None,bunch=None,post=None):
         'posts' : posts,
         'bunches' : bunches,
         'tags' : tags ,
+        'bloger' : bloger ,
     }
-    print('abc')
     return render(request,'post/list.html',context)
 
 def ManagePostDetailView(request,pk):

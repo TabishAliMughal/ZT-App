@@ -9,4 +9,5 @@ urlpatterns = [
     path('questions/user/<user>', views.ManageQuestionsListView, name='my_question'),
     path('questions/answer', views.ManageQuestionAnswerView, name='answer_question'),
     path('questions/<question>/audiance', views.ManageQuestionAudianceView, name='question_audiance'),
+    path('questions/answer/approve/<answer>', views.ManageApproveAnswer, name='question_answer_approve'),
 ]

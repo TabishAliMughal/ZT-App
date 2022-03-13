@@ -59,10 +59,14 @@
                             <label for="id_name">Fees</label>
                             <input class="form-control" type="number" name="fees" required="" id="id_fees">
                         </div>
-                        <div class="form-group">
-                            <label for="id_name">Active</label>
-                            <input class="form-control" type="checkbox" name="active" id="id_active">
-                        </div>
+                        {% for i in request.session.user %}
+                            {% if i == "Admin" or i == "School" %}
+                                <div class="form-group">
+                                    <label for="id_name">Active</label>
+                                    <input class="form-control" type="checkbox" name="active" id="id_active">
+                                </div>
+                            {% endif %}
+                        {% endfor %}
                         <button class="btn btn-primary">Add</button>
                         {% csrf_token %}
                     </form>
