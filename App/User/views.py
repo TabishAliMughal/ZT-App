@@ -19,7 +19,7 @@ from App.Authentication.user_handeling import allowed_users
 def ManageUserProfileView(request):
     cur_user = []
     if request.user.is_authenticated:
-        c_user = get_object_or_404(User , user = request.user.pk)
+        c_user = get_object_or_404(User , pk = request.user.pk)
         u_data = UserData.objects.all().filter(user = c_user)
         address = []
         for i in u_data:
