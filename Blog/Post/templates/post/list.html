@@ -32,16 +32,20 @@
                                 </div>
                             {% elif k == 'Admin' %}
                                 <a class="btn btn-primary" href="{% url 'blog_post:bulk_post_create' my_blog.pk %}">Create Bulk Post</a>
-                            {% elif k == 'Blog_Public' %}                                
-                                <div class="btn-group mb-2 mr-2">
-                                    <a type="button" class="btn btn-info" style="color: white;" href="{% url 'blog_bunch:blog_bunch_list' my_blog.pk %}">Bunches</a>
-                                    <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>
-                                    <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(66px, 43px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                        {% for i in bunches %}
-                                            <a class="dropdown-item" href="{% url 'blog_post:post_list_by_bunch' i.pk %}">{{ i.name }}</a>
-                                        {% endfor %}
+                            {% elif k == 'Blog_Public' %}              
+                                {% if bunches %}                  
+                                    <div class="btn-group mb-2 mr-2">
+                                        <a type="button" class="btn btn-info" style="color: white;" href="{% url 'blog_bunch:blog_bunch_list' my_blog.pk %}">Bunches</a>
+                                        <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>
+                                        <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(66px, 43px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                            {% for i in bunches %}
+                                                <a class="dropdown-item" href="{% url 'blog_post:post_list_by_bunch' i.pk %}">{{ i.name }}</a>
+                                            {% endfor %}
+                                        </div>
                                     </div>
-                                </div>
+                                {% else %}
+                                    No Bunches Found
+                                {% endif %}
                             {% endif %}
                         {% endfor %}
                     {% endif %}

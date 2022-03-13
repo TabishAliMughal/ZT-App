@@ -13,22 +13,22 @@
             <br>
             <br>
             <div class="row">
-                <div class="col-md-12">
-                    <div class="card block-card">
-                        <div class="card-header">
-                            <h5>Image</h5>
-                        </div>
-                        <div class="card-body text-center">
-                            {% for i in cur_user %}
-                                {% for v in i.data %}
-                                    {% if v.picture %}
+                {% for i in cur_user %}
+                    {% for v in i.data %}
+                        {% if v.picture %}
+                            <div class="col-md-12">
+                                <div class="card block-card">
+                                    <div class="card-header">
+                                        <h5>Image</h5>
+                                    </div>
+                                    <div class="card-body text-center">
                                         <img style="border-radius: 50%;max-width:140px;" src="{{ v.picture.url }}">
-                                    {% endif %}
-                                {% endfor %}
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
                 {% for i in cur_user %}
                     <div class="col-md-12">
                         <div class="card block-card">
