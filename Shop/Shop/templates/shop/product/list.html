@@ -63,7 +63,8 @@
                         <div style="width:15%;float: left;" class="text-center">
                             <a href="{% url 'shop:product_list_by_category' c.slug %}">
                                 {% if c.image %}<img style="width:100%;height: auto;" src="{{ c.image.url }}">{% endif %}
-                                {{ c }}<br><br>
+                                <a style="font-size: 10px;color: black;">{{ c }}</a>
+                                <br><br>
                             </a>
                         </div>
                     {% endfor %}
