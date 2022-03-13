@@ -152,6 +152,7 @@ def ManagePostCreateView(request,pk):
             'text' : request.POST.get('text') ,
             'video' : request.POST.get('video') ,
             'blog' : blog ,
+            'views' : "1" ,
         },{
             'sound' : request.FILES.get('sound') ,
             'image' : img_content ,
@@ -192,6 +193,7 @@ def ManagePostEditView(request,pk):
             'text' : request.POST.get('text') ,
             'video' : request.POST.get('video') ,
             'blog' : post.blog ,
+            'views' : post.views ,
         } or None,{
             'sound' : request.FILES.get('sound') ,
             'image' : img_content ,
