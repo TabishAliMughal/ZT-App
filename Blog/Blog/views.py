@@ -26,6 +26,7 @@ def ManageBlogListView(request):
                 comment = int(comment) + int(len(PostComment.objects.all().filter(post = v)))
             blog_list.append({'blog' : i , 'posts' : posts , 'react' : reacts , 'comment' : comment})
         blogs.append({"type" : k , "blogs" : blog_list})
+    blogs = blogs[::-1]
     context = {
         'blogs' : blogs ,
     }
@@ -67,6 +68,7 @@ def ManageUserBlogListView(request,pk=None):
             flow.sort(key=lambda x: x.get("count"))
             icons = flow[::-1]
             blogs.append({'blog' : i , 'posts' : posts , 'react' : total_reacts , 'comment' : comment,'icons':icons[:2]})
+    blogs = blogs[::-1]
     context = {
         'blogs' : blogs ,
     }

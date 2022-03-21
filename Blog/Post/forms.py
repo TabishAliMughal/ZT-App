@@ -13,6 +13,7 @@ class ManagePostCreateForm(forms.ModelForm):
             'video',
             'sound',
             'blog',
+            'views',
         ]
 
 class ManagePostReactForm(forms.ModelForm):
