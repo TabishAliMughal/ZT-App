@@ -50,11 +50,11 @@ INSTALLED_APPS = [
     'background_task',
 ]
 
-SOCIAL_AUTH_FACEBOOK_KEY = '154485483318786' # Facebook App ID
-SOCIAL_AUTH_FACEBOOK_SECRET = '6878449e81a93b8b55feeae65fc8efae' # Facebook App Secret
+SOCIAL_AUTH_FACEBOOK_KEY = '---' # Facebook App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = '---' # Facebook App Secret
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '792973645164-72jeaeme574usd1h671vp0kmnahtuph4.apps.googleusercontent.com' # Google Consumer Key
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'L6yMwg-1DkATJujbY0uIAHwh' # Google Consumer Secret
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '---' # Google Consumer Key
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '---' # Google Consumer Secret
 
 MAP_WIDGETS = {
     "GooglePointFieldWidget": (
@@ -111,49 +111,49 @@ WSGI_APPLICATION = 'MyApp.wsgi.application'
 DATABASES = {
     'school': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'zt_school_data',
-        'USER': 'comsoft',
-        'PASSWORD': 'Comsoft',
+        'NAME': '---',
+        'USER': '---',
+        'PASSWORD': '---',
         'HOST': '127.0.0.1' ,
         'PORT': '5432' ,
     },
     'matrinomial': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'zt_matrinomial_data',
-        'USER': 'comsoft',
-        'PASSWORD': 'Comsoft',
+        'NAME': '---',
+        'USER': '---',
+        'PASSWORD': '---',
         'HOST': '127.0.0.1' ,
         'PORT': '5432' ,
     },
     'blog': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'zt_blog_data',
-        'USER': 'comsoft',
-        'PASSWORD': 'Comsoft',
+        'NAME': '---',
+        'USER': '---',
+        'PASSWORD': '---',
         'HOST': '127.0.0.1' ,
         'PORT': '5432' ,
     },
     'shop': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'zt_shop_data',
-        'USER': 'comsoft',
-        'PASSWORD': 'Comsoft',
+        'NAME': '---',
+        'USER': '---',
+        'PASSWORD': '---',
         'HOST': '127.0.0.1' ,
         'PORT': '5432' ,
     },
     'app': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'zt_app_data',
-        'USER': 'comsoft',
-        'PASSWORD': 'Comsoft',
+        'NAME': '---',
+        'USER': '---',
+        'PASSWORD': '---',
         'HOST': '127.0.0.1' ,
         'PORT': '5432' ,
     },
     'default':{
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'zt_default_data',
-        'USER': 'comsoft',
-        'PASSWORD': 'Comsoft',
+        'NAME': '---',
+        'USER': '---',
+        'PASSWORD': '---',
         'HOST': '127.0.0.1' ,
         'PORT': '5432' ,
     },
@@ -196,10 +196,10 @@ USE_L10N = True
 
 USE_TZ = True
 
-AWS_ACCESS_KEY_ID = 'AKIAZBPKQPWOCBNQ5M55'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'zt-storage'
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.ap-south-1.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_ACCESS_KEY_ID = '---'
+AWS_SECRET_ACCESS_KEY = '---'
+AWS_STORAGE_BUCKET_NAME = '---'
+AWS_S3_CUSTOM_DOMAIN = '---' % AWS_STORAGE_BUCKET_NAME
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
@@ -233,8 +233,8 @@ AUTHENTICATION_BACKENDS = [
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'ztapp000@gmail.com'
-EMAIL_HOST_PASSWORD = 'ZT-App@123'
+EMAIL_HOST_USER = '---'
+EMAIL_HOST_PASSWORD = '---'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
